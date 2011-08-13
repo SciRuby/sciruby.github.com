@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>SciRuby</title>
+  <link href="http://sciruby.com/atom.xml" rel="self"/>
+  <link href="http://sciruby.com/"/>
+  <updated>2011-08-13T13:18:21-04:00</updated>
+  <id>http://sciruby.com/</id>
+  <author>
+    <name>SciRuby</name>
+    
+  </author>
+
+  
+</feed>
