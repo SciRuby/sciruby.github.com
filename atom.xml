@@ -4,12 +4,85 @@
   <title>SciRuby</title>
   <link href="http://sciruby.com/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2011-08-15T16:56:51-05:00</updated>
+  <updated>2011-08-15T20:05:18-05:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name>SciRuby</name>
     
   </author>
 
+  
+  <entry>
+    <title>First Post!</title>
+    <link href="http://sciruby.com/blog/2011/08/15/first-post/"/>
+    <updated>2011-08-15T19:50:00-05:00</updated>
+    <id>http://sciruby.com/blog/2011/08/15/first-post</id>
+    <content type="html">&lt;p&gt;I thought I'd start by introducing myself. I'm the project director for SciRuby, and I'm a molecular biology doctoral
+ student at the University of Texas. I work in the &lt;a href=&quot;http://marcottelab.org/&quot;&gt;Marcotte Lab&lt;/a&gt;, and actually occupy the
+ former desk (and lab hostname) of John Prince, another of the SciRuby project leads.&lt;/p&gt;
+
+&lt;p&gt;In addition to working as a graduate student, I am a blogger and an offline political activist -- specifically, a
+ community organizer. While I have contributed code to SciRuby already, and plan to continue, my main role here derives
+ from my community organizing experience: &lt;strong&gt;I want &lt;em&gt;you&lt;/em&gt; to get involved.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;In that vein, I have written &lt;a href=&quot;http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights/&quot;&gt;a fascinating (and humble) precautionary tale&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Oh, and if do you want to get involved, you can find us in #sciruby (Freenode.net), or you can come check out our
+&lt;a href=&quot;http://groups.google.com/group/sciruby-dev&quot;&gt;Google Group&lt;/a&gt;.&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>The Challenges of Copyrights</title>
+    <link href="http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights/"/>
+    <updated>2011-08-15T18:56:00-05:00</updated>
+    <id>http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights</id>
+    <content type="html">&lt;p&gt;Last week, I thought it would be fun to translate some of the &lt;em&gt;&lt;a href=&quot;http://nr.com/&quot;&gt;Numerical Recipes&lt;/a&gt;&lt;/em&gt; algorithms into Ruby,
+ specifically those for the Gamma distribution and incomplete gamma function. I got them all working pretty well, and
+ they were only a hundred or so lines of code altogether.&lt;/p&gt;
+
+&lt;p&gt;But a voice in the back of my head said, &quot;Hey, you should ask Bill Press if he wants to be involved.&quot;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/William_H._Press&quot;&gt;Bill Press&lt;/a&gt;, by the way, is a pretty cool astrophysicist who decided he
+ wanted to come work here at UT as a computational biologist instead. He also happens to be first author on &lt;em&gt;Numerical
+ Recipes&lt;/em&gt;, and a fairly regular attendee at my lab's weekly meetings. Once he had to pause my exam to take a call
+ from the White House, which was also pretty awesome.&lt;/p&gt;
+
+&lt;p&gt;So I emailed Dr. Press to ask him if he'd be interested in helping out with SciRuby, and specifically if he might be
+ willing to donate a copy of NR. He was happy to donate a copy and to help out in whatever way he could, he wrote back,
+ but the license for NR wouldn't allow us to use the code from the book.&lt;/p&gt;
+
+&lt;p&gt;My stomach sank. I had missed that disclaimer, and I was used to dealing with more-or-less public domain (or at least
+ GPLed) Ruby code.&lt;/p&gt;
+
+&lt;p&gt;The email continued. We should be careful using other libraries, because many of them were illegally derived from
+ copyrighted materials.&lt;/p&gt;
+
+&lt;p&gt;Several interesting discussions ensued (&lt;a href=&quot;https://plus.google.com/108379995018215027591/posts/2AefG8i3nUX&quot;&gt;including this public one&lt;/a&gt;).
+ The take-away is that many people don't understand code copyrights (I among them). Consequently, most governments don't
+ understand copyrights (and it doesn't help that U.S. Congress isn't exactly full of programmers).&lt;/p&gt;
+
+&lt;p&gt;Some were critical of Press and his coauthors for not simply giving us special permission to use his code, but such a
+ gimme would be complicated for NR. If they permitted us to use NR code in SciRuby, that code would then be available to
+ anyone else to use under the terms of the GPL. I imagine his publisher would be less than thrilled.&lt;/p&gt;
+
+&lt;p&gt;So here are some general guidelines for those who want to contribute code to an open-source scientific project,
+ particularly SciRuby. Please keep in mind that I am not a lawyer, and take any of this with a grain of salt.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;If in doubt, check with the author.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Do unto others as you would have them do unto you. In other words, honor closed source licenses if you wish your open
+source license to be honored.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Always cite your sources.&lt;/em&gt; If a copyright owner discovers apparently derivative code without a citation, it's easy
+to him or her to assume you plagiarized it directly from his or her work. If it has a citation, someone else gets the
+blame, or the copyright owner can determine that the code is only &lt;em&gt;apparently&lt;/em&gt;, but not &lt;em&gt;actually&lt;/em&gt;, derivative.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If you write your own code, derived from your own math, document it. Scan your derivation and make it public (send it
+to our Google Group, for example).&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Any more words of wisdom? Stick them in the comments.&lt;/p&gt;
+</content>
+  </entry>
   
 </feed>
