@@ -4,7 +4,7 @@
   <title>SciRuby</title>
   <link href="http://sciruby.com/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2011-08-17T22:10:59-05:00</updated>
+  <updated>2011-08-17T22:11:56-05:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name>SciRuby</name>
@@ -14,9 +14,9 @@
   
   <entry>
     <title>Interview with the SciRuby Team</title>
-    <link href="http://sciruby.com/blog/2011/08/17/interview-with-sciruby-team/"/>
+    <link href="http://sciruby.com/blog/2011/08/17/interview-with-the-sciruby-team/"/>
     <updated>2011-08-17T21:59:00-05:00</updated>
-    <id>http://sciruby.com/blog/2011/08/17/interview-with-sciruby-team</id>
+    <id>http://sciruby.com/blog/2011/08/17/interview-with-the-sciruby-team</id>
     <content type="html">&lt;p&gt;We just had an interview published today over at &lt;a href=&quot;http://www.floss4science.com/interview-sciruby-team/&quot;&gt;Floss for Science&lt;/a&gt;,
  and we're super excited because it's our very first media coverage.&lt;/p&gt;
 
