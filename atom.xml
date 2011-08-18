@@ -4,7 +4,7 @@
   <title>SciRuby</title>
   <link href="http://sciruby.com/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2011-08-15T20:14:53-05:00</updated>
+  <updated>2011-08-17T22:09:29-05:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name>SciRuby</name>
@@ -13,29 +13,31 @@
 
   
   <entry>
-    <title>First Post!</title>
-    <link href="http://sciruby.com/blog/2011/08/15/first-post/"/>
-    <updated>2011-08-15T19:50:00-05:00</updated>
-    <id>http://sciruby.com/blog/2011/08/15/first-post</id>
-    <content type="html">&lt;p&gt;I thought I'd start by introducing myself. I'm the project director for SciRuby, and I'm a molecular biology doctoral
- student at the University of Texas. I work in the &lt;a href=&quot;http://marcottelab.org/&quot;&gt;Marcotte Lab&lt;/a&gt;, and actually occupy the
- former desk (and lab hostname) of John Prince, another of the SciRuby project leads.&lt;/p&gt;
+    <title>Interview With SciRuby Team</title>
+    <link href="http://sciruby.com/blog/2011/08/17/interview-with-sciruby-team/"/>
+    <updated>2011-08-17T21:59:00-05:00</updated>
+    <id>http://sciruby.com/blog/2011/08/17/interview-with-sciruby-team</id>
+    <content type="html">&lt;p&gt;We just had an interview published today over at &lt;a href=&quot;http://www.floss4science.com/interview-sciruby-team/&quot;&gt;Floss for Science&lt;/a&gt;,
+ and we're super excited because it's our very first media coverage.&lt;/p&gt;
 
-&lt;p&gt;In addition to working as a graduate student, I am a blogger and an offline political activist -- specifically, a
- community organizer. While I have contributed code to SciRuby already, and plan to continue, my main role here derives
- from my community organizing experience: &lt;strong&gt;I want &lt;em&gt;you&lt;/em&gt; to get involved.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;If you want to vote it up at &lt;a href=&quot;http://www.reddit.com&quot;&gt;reddit&lt;/a&gt;, that would be outstanding &amp;emdash; or share it however you
+ like to share things. Here are the links:&lt;/p&gt;
 
-&lt;p&gt;In that vein, I have written &lt;a href=&quot;http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights/&quot;&gt;a fascinating (and humble) precautionary tale&lt;/a&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.reddit.com/r/programming/comments/jlh19/interview_sciruby_team/&quot;&gt;/r/programming&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.reddit.com/r/ruby/comments/jlkur/interview_sciruby_team/&quot;&gt;r/ruby&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;Oh, and if do you want to get involved, you can find us in #sciruby (Freenode.net), or you can come check out our
-&lt;a href=&quot;http://groups.google.com/group/sciruby-dev&quot;&gt;Google Group&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Already we've had a bunch of new people joining us on IRC (#sciruby on Freenode) and in our
+ &lt;a href=&quot;http://groups.google.com/group/sciruby-dev&quot;&gt;Google Group&lt;/a&gt;. Thanks for all your support!&lt;/p&gt;
 </content>
   </entry>
   
   <entry>
     <title>The Challenges of Copyrights</title>
     <link href="http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights/"/>
-    <updated>2011-08-15T18:56:00-05:00</updated>
+    <updated>2011-08-15T19:56:00-05:00</updated>
     <id>http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights</id>
     <content type="html">&lt;p&gt;Last week, I thought it would be fun to translate some of the &lt;em&gt;&lt;a href=&quot;http://nr.com/&quot;&gt;Numerical Recipes&lt;/a&gt;&lt;/em&gt; algorithms into Ruby,
  specifically those for the Gamma distribution and incomplete gamma function. I got them all working pretty well, and
@@ -82,6 +84,26 @@ to our Google Group, for example).&lt;/p&gt;&lt;/li&gt;
 
 
 &lt;p&gt;Any more words of wisdom? Stick them in the comments.&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
+    <title>First Post!</title>
+    <link href="http://sciruby.com/blog/2011/08/15/first-post/"/>
+    <updated>2011-08-15T19:50:00-05:00</updated>
+    <id>http://sciruby.com/blog/2011/08/15/first-post</id>
+    <content type="html">&lt;p&gt;I thought I'd start by introducing myself. I'm the project director for SciRuby, and I'm a molecular biology doctoral
+ student at the University of Texas. I work in the &lt;a href=&quot;http://marcottelab.org/&quot;&gt;Marcotte Lab&lt;/a&gt;, and actually occupy the
+ former desk (and lab hostname) of John Prince, another of the SciRuby project leads.&lt;/p&gt;
+
+&lt;p&gt;In addition to working as a graduate student, I am a blogger and an offline political activist -- specifically, a
+ community organizer. While I have contributed code to SciRuby already, and plan to continue, my main role here derives
+ from my community organizing experience: &lt;strong&gt;I want &lt;em&gt;you&lt;/em&gt; to get involved.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;In that vein, I have written &lt;a href=&quot;http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights/&quot;&gt;a fascinating (and humble) precautionary tale&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Oh, and if do you want to get involved, you can find us in #sciruby (Freenode.net), or you can come check out our
+&lt;a href=&quot;http://groups.google.com/group/sciruby-dev&quot;&gt;Google Group&lt;/a&gt;.&lt;/p&gt;
 </content>
   </entry>
   
