@@ -5,11 +5,9 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head xmlns:og="http://ogp.me/ns#">
   <meta charset="utf-8">
-  <title>SciRuby: Category: Licenses</title>
+  <title>SciRuby: *NIX Install Instructions</title>
   <meta property="og:image" content="http://sciruby.com/images/logo.png">
   <meta name="author" content="SciRuby">
-  
-    <meta name="description" content="Category: Licenses"/>
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +17,7 @@
 
   
 
-  <link rel="canonical" href="http://sciruby.comblog/categories/Licenses/index.html"/>
+  <link rel="canonical" href="http://sciruby.com/docs/installation/linux.html"/>
   <link href="/favicon.png" rel="shortcut icon" />
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -102,31 +100,65 @@
 <article>
   
   <header>
-    <h1 class="entry-title">Category: Licenses</h1>
-    
+    <h1 class="entry-title">*NIX Install Instructions</h1>
+    <p class="meta">
+
+
+
+
+<time datetime="2011-09-19 20:16:00 -0500" pubdate  updated >Sep 19<span>th</span>, 2011</time>
+
+
+</p>
   </header>
   
-  <div id="blog-archives" class="category">
+  <h2>System headers</h2>
 
+<p>These steps should work for Debian and Ubuntu flavors. If you&#8217;re using something else, please <a href="mailto:john.woods@marcottelab.org">email John</a> with the steps you took.</p>
+
+<pre><code>apt-get update # update package sources
+apt-get install libgtk2.0-dev librsvg2-dev libcairo2-dev
+apt-get install libgtksourceview2.0-dev # optional, for code editor
+</code></pre>
+
+
+<p>If you have problems, you might consult (the Green Shoes wiki)[https://github.com/ashbb/green_shoes/wiki/Building-Green-Shoes-on-Ubuntu].</p>
+
+<h2>SciRuby</h2>
+
+<pre><code>gem install sciruby
+gem install gtksourceview2 # optional, for code editor
+gem install statsample-optimization # optional: rb-gsl, statistics2
+</code></pre>
 
 
   
-  <h2>2011</h2>
+    <footer>
+      <p class="meta">
+        
+        
 
-<article>
+
+
+
+<time datetime="2011-09-19 20:16:00 -0500" pubdate  updated >Sep 19<span>th</span>, 2011</time>
+
+
+
+        
+      </p>
+      
+        <div class="sharing">
   
-<h1><a href="/blog/2011/08/15/the-challenges-of-copyrights/">The Challenges of Copyrights</a></h1>
-<time datetime="2011-08-15 19:56:00 -0500" pubdate><span class='month'>Aug</span> <span class='day'>15</span> <span class='year'>2011</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/Algorithms/'>Algorithms</a>, <a class='category' href='/blog/categories/Licenses/'>Licenses</a>, <a class='category' href='/blog/categories/Meta/'>Meta</a></span>
-</footer>
-
-
-</article>
-
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sciruby.com/docs/installation/linux.html" data-via="sciruby" data-counturl="http://sciruby.com/docs/installation/linux.html" >Tweet</a>
+  
+  
+  <g:plusone size="medium"></g:plusone>
+  
 </div>
 
+      
+    </footer>
   
 </article>
 

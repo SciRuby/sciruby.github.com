@@ -89,7 +89,8 @@
   <li><a href="/">Home</a></li>
   <li><a href="/blog">Blog</a></li>
   <li><a href="/docs">Documentation</a></li>
-  <li><a href="http://www.github.com/sciruby/sciruby">Source</a></li>
+  <li><a href="http://github.com/sciruby/sciruby">Source</a></li>
+  <li><a href="http://github.com/sciruby/sciruby/issues">Tracker</a></li>
 </ul>
 
 </nav>
@@ -100,20 +101,47 @@
   
   <header>
     <h1 class="entry-title">Documentation</h1>
-    <p class="meta">
-
-
-
-
-<time datetime="2011-08-19 16:18:00 -0500" pubdate  updated >Aug 19<span>th</span>, 2011</time>
-
-
-</p>
+    
   </header>
   
-  <p>We are currently in the process of putting together a spec and documentation. If you want to get involved, please drop by our <a href="http://groups.google.com/group/sciruby-dev">Google Group</a> or our IRC channel, <tt>#sciruby</tt>.</p>
+  <h2 id="installation">Installation</h2>
 
-<p>In the meantime, documentation for existing gems is scattered.</p>
+
+
+
+<p class="warning"><strong>Word to the wise:</strong> These gems have been tested, but not extensively. If you&#8217;re thinking of using SciRuby to write mission critical code, such as for driving a car or flying a space shuttle, you may wish to choose other software (for now).</p>
+
+
+<p>Please note that SciRuby requires Ruby 1.9.2 or higher. Individual components <em>may</em> work with Ruby 1.8, but we won&#8217;t be much assistance if you ask about it.</p>
+
+<h3>Platform-specific instructions</h3>
+
+
+<ul>
+<li><a href="docs/installation/mac.html">Mac OSX</a></li>
+<li><a href="docs/installation/windows.html">Windows</a></li>
+<li><a href="docs/installation/linux.html">Linux</a></li>
+</ul>
+
+
+<h3>Pre-alpha workaround instructions</h3>
+
+
+<p>If you have any trouble getting SciRuby to work and are too impatient to seek assistance, most of the SciRuby components are already available as individual packages. We recommend you try out the following component gems:</p>
+
+<ul>
+<li><em>Visualization:</em> <span class="gem"><a href="https://github.com/clbustos/rubyvis">rubyvis</a></span></li>
+<li><em>Statistics:</em> <span class="gem"><a href="https://github.com/clbustos/statsample">statsample</a></span></li>
+<li><em>Numeric:</em> <span class="gem"><a href="https://github.com/princelab/narray">narray</a></span>, <span class="gem"><a href="https://github.com/clbustos/minimization">minimization</a></span>, <span class="gem"><a href="https://github.com/clbustos/integration">integration</a></span></li>
+<li><em>Probability:</em> <span class="gem"><a href="https://github.com/clbustos/distribution">distribution</a></span></li>
+</ul>
+
+
+<h2>Project Status</h2>
+
+<p>As we are currently pre-alpha, documentation is a work in progress. If you want to get involved, please drop by our <a href="http://groups.google.com/group/sciruby-dev">Google Group</a> or our IRC channel, <tt>#sciruby</tt>.</p>
+
+<p>In the meantime, documentation for existing gems is scattered. You can look through the links below for additional information.</p>
 
 <h2>Project Pages</h2>
 
@@ -145,19 +173,7 @@
 
   
     <footer>
-      <p class="meta">
-        
-        
-
-
-
-
-<time datetime="2011-08-19 16:18:00 -0500" pubdate  updated >Aug 19<span>th</span>, 2011</time>
-
-
-
-        
-      </p>
+      
       
         <div class="sharing">
   
@@ -180,6 +196,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/11/02/first-pre-alpha-release/">First Pre-alpha Release</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2011/08/17/interview-with-the-sciruby-team/">Interview with the SciRuby Team</a>
