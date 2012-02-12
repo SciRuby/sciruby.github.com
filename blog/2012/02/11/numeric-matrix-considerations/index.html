@@ -5,11 +5,9 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head xmlns:og="http://ogp.me/ns#">
   <meta charset="utf-8">
-  <title>SciRuby: Category: Licenses</title>
+  <title>SciRuby: Numeric Matrix Considerations</title>
   <meta property="og:image" content="http://sciruby.com/images/logo.png">
   <meta name="author" content="SciRuby">
-  
-    <meta name="description" content="Category: Licenses"/>
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +17,7 @@
 
   
 
-  <link rel="canonical" href="http://sciruby.comblog/categories/Licenses/index.html"/>
+  <link rel="canonical" href="http://sciruby.com/blog/2012/02/11/numeric-matrix-considerations/"/>
   <link href="https://plus.google.com/109304769076178160953/" rel="publisher" />
   <link href="/favicon.png" rel="shortcut icon" />
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -100,36 +98,105 @@
   <div id="main">
     <div id="content">
       <div>
-<article>
+<article class="hentry">
   
   <header>
-    <h1 class="entry-title">Category: Licenses</h1>
+    
+      <h1 class="entry-title">Numeric Matrix Considerations</h1>
+    
+    
+      <p class="meta">
+
+
+
+
+<time datetime="2012-02-11 17:35:00 -0600" pubdate  updated >Feb 11<span>th</span>, 2012</time>
+
+
+</p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>Maybe you&#8217;ve been wondering why the SciRuby people have been so quiet lately.</p>
 
-  
-  <h2>2011</h2>
+<p>Mostly, we&#8217;ve been working on <a href="http://github.com/mohawkjohn/nmatrix">NMatrix</a>, which is our prototype linear algebra library, written as a Ruby C extension.</p>
 
-<article>
-  
-<h1><a href="/blog/2011/08/15/the-challenges-of-copyrights/">The Challenges of Copyrights</a></h1>
-<time datetime="2011-08-15 19:56:00 -0500" pubdate><span class='month'>Aug</span> <span class='day'>15</span> <span class='year'>2011</span></time>
+<p>So far, we have dense and linked-list-of-linked-lists (or just &#8220;list&#8221;) matrices, which can exist in an essentially unlimited number of dimensions. This week, I implemented the <a href="https://github.com/mohawkjohn/nmatrix/tree/sparse">beginnings of a two-dimensional sparse type known as &#8220;new Yale.&#8221;</a> If you&#8217;re curious, check out <em><a href="http://apps.nrbook.com/c/index.html">Numerical Recipes in C</a></em>, pp. 78-79.</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/Algorithms/'>Algorithms</a>, <a class='category' href='/blog/categories/Licenses/'>Licenses</a>, <a class='category' href='/blog/categories/Meta/'>Meta</a></span>
-</footer>
+<p>&#8220;New Yale&#8221; differs from &#8220;old Yale&#8221; (which SciPy uses for its CSR type) in that the diagonals are accessible in <tt>O(1)</tt> instead of <tt>O(log(n))</tt> time. Most libraries for Yale matrices include conditionals that permit both types to be used together (e.g., multiplying a new Yale matrix by an old Yale matrix).</p>
 
+<p>As I worked through implementation of matrix multiplication for Yale, I realized that matrix libraries are a bottomless pit. One could probably write matrix algorithms forever and still have lots left to do.</p>
 
-</article>
+<p>So we need to set ourselves some limits.</p>
 
+<p>It&#8217;s not just whether the diagonal is extracted from the rest of the matrix. It&#8217;s also whether you want to be able to multiply integer-valued matrices by real-valued matrices without an expensive copy operation. It&#8217;s whether you want to be able to multiply dense against Yale matrices, or two Yale and list matrices that have different dtypes, and so on.</p>
+
+<p>Some of this can be templated using generators. But the complexity begins to grow to the point where it&#8217;s infeasible to test everything you&#8217;ve implemented. (You also start to get lost in a magical world of function pointers, which is yet another concern.)</p>
+
+<p>So, again, we need to set ourselves some limits.</p>
+
+<p>Where those limits might be, however, I know not. Weigh in on the Google Group!</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">John Woods</span></span>
+
+      
+
+
+
+
+<time datetime="2012-02-11 17:35:00 -0600" pubdate  updated >Feb 11<span>th</span>, 2012</time>
+
+
+
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/Algorithms/'>Algorithms</a>, <a class='category' href='/blog/categories/Matrices/'>Matrices</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sciruby.com/blog/2012/02/11/numeric-matrix-considerations/" data-via="sciruby" data-counturl="http://sciruby.com/blog/2012/02/11/numeric-matrix-considerations/" >Tweet</a>
+  
+  
+  <g:plusone size="medium"></g:plusone>
+  
+</div>
+
+    
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread"><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'sciruby';
+  var disqus_identifier = 'http://sciruby.com/blog/2012/02/11/numeric-matrix-considerations/';
+  var disqus_url = 'http://sciruby.com/blog/2012/02/11/numeric-matrix-considerations/';
+  //var disqus_developer = 1;
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
