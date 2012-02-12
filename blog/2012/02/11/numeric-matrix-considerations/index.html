@@ -130,7 +130,7 @@
 
 <p>So we need to set ourselves some limits.</p>
 
-<p>It&#8217;s not just whether the diagonal is extracted from the rest of the matrix. It&#8217;s also whether you want to be able to multiply integer-valued matrices by real-valued matrices without an expensive copy operation. It&#8217;s whether you want to be able to multiply dense against Yale matrices, or two Yale and list matrices that have different dtypes, and so on.</p>
+<p>It&#8217;s not just whether the diagonal is extracted from the rest of the matrix. It&#8217;s also whether you want to be able to multiply integer-valued matrices by real-valued matrices without an expensive copy operation. It&#8217;s whether you want to be able to multiply dense against Yale matrices, or two Yale and list matrices that have different dtypes, or separate storage for symmetric matrices, and so on.</p>
 
 <p>Some of this can be templated using generators. But the complexity begins to grow to the point where it&#8217;s infeasible to test everything you&#8217;ve implemented. (You also start to get lost in a magical world of function pointers, which is yet another concern.)</p>
 
