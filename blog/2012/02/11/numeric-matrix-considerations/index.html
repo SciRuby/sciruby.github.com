@@ -120,9 +120,9 @@
 
 <div class="entry-content"><p>Maybe you&#8217;ve been wondering why the SciRuby people have been so quiet lately.</p>
 
-<p>Mostly, we&#8217;ve been working on <a href="http://github.com/mohawkjohn/nmatrix">NMatrix</a>, which is our prototype linear algebra library, written as a Ruby C extension.</p>
+<p>Mostly, we&#8217;ve been working on <a href="http://github.com/SciRuby/nmatrix">NMatrix</a>, which is our prototype linear algebra library, written as a Ruby C extension.</p>
 
-<p>So far, we have dense and linked-list-of-linked-lists (or just &#8220;list&#8221;) matrices, which can exist in an essentially unlimited number of dimensions. This week, I implemented the <a href="https://github.com/mohawkjohn/nmatrix/tree/sparse">beginnings of a two-dimensional sparse type known as &#8220;new Yale.&#8221;</a> If you&#8217;re curious, check out <em><a href="http://apps.nrbook.com/c/index.html">Numerical Recipes in C</a></em>, pp. 78-79.</p>
+<p>So far, we have dense and linked-list-of-linked-lists (or just &#8220;list&#8221;) matrices, which can exist in an essentially unlimited number of dimensions. This week, I implemented the <a href="https://github.com/SciRuby/nmatrix/blob/sparse/ext/nmatrix/yale.c">beginnings of a two-dimensional sparse type known as &#8220;new Yale.&#8221;</a> If you&#8217;re curious, check out <em><a href="http://apps.nrbook.com/c/index.html">Numerical Recipes in C</a></em>, pp. 78-79.</p>
 
 <p>&#8220;New Yale&#8221; differs from &#8220;old Yale&#8221; (which SciPy uses for its CSR type) in that the diagonals are accessible in <tt>O(1)</tt> instead of <tt>O(log(n))</tt> time. Most libraries for Yale matrices include conditionals that permit both types to be used together (e.g., multiplying a new Yale matrix by an old Yale matrix).</p>
 
@@ -160,7 +160,7 @@
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/Algorithms/'>Algorithms</a>, <a class='category' href='/blog/categories/Matrices/'>Matrices</a>
+    <a class='category' href='/blog/categories/Algorithms/'>Algorithms</a>, <a class='category' href='/blog/categories/Matrices/'>Matrices</a>, <a class='category' href='/blog/categories/NMatrix/'>NMatrix</a>
   
 </span>
 
@@ -207,6 +207,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/04/11/first-nmatrix-alpha-released/">First NMatrix Alpha Released</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/02/11/numeric-matrix-considerations/">Numeric Matrix Considerations</a>
       </li>
     
@@ -220,10 +224,6 @@
     
       <li class="post">
         <a href="/blog/2011/08/15/the-challenges-of-copyrights/">The Challenges of Copyrights</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2011/08/15/first-post/">First Post!</a>
       </li>
     
   </ul>

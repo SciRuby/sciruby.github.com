@@ -4,7 +4,7 @@
   <title>SciRuby</title>
   <link href="http://sciruby.com/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2012-02-11T18:08:55-06:00</updated>
+  <updated>2012-04-11T15:14:08-05:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name>SciRuby</name>
@@ -13,15 +13,132 @@
 
   
   <entry>
+    <title>First NMatrix Alpha Released</title>
+    <link href="http://sciruby.com/blog/2012/04/11/first-nmatrix-alpha-released/"/>
+    <updated>2012-04-11T13:36:00-05:00</updated>
+    <id>http://sciruby.com/blog/2012/04/11/first-nmatrix-alpha-released</id>
+    <content type="html">&lt;p&gt;Two months ago, I &lt;a href=&quot;2012/02/11/numeric-matrix-considerations&quot;&gt;mentioned the existence of a prototype Ruby linear algebra library&lt;/a&gt;, written in C.&lt;/p&gt;
+
+&lt;p&gt;I am pleased to announce that yesterday we released our first alpha of said library, &lt;a href=&quot;http://sciruby.com/nmatrix/&quot;&gt;NMatrix&lt;/a&gt; v0.0.1.&lt;/p&gt;
+
+&lt;h2&gt;Creating Matrices&lt;/h2&gt;
+
+&lt;p&gt;There are lots of different ways to create matrices. The first and easiest is to supply dimensions and initial data:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&gt;&gt; n = NMatrix.new(4, 0) # a square 4x4 dense zero matrix
+=&gt; #&amp;lt;NMatrix:0x9a57e14shape:[4,4] dtype:int32 stype:dense&amp;gt;
+&gt;&gt; n.pretty_print
+0  0  0  0
+0  0  0  0
+0  0  0  0
+0  0  0  0
+=&gt; nil
+&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;h2&gt;Data Types&lt;/h2&gt;
+
+&lt;p&gt;You may notice that this first matrix defaulted to &lt;tt&gt;dtype=:int32&lt;/tt&gt;. NMatrix will try to guess the &lt;i&gt;dtype&lt;/i&gt; based on the
+first initial value you provide (e.g., &lt;tt&gt;NMatrix.new(4, [0.0, 1])&lt;/tt&gt; will be :float32), but you can choose to provide
+a &lt;i&gt;dtype&lt;/i&gt; in addition to or in lieu of initial values:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&gt;&gt; n = NMatrix.new(4, [0,1], :rational128)
+=&gt; #&amp;lt;NMatrix:0x9959e04shape:[4,4] dtype:rational128 stype:dense&amp;gt;
+&gt;&gt; n.pretty_print
+0/1  1/1  0/1  1/1
+0/1  1/1  0/1  1/1
+0/1  1/1  0/1  1/1
+0/1  1/1  0/1  1/1
+&gt;&gt; m = NMatrix.new(4, :int64)  # no initialization of values
+=&gt; #&amp;lt;NMatrix:0x99fad68shape:[4,4] dtype:int64 stype:dense&amp;gt;
+&gt;&gt; m.pretty_print
+-1217641248  161386160  161386100  161385680
+161385640  161385520  161385420  161384180
+161384120  161381060  161381020  161412140
+161411940  161411880  161411840  160879240
+=&gt; nil
+&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;h2&gt;Storage Formats&lt;/h2&gt;
+
+&lt;p&gt;The storage type (&lt;i&gt;stype&lt;/i&gt;) can also be specified, prior to the dimension argument. However, with sparse storage formats, initial values don't make sense, and these matrices will contain zeros by default.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# empty list-of-lists-of-lists 4x3x4 matrix
+n = NMatrix.new(:list, [4,3,4], :int64)
+
+# Ruby objects in a 'Yale' sparse matrix
+m = NMatrix.new(:yale, [5,4], :object)
+
+# A byte matrix containing a gradient
+o = NMatrix.new(:dense, 5, [0,1,2,3,4], :byte)
+&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;p&gt;The matrix &lt;tt&gt;m&lt;/tt&gt; created above is a Yale-format sparse matrix, or more specifically, &quot;new Yale,&quot; which differs from &quot;old Yale&quot; in that the diagonal is stored separately from the non-diagonal elements. Thus, diagonals can be accessed and set in constant time.&lt;/p&gt;
+
+&lt;p&gt;Currently, all storage is row-based.&lt;/p&gt;
+
+&lt;h3&gt;Conversion&lt;/h3&gt;
+
+&lt;p&gt;You can also convert between any of these three stypes using &lt;tt&gt;cast&lt;/tt&gt;, e.g.,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;n = NMatrix.new(:list, 4, :int64)
+n[0,0] = 5
+n[0,3] = -2
+dense = n.cast(:dense, :int64)
+&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;h2&gt;Vectors&lt;/h2&gt;
+
+&lt;p&gt;Currently, only dense vectors are implemented as a child class of &lt;tt&gt;NMatrix&lt;/tt&gt;, and creation is similar:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&gt;&gt; nv = NVector.new(5, :int64)
+=&gt; #&amp;lt;NVector:0x9a62328shape:[5,1] dtype:int64 stype:dense orientation:column&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;h2&gt;Math Operations&lt;/h2&gt;
+
+&lt;p&gt;Most element-wise mathematical operations are supported for Yale and dense types. These use the basic operators (e.g., +, -, /, *, ==).&lt;/p&gt;
+
+&lt;p&gt;For non-element-wise matrix multiplication, use the &lt;tt&gt;dot&lt;/tt&gt; instance method of NMatrix. Whole-matrix comparison (returning a single boolean value) is the &lt;tt&gt;equal?&lt;/tt&gt; or &lt;tt&gt;eql?&lt;/tt&gt; method.&lt;/p&gt;
+
+&lt;h2&gt;Road Map&lt;/h2&gt;
+
+&lt;p&gt;Much more remains to be written than has been completed. Here are some of our key priorities:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;determinants&lt;/li&gt;
+&lt;li&gt;matrix-vector multiplication for Yale&lt;/li&gt;
+&lt;li&gt;adaptation of SciRuby Matlab file reader to support NMatrix&lt;/li&gt;
+&lt;li&gt;in-place transposition&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;If you want to get involved, I suggest visiting the &lt;a href=&quot;https://github.com/sciruby/nmatrix/issues&quot;&gt;NMatrix issue tracker&lt;/a&gt;. It will contain not only bugs, but also features that need to be implemented.&lt;/p&gt;
+
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;We're all pretty excited about NMatrix. But we couldn't have gotten this far without Masahiro Tanaka's &lt;a href=&quot;http://narray.rubyforge.org/&quot;&gt;NArray&lt;/a&gt;, which has served as a model for our library.&lt;/p&gt;
+
+&lt;p&gt;And we can't do it without your help. A numerical library in Ruby is no small endeavour, and probably requires at least one full-time programmer (which we do not have). Please consider contributing, even if it's just by letting us know what you think.&lt;/p&gt;
+
+&lt;p&gt;Happy coding!&lt;/p&gt;
+</content>
+  </entry>
+  
+  <entry>
     <title>Numeric Matrix Considerations</title>
     <link href="http://sciruby.com/blog/2012/02/11/numeric-matrix-considerations/"/>
     <updated>2012-02-11T17:35:00-06:00</updated>
     <id>http://sciruby.com/blog/2012/02/11/numeric-matrix-considerations</id>
     <content type="html">&lt;p&gt;Maybe you've been wondering why the SciRuby people have been so quiet lately.&lt;/p&gt;
 
-&lt;p&gt;Mostly, we've been working on &lt;a href=&quot;http://github.com/mohawkjohn/nmatrix&quot;&gt;NMatrix&lt;/a&gt;, which is our prototype linear algebra library, written as a Ruby C extension.&lt;/p&gt;
+&lt;p&gt;Mostly, we've been working on &lt;a href=&quot;http://github.com/SciRuby/nmatrix&quot;&gt;NMatrix&lt;/a&gt;, which is our prototype linear algebra library, written as a Ruby C extension.&lt;/p&gt;
 
-&lt;p&gt;So far, we have dense and linked-list-of-linked-lists (or just &quot;list&quot;) matrices, which can exist in an essentially unlimited number of dimensions. This week, I implemented the &lt;a href=&quot;https://github.com/mohawkjohn/nmatrix/tree/sparse&quot;&gt;beginnings of a two-dimensional sparse type known as &quot;new Yale.&quot;&lt;/a&gt; If you're curious, check out &lt;em&gt;&lt;a href=&quot;http://apps.nrbook.com/c/index.html&quot;&gt;Numerical Recipes in C&lt;/a&gt;&lt;/em&gt;, pp. 78-79.&lt;/p&gt;
+&lt;p&gt;So far, we have dense and linked-list-of-linked-lists (or just &quot;list&quot;) matrices, which can exist in an essentially unlimited number of dimensions. This week, I implemented the &lt;a href=&quot;https://github.com/SciRuby/nmatrix/blob/sparse/ext/nmatrix/yale.c&quot;&gt;beginnings of a two-dimensional sparse type known as &quot;new Yale.&quot;&lt;/a&gt; If you're curious, check out &lt;em&gt;&lt;a href=&quot;http://apps.nrbook.com/c/index.html&quot;&gt;Numerical Recipes in C&lt;/a&gt;&lt;/em&gt;, pp. 78-79.&lt;/p&gt;
 
 &lt;p&gt;&quot;New Yale&quot; differs from &quot;old Yale&quot; (which SciPy uses for its CSR type) in that the diagonals are accessible in &lt;tt&gt;O(1)&lt;/tt&gt; instead of &lt;tt&gt;O(log(n))&lt;/tt&gt; time. Most libraries for Yale matrices include conditionals that permit both types to be used together (e.g., multiplying a new Yale matrix by an old Yale matrix).&lt;/p&gt;
 

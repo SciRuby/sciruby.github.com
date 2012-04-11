@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head xmlns:og="http://ogp.me/ns#">
   <meta charset="utf-8">
-  <title>SciRuby: The Challenges of Copyrights</title>
+  <title>SciRuby: First NMatrix Alpha Released</title>
   <meta property="og:image" content="http://sciruby.com/images/logo.png">
   <meta name="author" content="SciRuby">
   
@@ -17,7 +17,7 @@
 
   
 
-  <link rel="canonical" href="http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights/"/>
+  <link rel="canonical" href="http://sciruby.com/blog/2012/04/11/first-nmatrix-alpha-released/"/>
   <link href="https://plus.google.com/109304769076178160953/" rel="publisher" />
   <link href="/favicon.png" rel="shortcut icon" />
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -102,7 +102,7 @@
   
   <header>
     
-      <h1 class="entry-title">The Challenges of Copyrights</h1>
+      <h1 class="entry-title">First NMatrix Alpha Released</h1>
     
     
       <p class="meta">
@@ -110,7 +110,7 @@
 
 
 
-<time datetime="2011-08-15 19:56:00 -0500" pubdate  updated >Aug 15<span>th</span>, 2011</time>
+<time datetime="2012-04-11 13:36:00 -0500" pubdate  updated >Apr 11<span>th</span>, 2012</time>
 
 
 </p>
@@ -118,51 +118,115 @@
   </header>
 
 
-<div class="entry-content"><p>Last week, I thought it would be fun to translate some of the <em><a href="http://nr.com/">Numerical Recipes</a></em> algorithms into Ruby,
- specifically those for the Gamma distribution and incomplete gamma function. I got them all working pretty well, and
- they were only a hundred or so lines of code altogether.</p>
+<div class="entry-content"><p>Two months ago, I <a href="2012/02/11/numeric-matrix-considerations">mentioned the existence of a prototype Ruby linear algebra library</a>, written in C.</p>
 
-<p>But a voice in the back of my head said, &#8220;Hey, you should ask Bill Press if he wants to be involved.&#8221;</p>
+<p>I am pleased to announce that yesterday we released our first alpha of said library, <a href="/nmatrix/">NMatrix</a> v0.0.1.</p>
 
-<p><a href="http://en.wikipedia.org/wiki/William_H._Press">Bill Press</a>, by the way, is a pretty cool astrophysicist who decided he
- wanted to come work here at UT as a computational biologist instead. He also happens to be first author on <em>Numerical
- Recipes</em>, and a fairly regular attendee at my lab&#8217;s weekly meetings. Once he had to pause my exam to take a call
- from the White House, which was also pretty awesome.</p>
+<h2>Creating Matrices</h2>
 
-<p>So I emailed Dr. Press to ask him if he&#8217;d be interested in helping out with SciRuby, and specifically if he might be
- willing to donate a copy of NR. He was happy to donate a copy and to help out in whatever way he could, he wrote back,
- but the license for NR wouldn&#8217;t allow us to use the code from the book.</p>
+<p>There are lots of different ways to create matrices. The first and easiest is to supply dimensions and initial data:</p>
 
-<p>My stomach sank. I had missed that disclaimer, and I was used to dealing with more-or-less public domain (or at least
- GPLed) Ruby code.</p>
+<pre><code>>> n = NMatrix.new(4, 0) # a square 4x4 dense zero matrix
+=> #&lt;NMatrix:0x9a57e14shape:[4,4] dtype:int32 stype:dense&gt;
+>> n.pretty_print
+0  0  0  0
+0  0  0  0
+0  0  0  0
+0  0  0  0
+=> nil
+</code></pre>
 
-<p>The email continued. We should be careful using other libraries, because many of them were illegally derived from
- copyrighted materials.</p>
 
-<p>Several interesting discussions ensued (<a href="https://plus.google.com/108379995018215027591/posts/2AefG8i3nUX">including this public one</a>).
- The take-away is that many people don&#8217;t understand code copyrights (I among them). Consequently, most governments don&#8217;t
- understand copyrights (and it doesn&#8217;t help that U.S. Congress isn&#8217;t exactly full of programmers).</p>
+<h2>Data Types</h2>
 
-<p>Some were critical of Press and his coauthors for not simply giving us special permission to use his code, but such a
- gimme would be complicated for NR. If they permitted us to use NR code in SciRuby, that code would then be available to
- anyone else to use under the terms of the GPL. I imagine his publisher would be less than thrilled.</p>
+<p>You may notice that this first matrix defaulted to <tt>dtype=:int32</tt>. NMatrix will try to guess the <i>dtype</i> based on the
+first initial value you provide (e.g., <tt>NMatrix.new(4, [0.0, 1])</tt> will be :float32), but you can choose to provide
+a <i>dtype</i> in addition to or in lieu of initial values:</p>
 
-<p>So here are some general guidelines for those who want to contribute code to an open-source scientific project,
- particularly SciRuby. Please keep in mind that I am not a lawyer, and take any of this with a grain of salt.</p>
+<pre><code>>> n = NMatrix.new(4, [0,1], :rational128)
+=> #&lt;NMatrix:0x9959e04shape:[4,4] dtype:rational128 stype:dense&gt;
+>> n.pretty_print
+0/1  1/1  0/1  1/1
+0/1  1/1  0/1  1/1
+0/1  1/1  0/1  1/1
+0/1  1/1  0/1  1/1
+>> m = NMatrix.new(4, :int64)  # no initialization of values
+=> #&lt;NMatrix:0x99fad68shape:[4,4] dtype:int64 stype:dense&gt;
+>> m.pretty_print
+-1217641248  161386160  161386100  161385680
+161385640  161385520  161385420  161384180
+161384120  161381060  161381020  161412140
+161411940  161411880  161411840  160879240
+=> nil
+</code></pre>
+
+
+<h2>Storage Formats</h2>
+
+<p>The storage type (<i>stype</i>) can also be specified, prior to the dimension argument. However, with sparse storage formats, initial values don&#8217;t make sense, and these matrices will contain zeros by default.</p>
+
+<pre><code># empty list-of-lists-of-lists 4x3x4 matrix
+n = NMatrix.new(:list, [4,3,4], :int64)
+
+# Ruby objects in a 'Yale' sparse matrix
+m = NMatrix.new(:yale, [5,4], :object)
+
+# A byte matrix containing a gradient
+o = NMatrix.new(:dense, 5, [0,1,2,3,4], :byte)
+</code></pre>
+
+
+<p>The matrix <tt>m</tt> created above is a Yale-format sparse matrix, or more specifically, &#8220;new Yale,&#8221; which differs from &#8220;old Yale&#8221; in that the diagonal is stored separately from the non-diagonal elements. Thus, diagonals can be accessed and set in constant time.</p>
+
+<p>Currently, all storage is row-based.</p>
+
+<h3>Conversion</h3>
+
+<p>You can also convert between any of these three stypes using <tt>cast</tt>, e.g.,</p>
+
+<pre><code>n = NMatrix.new(:list, 4, :int64)
+n[0,0] = 5
+n[0,3] = -2
+dense = n.cast(:dense, :int64)
+</code></pre>
+
+
+<h2>Vectors</h2>
+
+<p>Currently, only dense vectors are implemented as a child class of <tt>NMatrix</tt>, and creation is similar:</p>
+
+<pre><code>>> nv = NVector.new(5, :int64)
+=> #&lt;NVector:0x9a62328shape:[5,1] dtype:int64 stype:dense orientation:column&gt;
+</code></pre>
+
+
+<h2>Math Operations</h2>
+
+<p>Most element-wise mathematical operations are supported for Yale and dense types. These use the basic operators (e.g., +, -, /, *, ==).</p>
+
+<p>For non-element-wise matrix multiplication, use the <tt>dot</tt> instance method of NMatrix. Whole-matrix comparison (returning a single boolean value) is the <tt>equal?</tt> or <tt>eql?</tt> method.</p>
+
+<h2>Road Map</h2>
+
+<p>Much more remains to be written than has been completed. Here are some of our key priorities:</p>
 
 <ul>
-<li><p>If in doubt, check with the author.</p></li>
-<li><p>Do unto others as you would have them do unto you. In other words, honor closed source licenses if you wish your open
-source license to be honored.</p></li>
-<li><p><em>Always cite your sources.</em> If a copyright owner discovers apparently derivative code without a citation, it&#8217;s easy
-to him or her to assume you plagiarized it directly from his or her work. If it has a citation, someone else gets the
-blame, or the copyright owner can determine that the code is only <em>apparently</em>, but not <em>actually</em>, derivative.</p></li>
-<li><p>If you write your own code, derived from your own math, document it. Scan your derivation and make it public (send it
-to our Google Group, for example).</p></li>
+<li>determinants</li>
+<li>matrix-vector multiplication for Yale</li>
+<li>adaptation of SciRuby Matlab file reader to support NMatrix</li>
+<li>in-place transposition</li>
 </ul>
 
 
-<p>Any more words of wisdom? Stick them in the comments.</p>
+<p>If you want to get involved, I suggest visiting the <a href="https://github.com/sciruby/nmatrix/issues">NMatrix issue tracker</a>. It will contain not only bugs, but also features that need to be implemented.</p>
+
+<h2>Conclusion</h2>
+
+<p>We&#8217;re all pretty excited about NMatrix. But we couldn&#8217;t have gotten this far without Masahiro Tanaka&#8217;s <a href="http://narray.rubyforge.org/">NArray</a>, which has served as a model for our library.</p>
+
+<p>And we can&#8217;t do it without your help. A numerical library in Ruby is no small endeavour, and probably requires at least one full-time programmer (which we do not have). Please consider contributing, even if it&#8217;s just by letting us know what you think.</p>
+
+<p>Happy coding!</p>
 </div>
 
 
@@ -178,7 +242,7 @@ to our Google Group, for example).</p></li>
 
 
 
-<time datetime="2011-08-15 19:56:00 -0500" pubdate  updated >Aug 15<span>th</span>, 2011</time>
+<time datetime="2012-04-11 13:36:00 -0500" pubdate  updated >Apr 11<span>th</span>, 2012</time>
 
 
 
@@ -186,7 +250,7 @@ to our Google Group, for example).</p></li>
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/Algorithms/'>Algorithms</a>, <a class='category' href='/blog/categories/Licenses/'>Licenses</a>, <a class='category' href='/blog/categories/Meta/'>Meta</a>
+    <a class='category' href='/blog/categories/Algorithms/'>Algorithms</a>, <a class='category' href='/blog/categories/Matrices/'>Matrices</a>
   
 </span>
 
@@ -195,7 +259,7 @@ to our Google Group, for example).</p></li>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights/" data-via="sciruby" data-counturl="http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sciruby.com/blog/2012/04/11/first-nmatrix-alpha-released/" data-via="sciruby" data-counturl="http://sciruby.com/blog/2012/04/11/first-nmatrix-alpha-released/" >Tweet</a>
   
   
   <g:plusone size="medium"></g:plusone>
@@ -211,8 +275,8 @@ to our Google Group, for example).</p></li>
     <div id="disqus_thread"><div id="disqus_thread"></div>
 <script type="text/javascript">
   var disqus_shortname = 'sciruby';
-  var disqus_identifier = 'http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights/';
-  var disqus_url = 'http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights/';
+  var disqus_identifier = 'http://sciruby.com/blog/2012/04/11/first-nmatrix-alpha-released/';
+  var disqus_url = 'http://sciruby.com/blog/2012/04/11/first-nmatrix-alpha-released/';
   //var disqus_developer = 1;
   (function() {
     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
