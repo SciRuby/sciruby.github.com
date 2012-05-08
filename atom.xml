@@ -4,7 +4,7 @@
   <title>SciRuby</title>
   <link href="http://sciruby.com/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2012-05-08T17:07:51-05:00</updated>
+  <updated>2012-05-08T17:23:34-05:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name>SciRuby</name>
@@ -20,6 +20,8 @@
     <content type="html">&lt;p&gt;We are immensely pleased to announce the first ever &lt;strong&gt;SciRuby Summer of Code, sponsored by &lt;a href=&quot;http://brighterplanet.com/&quot;&gt;Brighter Planet&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://static.brighterplanet.com/assets/logos/flush-left/inline/green/rasterized/brighter_planet-140.png&quot; alt=&quot;Brighter Planet logo&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The fellowship is intended for undergraduate and graduate science and engineering students interested in going into research.&lt;/p&gt;
 
 &lt;p&gt;Fellowship tenure is full-time, May 18th through August 18th (dates are flexible). The stipend is $1,500.&lt;/p&gt;
 
