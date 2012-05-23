@@ -4,13 +4,34 @@
   <title>SciRuby</title>
   <link href="http://sciruby.com/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2012-05-08T17:23:34-05:00</updated>
+  <updated>2012-05-23T18:09:03-05:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name>SciRuby</name>
     
   </author>
 
+  
+  <entry>
+    <title>SciRuby Summer of Code Selection Announced</title>
+    <link href="http://sciruby.com/blog/2012/05/23/sciruby-summer-of-code-selection-announced/"/>
+    <updated>2012-05-23T18:08:00-05:00</updated>
+    <id>http://sciruby.com/blog/2012/05/23/sciruby-summer-of-code-selection-announced</id>
+    <content type="html">&lt;p&gt;We were blown away by the quality of the application pool for our first ever SciRuby Summer of Code, sponsored by Brighter
+ Planet. We received eight exemplary applications for a single placement, and nearly every applicant showed up on at least
+ one selection committee member's top-three list.&lt;/p&gt;
+
+&lt;p&gt;I am pleased to report that we have selected &lt;a href=&quot;https://github.com/chriswailes&quot;&gt;Chris Wailes&lt;/a&gt;, a doctoral student in Computer
+ Science at the University of Colorado at Boulder, to be the recipient of our fellowship this year.&lt;/p&gt;
+
+&lt;p&gt;Chris plans to contribute to NMatrix, by adding parallel computing support and/or by creating a Ruby domain-specific language for
+ linear algebra.&lt;/p&gt;
+
+&lt;p&gt;The SciRuby Project is deeply grateful to &lt;a href=&quot;http://brighterplanet.com&quot;&gt;Brighter Planet&lt;/a&gt; for its generous support of our
+ relatively new project and this fellowship program. We also wish to thank the applicants, and encourage them to apply
+ again next time.&lt;/p&gt;
+</content>
+  </entry>
   
   <entry>
     <title>Announcing SciRuby Summer Coding Fellowship</title>
@@ -64,7 +85,7 @@
 
 &lt;h3&gt;Application Deadline&lt;/h3&gt;
 
-&lt;p&gt;We recommend you submit your application by &lt;strong&gt;May 14th&lt;/strong&gt; at the very latest. If you can't meet that deadline, we can try to work with you, but please let us know that you're planning on applying.&lt;/p&gt;
+&lt;p&gt;Applications are now closed. We hope to offer the fellowship again next year.&lt;/p&gt;
 </content>
   </entry>
   
