@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head xmlns:og="http://ogp.me/ns#">
   <meta charset="utf-8">
-  <title>SciRuby: Blog Archive</title>
+  <title>SciRuby: Major Refactoring in the Pipeline</title>
   <meta property="og:image" content="http://sciruby.com/images/logo.png">
   <meta name="author" content="SciRuby">
   
@@ -17,7 +17,7 @@
 
   
 
-  <link rel="canonical" href="http://sciruby.com/blog/archives/index.html"/>
+  <link rel="canonical" href="http://sciruby.com/blog/2012/07/31/major-refactoring-in-the-pipeline/"/>
   <link href="https://plus.google.com/109304769076178160953/" rel="publisher" />
   <link href="/favicon.png" rel="shortcut icon" />
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -98,151 +98,110 @@
   <div id="main">
     <div id="content">
       <div>
-<article>
+<article class="hentry">
   
   <header>
-    <h1 class="entry-title">Blog Archive</h1>
+    
+      <h1 class="entry-title">Major Refactoring in the Pipeline</h1>
+    
+    
+      <p class="meta">
+
+
+
+
+<time datetime="2012-07-31 16:23:00 -0500" pubdate  updated >Jul 31<span>st</span>, 2012</time>
+
+
+</p>
     
   </header>
-  
-  <div id="blog-archives">
 
 
+<div class="entry-content"><p>Activity has picked up enormously on <a href="http://groups.google.com/group/sciruby-dev">our listserv</a> over the last few weeks,
+which makes us all very happy.</p>
 
-  
-  <h2>2012</h2>
+<p><a href="https://github.com/chriswailes">Chris Wailes</a> and I have been working on a major refactoring of <a href="http://github.com/SciRuby/nmatrix">NMatrix</a>,
+our replacement for NArray. You may recall that we released our first alpha (0.0.1) back in April, and that we&#8217;ve been
+relatively silent since then.</p>
 
-<article>
-  
-<h1><a href="/blog/2012/07/31/major-refactoring-in-the-pipeline/">Major Refactoring in the Pipeline</a></h1>
-<time datetime="2012-07-31 16:23:00 -0500" pubdate><span class='month'>Jul</span> <span class='day'>31</span> <span class='year'>2012</span></time>
+<p>We&#8217;re pleased to announce that our second alpha, NMatrix v0.0.2, should be available as a gem by mid-August.</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/NMatrix/'>NMatrix</a></span>
-</footer>
+<p>Our first alpha was a proof of concept. The second alpha is the framework upon which we will build an empire of chunky
+bacon.</p>
 
+<p>Chris came up with the idea to convert all of NMatrix&#8217;s Ruby/C template code into C++ templates, and we&#8217;ve been working
+on that steadily. These are cleaner and easier to maintain than the C parser-based templates I wrote a few months ago.</p>
 
-</article>
+<p>In addition, I have incorporated basic slicing, contributed by <a href="http://github.com/flipback">Aleksey Timin</a>, who has been
+absolutely essential to our growing project.</p>
 
+<p>One major hiccup has been that NMatrix and NArray conflict with one another when both are included (particularly poor
+planning on my part). This means that Ruby/GSL can&#8217;t work with NMatrix without some modifications &#8211; which are underway
+in a <a href="http://github.com/SciRuby/rb-gsl">fork</a>. We plan to release fixes for Ruby/GSL and Statsample as soon as possible.</p>
 
-
-<article>
-  
-<h1><a href="/blog/2012/05/23/sciruby-summer-of-code-selection-announced/">SciRuby Summer of Code Selection Announced</a></h1>
-<time datetime="2012-05-23 18:08:00 -0500" pubdate><span class='month'>May</span> <span class='day'>23</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/Students/'>Students</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/05/08/sciruby-summer-of-code/">Announcing SciRuby Summer Coding Fellowship</a></h1>
-<time datetime="2012-05-08 16:33:00 -0500" pubdate><span class='month'>May</span> <span class='day'>08</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/Students/'>Students</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/04/11/first-nmatrix-alpha-released/">First NMatrix Alpha Released</a></h1>
-<time datetime="2012-04-11 13:36:00 -0500" pubdate><span class='month'>Apr</span> <span class='day'>11</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/Algorithms/'>Algorithms</a>, <a class='category' href='/blog/categories/Matrices/'>Matrices</a>, <a class='category' href='/blog/categories/NMatrix/'>NMatrix</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/02/11/numeric-matrix-considerations/">Numeric Matrix Considerations</a></h1>
-<time datetime="2012-02-11 17:35:00 -0600" pubdate><span class='month'>Feb</span> <span class='day'>11</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/Algorithms/'>Algorithms</a>, <a class='category' href='/blog/categories/Matrices/'>Matrices</a>, <a class='category' href='/blog/categories/NMatrix/'>NMatrix</a></span>
-</footer>
-
-
-</article>
-
-
-
-  
-  <h2>2011</h2>
-
-<article>
-  
-<h1><a href="/blog/2011/11/02/first-pre-alpha-release/">First Pre-alpha Release</a></h1>
-<time datetime="2011-11-02 21:39:00 -0500" pubdate><span class='month'>Nov</span> <span class='day'>02</span> <span class='year'>2011</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/Media/'>Media</a>, <a class='category' href='/blog/categories/Releases/'>Releases</a>, <a class='category' href='/blog/categories/Roadmap/'>Roadmap</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2011/08/17/interview-with-the-sciruby-team/">Interview with the SciRuby Team</a></h1>
-<time datetime="2011-08-17 21:59:00 -0500" pubdate><span class='month'>Aug</span> <span class='day'>17</span> <span class='year'>2011</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/Introductions/'>Introductions</a>, <a class='category' href='/blog/categories/Media/'>Media</a>, <a class='category' href='/blog/categories/Roadmap/'>Roadmap</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2011/08/15/the-challenges-of-copyrights/">The Challenges of Copyrights</a></h1>
-<time datetime="2011-08-15 19:56:00 -0500" pubdate><span class='month'>Aug</span> <span class='day'>15</span> <span class='year'>2011</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/Algorithms/'>Algorithms</a>, <a class='category' href='/blog/categories/Licenses/'>Licenses</a>, <a class='category' href='/blog/categories/Meta/'>Meta</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2011/08/15/first-post/">First Post!</a></h1>
-<time datetime="2011-08-15 19:50:00 -0500" pubdate><span class='month'>Aug</span> <span class='day'>15</span> <span class='year'>2011</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/Introductions/'>Introductions</a></span>
-</footer>
-
-
-</article>
-
+<p>We want to again thank <a href="http://brighterplanet.com">Brighter Planet</a> for their support of our summer coding fellowship.
+Little of this would be possible without them.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">John Woods</span></span>
+
+      
+
+
+
+
+<time datetime="2012-07-31 16:23:00 -0500" pubdate  updated >Jul 31<span>st</span>, 2012</time>
+
+
+
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/NMatrix/'>NMatrix</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sciruby.com/blog/2012/07/31/major-refactoring-in-the-pipeline/" data-via="sciruby" data-counturl="http://sciruby.com/blog/2012/07/31/major-refactoring-in-the-pipeline/" >Tweet</a>
+  
+  
+  <g:plusone size="medium"></g:plusone>
+  
+</div>
+
+    
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread"><div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'sciruby';
+  var disqus_identifier = 'http://sciruby.com/blog/2012/07/31/major-refactoring-in-the-pipeline/';
+  var disqus_url = 'http://sciruby.com/blog/2012/07/31/major-refactoring-in-the-pipeline/';
+  //var disqus_developer = 1;
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 

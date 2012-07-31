@@ -106,6 +106,59 @@
     
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/07/31/major-refactoring-in-the-pipeline/">Major Refactoring in the Pipeline</a></h1>
+    
+    
+      <p class="meta">
+
+
+
+
+<time datetime="2012-07-31 16:23:00 -0500" pubdate  updated >Jul 31<span>st</span>, 2012</time>
+
+
+</p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Activity has picked up enormously on <a href="http://groups.google.com/group/sciruby-dev">our listserv</a> over the last few weeks,
+which makes us all very happy.</p>
+
+<p><a href="https://github.com/chriswailes">Chris Wailes</a> and I have been working on a major refactoring of <a href="http://github.com/SciRuby/nmatrix">NMatrix</a>,
+our replacement for NArray. You may recall that we released our first alpha (0.0.1) back in April, and that we&#8217;ve been
+relatively silent since then.</p>
+
+<p>We&#8217;re pleased to announce that our second alpha, NMatrix v0.0.2, should be available as a gem by mid-August.</p>
+
+<p>Our first alpha was a proof of concept. The second alpha is the framework upon which we will build an empire of chunky
+bacon.</p>
+
+<p>Chris came up with the idea to convert all of NMatrix&#8217;s Ruby/C template code into C++ templates, and we&#8217;ve been working
+on that steadily. These are cleaner and easier to maintain than the C parser-based templates I wrote a few months ago.</p>
+
+<p>In addition, I have incorporated basic slicing, contributed by <a href="http://github.com/flipback">Aleksey Timin</a>, who has been
+absolutely essential to our growing project.</p>
+
+<p>One major hiccup has been that NMatrix and NArray conflict with one another when both are included (particularly poor
+planning on my part). This means that Ruby/GSL can&#8217;t work with NMatrix without some modifications &#8211; which are underway
+in a <a href="http://github.com/SciRuby/rb-gsl">fork</a>. We plan to release fixes for Ruby/GSL and Statsample as soon as possible.</p>
+
+<p>We want to again thank <a href="http://brighterplanet.com">Brighter Planet</a> for their support of our summer coding fellowship.
+Little of this would be possible without them.</p>
+</div>
+  <footer>
+    <a rel="full-article" href="/blog/2012/07/31/major-refactoring-in-the-pipeline/">Read on &rarr;</a>
+  </footer>
+
+
+  </article>
+
+
+  <article>
+    
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/05/23/sciruby-summer-of-code-selection-announced/">SciRuby Summer of Code Selection Announced</a></h1>
     
     
@@ -668,6 +721,10 @@ to our Google Group, for example).</p></li>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/31/major-refactoring-in-the-pipeline/">Major Refactoring in the Pipeline</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/05/23/sciruby-summer-of-code-selection-announced/">SciRuby Summer of Code Selection Announced</a>
       </li>
     
@@ -681,10 +738,6 @@ to our Google Group, for example).</p></li>
     
       <li class="post">
         <a href="/blog/2012/02/11/numeric-matrix-considerations/">Numeric Matrix Considerations</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2011/11/02/first-pre-alpha-release/">First Pre-alpha Release</a>
       </li>
     
   </ul>
