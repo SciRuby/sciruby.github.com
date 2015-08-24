@@ -5,12 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>SciRuby</title>
+  <title>Introducing the GSoC 2014 D3 Project - SciRuby</title>
   <meta name="author" content="SciRuby">
 
   
-  <meta name="description" content="The SciRuby Manifesto
-Ruby has for some time lacked libraries implementing the basic tools needed for scientific computing and data visualization. &hellip;">
+  <meta name="description" content="Hello. I am Naoki, one of four Google Summer of Code (GSoC) 2014
+students in SciRuby. Let me introduce my project. The goal of the GSoC
+2014 D3 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +20,7 @@ Ruby has for some time lacked libraries implementing the basic tools needed for 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sciruby.com/">
+  <link rel="canonical" href="http://sciruby.com/blog/2014/06/02/introducing-gsoc-2014-the-d3-project/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -81,88 +82,131 @@ Ruby has for some time lacked libraries implementing the basic tools needed for 
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
-  <h2>The SciRuby Manifesto</h2>
-<p><a href="http://www.ruby-lang.org/">Ruby</a> has for some time lacked libraries implementing the basic tools needed for scientific computing and data visualization.</p>
+  <header>
+    
+      <h1 class="entry-title">Introducing the GSoC 2014 D3 Project</h1>
+    
+    
+      <p class="meta">
+        
+  
 
-<p>We believe that the time for a Ruby science and visualization package has come. Sometimes when a solution of sugar and water becomes super-saturated, from it precipitates a pure, delicious, and diabetes-causing crystal of sweetness, induced by no more than the tap of a finger. So it is, we believe, with the need for numeric and visualization libraries in Ruby.</p>
+<span class="byline author vcard"><span class="fn">Naoki Nishida</span></span>
+ &bull; 
+        
 
-<img src="images/logo.png" alt="SciRuby logo" />
 
-<p>We are not the first with this idea, but we are bringing it to life.</p>
 
-<h2>Project Status</h2>
-<p>A few months ago, we shipped our first beta release of <a href="nmatrix/">NMatrix</a>, the SciRuby linear algebra library. NMatrix includes both dense and sparse matrix storage, and we are working on including full ATLAS and LAPACK support.</p>
 
-<p>Our key goals in the short term are improved visualization software and continued development of our linear algebra software (NMatrix and MDArray). We have several experimental plotting libraries &mdash; such as Rubyvis, Plotrb, and Nyaplot &mdash; and are interested in improving existing APIs, such as for Gnuplot.</p>
 
-<h3 id="googlegroup">Subscribe to the SciRuby Google Group</h3>
-<form action="http://groups.google.com/group/sciruby-dev/boxsubscribe">
-<p>To subscribe to our <a href="http://groups.google.com/group/sciruby-dev">Google Group</a>, please enter your email below.
-  <div style="padding-left: 3em;">
-    <input type="text" name="email"><input type="submit" name="sub" value="Subscribe">
-  </div>
-</p>
-</form>
 
-<h3 id="irc">SciRuby on IRC</h3>
 
-<p>Our IRC channel is most active during the months of Google Summer of Code, but generally there are always a few people around. You can find us on Freenode.net in <tt>#sciruby</tt>.</p>
 
-<h2 id="installation">Getting SciRuby</h3>
+  
 
-<p class="warning"><strong>Word to the wise:</strong> These gems have been tested, but are not battle-hardened. If you&#8217;re thinking of using NMatrix (or other SciRuby components) to write mission critical code, such as for a self-driving car or controlling an ARKYD 100 satellite, you should expect to encounter a few bugs &#8212; and be prepared for them.</p>
 
-<p><a href="/docs">Instructions for installing various SciRuby components are available in our docs.</a></p>
+<time datetime="2014-06-02T14:00:00-05:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
 
-<p><a href="/nmatrix/">You can find our NMatrix documentation here.</a></p>
 
-<h2 id="developers">Developers</h2>
+<div class="entry-content"><p>Hello. I am Naoki, one of four Google Summer of Code (GSoC) 2014
+students in SciRuby. Let me introduce my project. The goal of the GSoC
+2014 D3 Project is to create a new plotting library for
+SciRuby. <a href="http://d3js.org/">D3.js</a> is the most suitable JavaScript
+library to achieve this goal.</p>
 
-<p>You can find the <a href="https://github.com/SciRuby/sciruby/wiki/Roster">full roster</a> on our <a href="https://github.com/SciRuby/sciruby/wiki/">project wiki</a>.</p>
+<p>There are several non-Ruby plotting software libraries in the wild,
+like ggplot, matplotlib, and ggplot2. Actually, SciRuby already has
+its own plotting libraries named
+<a href="https://github.com/SciRuby/plotrb">Plotrb</a> and
+<a href="https://github.com/SciRuby/rubyvis">Rubyvis</a>. The main feature of my
+project compared with those software packages is <em>interactivity</em>.
+Interactivity has various meanings here: interactivity when generating
+plots, interactivity when viewing them, and server&ndash;client
+interactivity. My project includes all of those.</p>
 
-<h3 id="get-involved">Want to get involved?</h3>
-
-<p><strong>Say you have a few hours and are itching to get your hands dirty.</strong> The best place to look right now is <a href="https://github.com/sciruby/nmatrix/issues?sort=created&direction=desc&state=open">the NMatrix issue tracker</a> on Github. Pick something that interests you and fork us!</p>
-
-<p>You might also check out the <a href="https://github.com/sciruby/sciruby/issues?sort=created&direction=desc&state=open">SciRuby issue tracker</a> if matrices don&#8217;t interest you much.</p>
-
-<h2 id="license">License</h2>
-
-<p>SciRuby and NMatrix are <a href="https://github.com/SciRuby/sciruby/wiki/License">available under the BSD three-clause license</a>.</p>
-
-<h2 id="acknowledgements">Acknowledgements</h2>
+<p>My project can be divided into two components, one JavaScript and the
+other Ruby. JavaScript serves as a back-end, and Ruby as a
+front-end. I&#8217;m currently working on the former part. Have a look at a
+few examples I&#8217;ve assembled:</p>
 
 <ul>
-    <li>
-        Google Summer of Code 2013&ndash;2015, <a href="https://developers.google.com/open-source/">Google&#8217;s Open Source Programs Office</a>, and all of our wonderful students and mentors.<br/>
-        <a href="http://www.google-melange.com"><img src="https://developers.google.com/open-source/gsoc/images/gsoc2015-300x270.jpg" alt="Google Summer of Code 2015" /></a>
-    </li>
-    <li><a href="http://brighterplanet.com/">Brighter Planet</a> for their sponsorship of our first ever <a href="/blog/2012/05/08/sciruby-summer-of-code/">SciRuby Summer of Code</a> in 2012.
-        <a href="http://brighterplanet.com"><img src="http://static.brighterplanet.com/assets/logos/flush-left/inline/green/rasterized/brighter_planet-140.png" alt="Brighter Planet logo" /></a>
-    </li>
-    <li>
-        <a href="http://www.jetbrains.com">JetBrains</a> has kindly provided our project with an open source license for RubyMine. <a href="http://www.jetbrains.com/ruby/features?utm_source=RubyMineUser&utm_medium=Banner&utm_campaign=RubyMine" style="position: relative;display:block; width:127px; height:37px; border:0; margin:0;padding:0;text-decoration:none;text-indent:0;"><span style="margin: 0;padding: 0;position: absolute;top: 1px;left: 33px;font-size: 10px;cursor:pointer;  background-image:none;border:0;color: #efcedc; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">Can&#8217;t code without</span><img src="http://www.jetbrains.com/ruby/features/ruby_banners/ruby1/ruby125x37_rubin.gif" alt="Can't code without" border="0"/></a><br/>
-    </li>
-    <li>
-        <a href="http://www.ruby.or.jp">The Ruby Association</a> generously awarded us with a <a href="http://www.ruby.or.jp/en/news/20120717.html">rather large grant</a> to fund a couple of SciRuby fellows in 2012 and 2013. Thanks, Ruby Association!
-    </li>
-    <li>
-        <a href="http://www.symora.com">Symora Networks</a> gave a major portion of the funding toward our eventual application for 501(c)(3) (U.S. educational charity) status.<br/>
-        <a href="http://www.symora.com"><img src="/images/symora.png" alt="Symora Networks logo" /></a>
-    </li>
-    <li>
-        Masahiro Tanaka, the creator of NArray, without which NMatrix would not be possible.
-    </li>
-    <li>
-        The several individual donors to our project.
-    </li>
+<li><a href="http://bl.ocks.org/domitry/b8785f02f36deef567ce">Multiple panes</a></li>
+<li><a href="http://bl.ocks.org/domitry/2f53781449025f772676">Bar chart</a></li>
+<li><a href="http://bl.ocks.org/domitry/e9a914b78f3a576ed3bb">Line</a></li>
+<li><a href="http://bl.ocks.org/domitry/308e27d8d12c1374e61f">Scatter</a></li>
+<li><a href="http://bl.ocks.org/domitry/f215d5ff3bd3f5fec2ad">Another theme</a></li>
 </ul>
 
 
+<p>This project involves a number of challenges, but I believe it to be
+achievable during this Summer of Code. Thank you for reading!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Naoki Nishida</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-02T14:00:00-05:00" pubdate data-updated="true">Jun 2<span>nd</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/d3/'>D3</a>, <a class='category' href='/blog/categories/gsoc/'>GSOC</a>, <a class='category' href='/blog/categories/gsoc2014/'>GSOC2014</a>, <a class='category' href='/blog/categories/students/'>Students</a>, <a class='category' href='/blog/categories/visualization/'>Visualization</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sciruby.com/blog/2014/06/02/introducing-gsoc-2014-the-d3-project/" data-via="sciruby" data-counturl="http://sciruby.com/blog/2014/06/02/introducing-gsoc-2014-the-d3-project/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/24/gsoc-2014/" title="Previous Post: Ruby Science Foundation selected for GSoC 2014">&laquo; Ruby Science Foundation selected for GSoC 2014</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project/" title="Next Post: Introducing the FFTW SciRuby GSoC project">Introducing the FFTW SciRuby GSoC project &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -267,7 +311,10 @@ Ruby has for some time lacked libraries implementing the basic tools needed for 
       var disqus_shortname = 'sciruby';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sciruby.com/blog/2014/06/02/introducing-gsoc-2014-the-d3-project/';
+        var disqus_url = 'http://sciruby.com/blog/2014/06/02/introducing-gsoc-2014-the-d3-project/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
