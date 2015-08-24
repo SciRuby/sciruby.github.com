@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Analysis | SciRuby]]></title>
-  <link href="http://sciruby.com/blog/categories/analysis/atom.xml" rel="self"/>
-  <link href="http://sciruby.com/"/>
-  <updated>2015-08-24T10:19:57-05:00</updated>
-  <id>http://sciruby.com/</id>
+  <link href="http://SciRuby.github.com/blog/categories/analysis/atom.xml" rel="self"/>
+  <link href="http://SciRuby.github.com/"/>
+  <updated>2015-08-24T11:41:11-05:00</updated>
+  <id>http://SciRuby.github.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Summary of work on daru this summer for GSOC 2015]]></title>
-    <link href="http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015/"/>
+    <link href="http://SciRuby.github.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015/"/>
     <updated>2015-08-16T23:53:00-05:00</updated>
-    <id>http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015</id>
+    <id>http://SciRuby.github.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015</id>
     <content type="html"><![CDATA[<p>Over this summer as a part of <a href="www.google-melange.com">Google Summer of Code 2015</a>, <a href="www.github.com/v0dro/daru/">daru</a> received a lot of upgrades and new features which have it made a pretty robust tool for data analysis in pure Ruby. Of course, a lot of work still remains for bringing daru at par with the other data analysis solutions on offer today, but I feel the work done this summer has put daru on that path.</p>
 
 <p>The new features led to the inclusion of daru in many of SciRuby's gems, which use daru's data storage, access and indexing features for storing and carrying around data. <a href="https://github.com/SciRuby/statsample">Statsample</a>, <a href="https://github.com/SciRuby/statsample-glm">statsample-glm</a>, <a href="https://github.com/SciRuby/statsample-timeseries">statsample-timeseries</a>, <a href="https://github.com/SciRuby/statsample-bivariate-extension">statsample-bivariate-extensions</a> are all now compatible with daru and use <code>Daru::Vector</code> and <code>Daru::DataFrame</code> as their primary data structures. I also overhauled Daru's <a href="http://nbviewer.ipython.org/github/SciRuby/sciruby-notebooks/blob/master/Visualization/Visualizing%20data%20with%20daru%20DataFrame.ipynb">plotting functionality</a>, that interfaced with <a href="https://github.com/domitry/nyaplot">nyaplot</a> for creating interactive plots directly from the data.</p>

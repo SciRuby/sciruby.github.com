@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Semantic Web | SciRuby]]></title>
-  <link href="http://sciruby.com/blog/categories/semantic-web/atom.xml" rel="self"/>
-  <link href="http://sciruby.com/"/>
-  <updated>2015-08-24T10:19:57-05:00</updated>
-  <id>http://sciruby.com/</id>
+  <link href="http://SciRuby.github.com/blog/categories/semantic-web/atom.xml" rel="self"/>
+  <link href="http://SciRuby.github.com/"/>
+  <updated>2015-08-24T11:41:11-05:00</updated>
+  <id>http://SciRuby.github.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Ruby and the Semantic Web, RDF, and SPARQL: PubliSci]]></title>
-    <link href="http://sciruby.com/blog/2013/10/12/ruby-and-the-semantic-web-rdf-sparql-publisci/"/>
+    <link href="http://SciRuby.github.com/blog/2013/10/12/ruby-and-the-semantic-web-rdf-sparql-publisci/"/>
     <updated>2013-10-12T16:36:00-05:00</updated>
-    <id>http://sciruby.com/blog/2013/10/12/ruby-and-the-semantic-web-rdf-sparql-publisci</id>
+    <id>http://SciRuby.github.com/blog/2013/10/12/ruby-and-the-semantic-web-rdf-sparql-publisci</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor's Note:</strong> This is the second of four blog posts detailing our Google Summer of
 Code 2013 students' work. I edited it to include a very incomplete list of public RDF repositories. &mdash;John Woods</p>
 

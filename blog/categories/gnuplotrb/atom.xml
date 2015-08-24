@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: GnuplotRB | SciRuby]]></title>
-  <link href="http://sciruby.com/blog/categories/gnuplotrb/atom.xml" rel="self"/>
-  <link href="http://sciruby.com/"/>
-  <updated>2015-08-24T10:19:57-05:00</updated>
-  <id>http://sciruby.com/</id>
+  <link href="http://SciRuby.github.com/blog/categories/gnuplotrb/atom.xml" rel="self"/>
+  <link href="http://SciRuby.github.com/"/>
+  <updated>2015-08-24T11:41:11-05:00</updated>
+  <id>http://SciRuby.github.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GnuplotRB and GSoC 2015]]></title>
-    <link href="http://sciruby.com/blog/2015/08/18/gnuplotrb-project/"/>
+    <link href="http://SciRuby.github.com/blog/2015/08/18/gnuplotrb-project/"/>
     <updated>2015-08-18T23:26:00-05:00</updated>
-    <id>http://sciruby.com/blog/2015/08/18/gnuplotrb-project</id>
+    <id>http://SciRuby.github.com/blog/2015/08/18/gnuplotrb-project</id>
     <content type="html"><![CDATA[<h2>Introduction</h2>
 
 <p>This summer I've been participating in Google Summer of Code
@@ -65,7 +65,7 @@
 
 <p>Plot examples:</p>
 
-<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/plots.jpg" alt="Plot example" style="width: 100%;"/></p>
+<p><img src="http://SciRuby.github.com/images/gnuplotrb-gsoc2015/plots.jpg" alt="Plot example" style="width: 100%;"/></p>
 
 <p>For code examples please see
  <a href="https://github.com/dilcom/gnuplotrb/blob/master/README.rdoc">the repository README</a>,
@@ -81,7 +81,7 @@
 <p>Here is a multiplot example
  (taken from <a href="http://nbviewer.ipython.org/github/SciRuby/sciruby-notebooks/blob/master/Data%20Analysis/Analyzing%20baby%20names/Use%20Case%20-%20Daru%20for%20analyzing%20baby%20names%20data.ipynb">Sameer's notebook</a>):</p>
 
-<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/multiplot.jpg" alt="Multiplot example" style="width: 80%; align: middle;"/></p>
+<p><img src="http://SciRuby.github.com/images/gnuplotrb-gsoc2015/multiplot.jpg" alt="Multiplot example" style="width: 80%; align: middle;"/></p>
 
 <h3>Animated plots</h3>
 
@@ -90,7 +90,7 @@
  multiplot does and outputs them one-by-one as frames of gif animation.
  <a href="http://nbviewer.ipython.org/github/dilcom/gnuplotrb/blob/master/notebooks/animated_plots.ipynb">Animation notebook</a>.</p>
 
-<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/trajectory.gif" alt="Trajectory example" style="width: 80%; align: middle;"/></p>
+<p><img src="http://SciRuby.github.com/images/gnuplotrb-gsoc2015/trajectory.gif" alt="Trajectory example" style="width: 80%; align: middle;"/></p>
 
 <h3>Fit</h3>
 

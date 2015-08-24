@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Regression | SciRuby]]></title>
-  <link href="http://sciruby.com/blog/categories/regression/atom.xml" rel="self"/>
-  <link href="http://sciruby.com/"/>
-  <updated>2015-08-24T10:19:57-05:00</updated>
-  <id>http://sciruby.com/</id>
+  <link href="http://SciRuby.github.com/blog/categories/regression/atom.xml" rel="self"/>
+  <link href="http://SciRuby.github.com/"/>
+  <updated>2015-08-24T11:41:11-05:00</updated>
+  <id>http://SciRuby.github.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Statistical linear mixed models in Ruby with mixed_models (GSoC2015)]]></title>
-    <link href="http://sciruby.com/blog/2015/08/19/gsoc-2015-mixed-models/"/>
+    <link href="http://SciRuby.github.com/blog/2015/08/19/gsoc-2015-mixed-models/"/>
     <updated>2015-08-19T12:00:00-05:00</updated>
-    <id>http://sciruby.com/blog/2015/08/19/gsoc-2015-mixed-models</id>
+    <id>http://SciRuby.github.com/blog/2015/08/19/gsoc-2015-mixed-models</id>
     <content type="html"><![CDATA[<p>Google Summer of Code 2015 is coming to an end. During this summer, I have learned too many things to list here about statistical modeling, Ruby and software development in general, and I had a lot of fun in the process!</p>
 
 <h2>Linear mixed models</h2>

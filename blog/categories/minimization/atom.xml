@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Minimization | SciRuby]]></title>
-  <link href="http://sciruby.com/blog/categories/minimization/atom.xml" rel="self"/>
-  <link href="http://sciruby.com/"/>
-  <updated>2015-08-24T10:19:57-05:00</updated>
-  <id>http://sciruby.com/</id>
+  <link href="http://SciRuby.github.com/blog/categories/minimization/atom.xml" rel="self"/>
+  <link href="http://SciRuby.github.com/"/>
+  <updated>2015-08-24T11:41:11-05:00</updated>
+  <id>http://SciRuby.github.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Updates: Minimization and Integration]]></title>
-    <link href="http://sciruby.com/blog/2014/06/24/updates-minimization-and-integration/"/>
+    <link href="http://SciRuby.github.com/blog/2014/06/24/updates-minimization-and-integration/"/>
     <updated>2014-06-24T14:32:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/06/24/updates-minimization-and-integration</id>
+    <id>http://SciRuby.github.com/blog/2014/06/24/updates-minimization-and-integration</id>
     <content type="html"><![CDATA[<h2>Minimization</h2>
 
 <p>The Minimization gem now supports the following unidimensional function minimizations
@@ -60,9 +60,9 @@ JScience and JRuby.</p>
   
   <entry>
     <title type="html"><![CDATA[Progress on Minimization methods]]></title>
-    <link href="http://sciruby.com/blog/2014/06/19/progress-on-minimization-methods/"/>
+    <link href="http://SciRuby.github.com/blog/2014/06/19/progress-on-minimization-methods/"/>
     <updated>2014-06-19T01:00:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/06/19/progress-on-minimization-methods</id>
+    <id>http://SciRuby.github.com/blog/2014/06/19/progress-on-minimization-methods</id>
     <content type="html"><![CDATA[<h2>Current Progress on Minimization Gem</h2>
 
 <p>In the first half of the summer, I plan to introduce some new numerical minimization methods to SciRuby's Minimization gem. As per my proposal, I began by implementing the Powell's multidimensional minimization method. Powell's method has a better convergence in most cases than the Nelder&ndash;Mead algorithm, and is also a multidimensional minimization method which doesn't use any derivative of the function.</p>
@@ -75,9 +75,9 @@ JScience and JRuby.</p>
   
   <entry>
     <title type="html"><![CDATA[Introduction: Minimization and Integration (Lahiru)]]></title>
-    <link href="http://sciruby.com/blog/2014/06/18/introduction-minimization-and-integration/"/>
+    <link href="http://SciRuby.github.com/blog/2014/06/18/introduction-minimization-and-integration/"/>
     <updated>2014-06-18T16:45:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/06/18/introduction-minimization-and-integration</id>
+    <id>http://SciRuby.github.com/blog/2014/06/18/introduction-minimization-and-integration</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor's Note:</strong> We have two students
 working on numerical minimization and integration this summer, Rajat and
 Lahiru. Rajat's introductory post appeared two weeks ago.</p>
@@ -114,9 +114,9 @@ test cases.</p>
   
   <entry>
     <title type="html"><![CDATA[Introduction to the Minimization and Integration project (Rajat)]]></title>
-    <link href="http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project/"/>
+    <link href="http://SciRuby.github.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project/"/>
     <updated>2014-06-04T14:23:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project</id>
+    <id>http://SciRuby.github.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor's Note:</strong> We have two students
 working on numerical minimization and integration this summer, Rajat and
 Lahiru. Lahiru will be writing a separate post about his work.</p>

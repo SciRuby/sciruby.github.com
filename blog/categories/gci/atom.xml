@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: GCI | SciRuby]]></title>
-  <link href="http://sciruby.com/blog/categories/gci/atom.xml" rel="self"/>
-  <link href="http://sciruby.com/"/>
-  <updated>2015-08-24T10:19:57-05:00</updated>
-  <id>http://sciruby.com/</id>
+  <link href="http://SciRuby.github.com/blog/categories/gci/atom.xml" rel="self"/>
+  <link href="http://SciRuby.github.com/"/>
+  <updated>2015-08-24T11:41:11-05:00</updated>
+  <id>http://SciRuby.github.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,14 +15,14 @@
   
   <entry>
     <title type="html"><![CDATA[Mentoring future computational power women for GCI 2013]]></title>
-    <link href="http://sciruby.com/blog/2013/10/25/mentoring-future-computational-power-women-for-gci-2013/"/>
+    <link href="http://SciRuby.github.com/blog/2013/10/25/mentoring-future-computational-power-women-for-gci-2013/"/>
     <updated>2013-10-25T14:09:00-05:00</updated>
-    <id>http://sciruby.com/blog/2013/10/25/mentoring-future-computational-power-women-for-gci-2013</id>
+    <id>http://SciRuby.github.com/blog/2013/10/25/mentoring-future-computational-power-women-for-gci-2013</id>
     <content type="html"><![CDATA[<p>My name is Anna, and I'm an engineer and a scientist. I study Materials Science and Engineering at the University of
 Michigan; and I graduated from Virginia Tech with a degree in Physics. My thesis project deals with computationally
 predicting the properties of materials used in lithium-ion batteries and airplane turbine blades.</p>
 
-<p><img src="http://sciruby.com/images/anna_belak.jpg" title="Anna Belak coding like a boss" /></p>
+<p><img src="http://SciRuby.github.com/images/anna_belak.jpg" title="Anna Belak coding like a boss" /></p>
 
 <p>I'm writing this blog post for SciRuby, but I'm really writing it for the young women out there. SciRuby is applying to
 participate in <a href="https://developers.google.com/open-source/gci/">Google's Code-In 2013</a>, which aims to get high school

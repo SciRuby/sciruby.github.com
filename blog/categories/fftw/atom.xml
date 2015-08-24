@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: FFTW | SciRuby]]></title>
-  <link href="http://sciruby.com/blog/categories/fftw/atom.xml" rel="self"/>
-  <link href="http://sciruby.com/"/>
-  <updated>2015-08-24T10:19:57-05:00</updated>
-  <id>http://sciruby.com/</id>
+  <link href="http://SciRuby.github.com/blog/categories/fftw/atom.xml" rel="self"/>
+  <link href="http://SciRuby.github.com/"/>
+  <updated>2015-08-24T11:41:11-05:00</updated>
+  <id>http://SciRuby.github.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Introducing the FFTW SciRuby GSoC project]]></title>
-    <link href="http://sciruby.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project/"/>
+    <link href="http://SciRuby.github.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project/"/>
     <updated>2014-06-04T12:30:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project</id>
+    <id>http://SciRuby.github.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project</id>
     <content type="html"><![CDATA[<p>My name is Magdalen Berns and I am a physics student with a technical
 background in live audio. I am particularly interested in using science
 and technology to improve access for all.</p>

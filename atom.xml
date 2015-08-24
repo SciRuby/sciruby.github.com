@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[SciRuby]]></title>
-  <link href="http://sciruby.com/atom.xml" rel="self"/>
-  <link href="http://sciruby.com/"/>
-  <updated>2015-08-24T10:19:57-05:00</updated>
-  <id>http://sciruby.com/</id>
+  <link href="http://SciRuby.github.com/atom.xml" rel="self"/>
+  <link href="http://SciRuby.github.com/"/>
+  <updated>2015-08-24T11:41:11-05:00</updated>
+  <id>http://SciRuby.github.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Statistical linear mixed models in Ruby with mixed_models (GSoC2015)]]></title>
-    <link href="http://sciruby.com/blog/2015/08/19/gsoc-2015-mixed-models/"/>
+    <link href="http://SciRuby.github.com/blog/2015/08/19/gsoc-2015-mixed-models/"/>
     <updated>2015-08-19T12:00:00-05:00</updated>
-    <id>http://sciruby.com/blog/2015/08/19/gsoc-2015-mixed-models</id>
+    <id>http://SciRuby.github.com/blog/2015/08/19/gsoc-2015-mixed-models</id>
     <content type="html"><![CDATA[<p>Google Summer of Code 2015 is coming to an end. During this summer, I have learned too many things to list here about statistical modeling, Ruby and software development in general, and I had a lot of fun in the process!</p>
 
 <h2>Linear mixed models</h2>
@@ -332,9 +332,9 @@ A good reference on such models is <a href="http://lme4.r-forge.r-project.org/bo
   
   <entry>
     <title type="html"><![CDATA[GSoC 2015: New NMatrix gems for advanced linear algebra features]]></title>
-    <link href="http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix/"/>
+    <link href="http://SciRuby.github.com/blog/2015/08/19/gsoc-2015-nmatrix/"/>
     <updated>2015-08-19T09:57:00-05:00</updated>
-    <id>http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix</id>
+    <id>http://SciRuby.github.com/blog/2015/08/19/gsoc-2015-nmatrix</id>
     <content type="html"><![CDATA[<p>My Google Summer of Code project was working on the <a href="https://github.com/SciRuby/nmatrix">NMatrix project</a>, moving
 functionality that depends on external libraries from the core <code>nmatrix</code>
 gem to optional plugin gems. NMatrix is a Ruby library for linear algebra,
@@ -500,9 +500,9 @@ and feedback throughout the summer.</p>
   
   <entry>
     <title type="html"><![CDATA[GnuplotRB and GSoC 2015]]></title>
-    <link href="http://sciruby.com/blog/2015/08/18/gnuplotrb-project/"/>
+    <link href="http://SciRuby.github.com/blog/2015/08/18/gnuplotrb-project/"/>
     <updated>2015-08-18T23:26:00-05:00</updated>
-    <id>http://sciruby.com/blog/2015/08/18/gnuplotrb-project</id>
+    <id>http://SciRuby.github.com/blog/2015/08/18/gnuplotrb-project</id>
     <content type="html"><![CDATA[<h2>Introduction</h2>
 
 <p>This summer I&#8217;ve been participating in Google Summer of Code
@@ -550,7 +550,7 @@ and feedback throughout the summer.</p>
 
 <p>Plot examples:</p>
 
-<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/plots.jpg" alt="Plot example" style="width: 100%;"/></p>
+<p><img src="http://SciRuby.github.com/images/gnuplotrb-gsoc2015/plots.jpg" alt="Plot example" style="width: 100%;"/></p>
 
 <p>For code examples please see
  <a href="https://github.com/dilcom/gnuplotrb/blob/master/README.rdoc">the repository README</a>,
@@ -566,7 +566,7 @@ and feedback throughout the summer.</p>
 <p>Here is a multiplot example
  (taken from <a href="http://nbviewer.ipython.org/github/SciRuby/sciruby-notebooks/blob/master/Data%20Analysis/Analyzing%20baby%20names/Use%20Case%20-%20Daru%20for%20analyzing%20baby%20names%20data.ipynb">Sameer&#8217;s notebook</a>):</p>
 
-<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/multiplot.jpg" alt="Multiplot example" style="width: 80%; align: middle;"/></p>
+<p><img src="http://SciRuby.github.com/images/gnuplotrb-gsoc2015/multiplot.jpg" alt="Multiplot example" style="width: 80%; align: middle;"/></p>
 
 <h3>Animated plots</h3>
 
@@ -575,7 +575,7 @@ and feedback throughout the summer.</p>
  multiplot does and outputs them one-by-one as frames of gif animation.
  <a href="http://nbviewer.ipython.org/github/dilcom/gnuplotrb/blob/master/notebooks/animated_plots.ipynb">Animation notebook</a>.</p>
 
-<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/trajectory.gif" alt="Trajectory example" style="width: 80%; align: middle;"/></p>
+<p><img src="http://SciRuby.github.com/images/gnuplotrb-gsoc2015/trajectory.gif" alt="Trajectory example" style="width: 80%; align: middle;"/></p>
 
 <h3>Fit</h3>
 
@@ -634,9 +634,9 @@ and feedback throughout the summer.</p>
   
   <entry>
     <title type="html"><![CDATA[Ruby Wrappers for SymEngine, a C++ symbolic manipulation library]]></title>
-    <link href="http://sciruby.com/blog/2015/08/17/ruby-wrappers-for-symengine/"/>
+    <link href="http://SciRuby.github.com/blog/2015/08/17/ruby-wrappers-for-symengine/"/>
     <updated>2015-08-17T14:30:00-05:00</updated>
-    <id>http://sciruby.com/blog/2015/08/17/ruby-wrappers-for-symengine</id>
+    <id>http://SciRuby.github.com/blog/2015/08/17/ruby-wrappers-for-symengine</id>
     <content type="html"><![CDATA[<p>I am sure you have heard about <a href="http://www.wolframalpha.com/">Wolfram Alpha</a>. Some of you would have used its <a href="http://www.wolframalpha.com/examples/Math.html">Mathematics section</a> at some point of time to cross check your solution to a maths problem. If you haven&#8217;t, please do. A computer algebra system (CAS) does the same thing. Algebraic computation or symbolic computation are all used interchangeably. A CAS solves problems the same way a human does, but way more quickly and precisely. There is very less chance for an error, that we humans often make.</p>
 
 <h2>Introduction</h2>
@@ -994,9 +994,9 @@ to check what was actually happening. That cleared things out, and made the it e
   
   <entry>
     <title type="html"><![CDATA[Summary of work on daru this summer for GSOC 2015]]></title>
-    <link href="http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015/"/>
+    <link href="http://SciRuby.github.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015/"/>
     <updated>2015-08-16T23:53:00-05:00</updated>
-    <id>http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015</id>
+    <id>http://SciRuby.github.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015</id>
     <content type="html"><![CDATA[<p>Over this summer as a part of <a href="www.google-melange.com">Google Summer of Code 2015</a>, <a href="www.github.com/v0dro/daru/">daru</a> received a lot of upgrades and new features which have it made a pretty robust tool for data analysis in pure Ruby. Of course, a lot of work still remains for bringing daru at par with the other data analysis solutions on offer today, but I feel the work done this summer has put daru on that path.</p>
 
 <p>The new features led to the inclusion of daru in many of SciRuby&#8217;s gems, which use daru&#8217;s data storage, access and indexing features for storing and carrying around data. <a href="https://github.com/SciRuby/statsample">Statsample</a>, <a href="https://github.com/SciRuby/statsample-glm">statsample-glm</a>, <a href="https://github.com/SciRuby/statsample-timeseries">statsample-timeseries</a>, <a href="https://github.com/SciRuby/statsample-bivariate-extension">statsample-bivariate-extensions</a> are all now compatible with daru and use <code>Daru::Vector</code> and <code>Daru::DataFrame</code> as their primary data structures. I also overhauled Daru&#8217;s <a href="http://nbviewer.ipython.org/github/SciRuby/sciruby-notebooks/blob/master/Visualization/Visualizing%20data%20with%20daru%20DataFrame.ipynb">plotting functionality</a>, that interfaced with <a href="https://github.com/domitry/nyaplot">nyaplot</a> for creating interactive plots directly from the data.</p>
@@ -1045,9 +1045,9 @@ to check what was actually happening. That cleared things out, and made the it e
   
   <entry>
     <title type="html"><![CDATA[NMatrix's first beta release (belated announcement)]]></title>
-    <link href="http://sciruby.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement/"/>
+    <link href="http://SciRuby.github.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement/"/>
     <updated>2015-02-14T14:56:00-06:00</updated>
-    <id>http://sciruby.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement</id>
+    <id>http://SciRuby.github.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement</id>
     <content type="html"><![CDATA[<p>Almost two months ago, in December, we <a href="https://rubygems.org/gems/nmatrix">release our first beta of NMatrix</a>, our
 linear algebra library for the Ruby language.</p>
 
@@ -1106,10 +1106,10 @@ our <a href="https://groups.google.com/forum/#!forum/sciruby-dev">mailing list</
   
   <entry>
     <title type="html"><![CDATA[Nyaplot: interactive plots generator with Ruby]]></title>
-    <link href="http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby/"/>
+    <link href="http://SciRuby.github.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby/"/>
     <updated>2014-08-23T10:07:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby</id>
-    <content type="html"><![CDATA[<iframe width="853" height="480" src="http://sciruby.com//www.youtube.com/embed/ZxjqsIluM88" frameborder="0" allowfullscreen></iframe>
+    <id>http://SciRuby.github.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby</id>
+    <content type="html"><![CDATA[<iframe width="853" height="480" src="http://SciRuby.github.com//www.youtube.com/embed/ZxjqsIluM88" frameborder="0" allowfullscreen></iframe>
 
 
 <h2>Introduction</h2>
@@ -1269,9 +1269,9 @@ summer thanks to all people related to this project.</p>
   
   <entry>
     <title type="html"><![CDATA[Benchmarks for Integration Gem]]></title>
-    <link href="http://sciruby.com/blog/2014/07/28/benchmarks-for-integration-gem/"/>
+    <link href="http://SciRuby.github.com/blog/2014/07/28/benchmarks-for-integration-gem/"/>
     <updated>2014-07-28T02:44:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/07/28/benchmarks-for-integration-gem</id>
+    <id>http://SciRuby.github.com/blog/2014/07/28/benchmarks-for-integration-gem</id>
     <content type="html"><![CDATA[<p>The Integration gem now includes quite a few functions from which to
 choose. To make this choice easier, I have done some benchmarking to
 see how fast and acuurate each of these functions are.  The results of
@@ -1490,9 +1490,9 @@ running the benchmarks with your desired functions.</p>
   
   <entry>
     <title type="html"><![CDATA[The Nyaplot internal event handler]]></title>
-    <link href="http://sciruby.com/blog/2014/07/09/nyaplot-internal-event-handler/"/>
+    <link href="http://SciRuby.github.com/blog/2014/07/09/nyaplot-internal-event-handler/"/>
     <updated>2014-07-09T17:01:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/07/09/nyaplot-internal-event-handler</id>
+    <id>http://SciRuby.github.com/blog/2014/07/09/nyaplot-internal-event-handler</id>
     <content type="html"><![CDATA[<p><img src="https://dl.dropboxusercontent.com/u/47978121/gsoc/multiple_panes.png" alt="Nyaplot multi-pane example" /></p>
 
 <h2>Introduction</h2>
@@ -1564,9 +1564,9 @@ events in DataFrame is both natural and efficient for Nyaplot.</p>
   
   <entry>
     <title type="html"><![CDATA[Usage: Integration Gem Improvements]]></title>
-    <link href="http://sciruby.com/blog/2014/07/02/usage-integration-gem-improvements/"/>
+    <link href="http://SciRuby.github.com/blog/2014/07/02/usage-integration-gem-improvements/"/>
     <updated>2014-07-02T17:43:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/07/02/usage-integration-gem-improvements</id>
+    <id>http://SciRuby.github.com/blog/2014/07/02/usage-integration-gem-improvements</id>
     <content type="html"><![CDATA[<h2>Numerical Integration</h2>
 
 <p>Integration is the process of finding the summation of the value of a function at small intervals, when the width of the intervals is infinitesimally small.
@@ -1605,9 +1605,9 @@ Instead of <code>{:method=&gt;:simpson}</code> in the above code, you can use an
   
   <entry>
     <title type="html"><![CDATA[The progress of the GSoC D3/Visualization Project]]></title>
-    <link href="http://sciruby.com/blog/2014/07/02/progress-of-d3-project/"/>
+    <link href="http://SciRuby.github.com/blog/2014/07/02/progress-of-d3-project/"/>
     <updated>2014-07-02T17:09:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/07/02/progress-of-d3-project</id>
+    <id>http://SciRuby.github.com/blog/2014/07/02/progress-of-d3-project</id>
     <content type="html"><![CDATA[<p>This week is the half-way point of this year&#8217;s Google Summer of
 Code. Let me report the progress during the term.</p>
 
@@ -1708,9 +1708,9 @@ pull-requests, even during the GSoC term.</p>
   
   <entry>
     <title type="html"><![CDATA[Updates: Minimization and Integration]]></title>
-    <link href="http://sciruby.com/blog/2014/06/24/updates-minimization-and-integration/"/>
+    <link href="http://SciRuby.github.com/blog/2014/06/24/updates-minimization-and-integration/"/>
     <updated>2014-06-24T14:32:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/06/24/updates-minimization-and-integration</id>
+    <id>http://SciRuby.github.com/blog/2014/06/24/updates-minimization-and-integration</id>
     <content type="html"><![CDATA[<h2>Minimization</h2>
 
 <p>The Minimization gem now supports the following unidimensional function minimizations
@@ -1753,9 +1753,9 @@ JScience and JRuby.</p>
   
   <entry>
     <title type="html"><![CDATA[Progress on Minimization methods]]></title>
-    <link href="http://sciruby.com/blog/2014/06/19/progress-on-minimization-methods/"/>
+    <link href="http://SciRuby.github.com/blog/2014/06/19/progress-on-minimization-methods/"/>
     <updated>2014-06-19T01:00:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/06/19/progress-on-minimization-methods</id>
+    <id>http://SciRuby.github.com/blog/2014/06/19/progress-on-minimization-methods</id>
     <content type="html"><![CDATA[<h2>Current Progress on Minimization Gem</h2>
 
 <p>In the first half of the summer, I plan to introduce some new numerical minimization methods to SciRuby&#8217;s Minimization gem. As per my proposal, I began by implementing the Powell&#8217;s multidimensional minimization method. Powell&#8217;s method has a better convergence in most cases than the Nelder&ndash;Mead algorithm, and is also a multidimensional minimization method which doesn&#8217;t use any derivative of the function.</p>
@@ -1768,9 +1768,9 @@ JScience and JRuby.</p>
   
   <entry>
     <title type="html"><![CDATA[Introduction: Minimization and Integration (Lahiru)]]></title>
-    <link href="http://sciruby.com/blog/2014/06/18/introduction-minimization-and-integration/"/>
+    <link href="http://SciRuby.github.com/blog/2014/06/18/introduction-minimization-and-integration/"/>
     <updated>2014-06-18T16:45:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/06/18/introduction-minimization-and-integration</id>
+    <id>http://SciRuby.github.com/blog/2014/06/18/introduction-minimization-and-integration</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor&#8217;s Note:</strong> We have two students
 working on numerical minimization and integration this summer, Rajat and
 Lahiru. Rajat&#8217;s introductory post appeared two weeks ago.</p>
@@ -1807,9 +1807,9 @@ test cases.</p>
   
   <entry>
     <title type="html"><![CDATA[Introduction to the Minimization and Integration project (Rajat)]]></title>
-    <link href="http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project/"/>
+    <link href="http://SciRuby.github.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project/"/>
     <updated>2014-06-04T14:23:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project</id>
+    <id>http://SciRuby.github.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor&#8217;s Note:</strong> We have two students
 working on numerical minimization and integration this summer, Rajat and
 Lahiru. Lahiru will be writing a separate post about his work.</p>
@@ -1868,9 +1868,9 @@ minimization methods.</p>
   
   <entry>
     <title type="html"><![CDATA[Introducing the FFTW SciRuby GSoC project]]></title>
-    <link href="http://sciruby.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project/"/>
+    <link href="http://SciRuby.github.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project/"/>
     <updated>2014-06-04T12:30:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project</id>
+    <id>http://SciRuby.github.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project</id>
     <content type="html"><![CDATA[<p>My name is Magdalen Berns and I am a physics student with a technical
 background in live audio. I am particularly interested in using science
 and technology to improve access for all.</p>
@@ -1929,9 +1929,9 @@ community, after all!</p>
   
   <entry>
     <title type="html"><![CDATA[Introducing the GSoC 2014 D3 Project]]></title>
-    <link href="http://sciruby.com/blog/2014/06/02/introducing-gsoc-2014-the-d3-project/"/>
+    <link href="http://SciRuby.github.com/blog/2014/06/02/introducing-gsoc-2014-the-d3-project/"/>
     <updated>2014-06-02T14:00:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/06/02/introducing-gsoc-2014-the-d3-project</id>
+    <id>http://SciRuby.github.com/blog/2014/06/02/introducing-gsoc-2014-the-d3-project</id>
     <content type="html"><![CDATA[<p>Hello. I am Naoki, one of four Google Summer of Code (GSoC) 2014
 students in SciRuby. Let me introduce my project. The goal of the GSoC
 2014 D3 Project is to create a new plotting library for
@@ -1969,9 +1969,9 @@ achievable during this Summer of Code. Thank you for reading!</p>
   
   <entry>
     <title type="html"><![CDATA[Ruby Science Foundation selected for GSoC 2014]]></title>
-    <link href="http://sciruby.com/blog/2014/02/24/gsoc-2014/"/>
+    <link href="http://SciRuby.github.com/blog/2014/02/24/gsoc-2014/"/>
     <updated>2014-02-24T21:45:00-06:00</updated>
-    <id>http://sciruby.com/blog/2014/02/24/gsoc-2014</id>
+    <id>http://SciRuby.github.com/blog/2014/02/24/gsoc-2014</id>
     <content type="html"><![CDATA[<p>We&#8217;re excited to announce that the Ruby Science Foundation has been selected as
 a mentoring organization for <a href="https://www.google-melange.com/gsoc/homepage/google/gsoc2014">Google Summer of Code 2014</a>!</p>
 
@@ -2001,9 +2001,9 @@ the moment.</p>
   
   <entry>
     <title type="html"><![CDATA[Some words from GSoC 2013 alumni]]></title>
-    <link href="http://sciruby.com/blog/2014/01/28/gsoc-alumni/"/>
+    <link href="http://SciRuby.github.com/blog/2014/01/28/gsoc-alumni/"/>
     <updated>2014-01-28T16:07:00-06:00</updated>
-    <id>http://sciruby.com/blog/2014/01/28/gsoc-alumni</id>
+    <id>http://SciRuby.github.com/blog/2014/01/28/gsoc-alumni</id>
     <content type="html"><![CDATA[<p>In 2013, SciRuby was a mentoring organization for the Google Summer of Code. We
 asked our alumni:</p>
 
@@ -2175,9 +2175,9 @@ there&#8217;s anything I can do to get involved this year, I&#8217;ll be availab
   
   <entry>
     <title type="html"><![CDATA[Statistics with Ruby: Time Series and General Linear Models]]></title>
-    <link href="http://sciruby.com/blog/2013/11/07/statistics-with-ruby-time-series-and-general-linear-models/"/>
+    <link href="http://SciRuby.github.com/blog/2013/11/07/statistics-with-ruby-time-series-and-general-linear-models/"/>
     <updated>2013-11-07T13:15:00-06:00</updated>
-    <id>http://sciruby.com/blog/2013/11/07/statistics-with-ruby-time-series-and-general-linear-models</id>
+    <id>http://SciRuby.github.com/blog/2013/11/07/statistics-with-ruby-time-series-and-general-linear-models</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor&#8217;s Note:</strong> This is the third of four blog posts detailing our Google Summer of
 Code 2013 students&#8217; work, edited by John Woods.</p>
 
