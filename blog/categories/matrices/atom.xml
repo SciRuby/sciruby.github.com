@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Matrices | SciRuby]]></title>
-  <link href="http://SciRuby.github.com/blog/categories/matrices/atom.xml" rel="self"/>
-  <link href="http://SciRuby.github.com/"/>
-  <updated>2015-08-25T08:49:29-05:00</updated>
-  <id>http://SciRuby.github.com/</id>
+  <link href="http://sciruby.com/blog/categories/matrices/atom.xml" rel="self"/>
+  <link href="http://sciruby.com/"/>
+  <updated>2015-08-25T08:52:04-05:00</updated>
+  <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[NMatrix's first beta release (belated announcement)]]></title>
-    <link href="http://SciRuby.github.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement/"/>
+    <link href="http://sciruby.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement/"/>
     <updated>2015-02-14T14:56:00-06:00</updated>
-    <id>http://SciRuby.github.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement</id>
+    <id>http://sciruby.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement</id>
     <content type="html"><![CDATA[<p>Almost two months ago, in December, we <a href="https://rubygems.org/gems/nmatrix">release our first beta of NMatrix</a>, our
 linear algebra library for the Ruby language.</p>
 
@@ -76,9 +76,9 @@ our <a href="https://groups.google.com/forum/#!forum/sciruby-dev">mailing list</
   
   <entry>
     <title type="html"><![CDATA[How to use NMatrix's shortcuts]]></title>
-    <link href="http://SciRuby.github.com/blog/2012/12/07/how-to-use-nmatrix-shortcuts/"/>
+    <link href="http://sciruby.com/blog/2012/12/07/how-to-use-nmatrix-shortcuts/"/>
     <updated>2012-12-07T12:30:00-06:00</updated>
-    <id>http://SciRuby.github.com/blog/2012/12/07/how-to-use-nmatrix-shortcuts</id>
+    <id>http://sciruby.com/blog/2012/12/07/how-to-use-nmatrix-shortcuts</id>
     <content type="html"><![CDATA[<p class="warning"><strong>Warning:</strong> This code predates v0.0.9 alpha, which is when the NMatrix constructor changed. Please check the <a href="https://github.com/SciRuby/nmatrix/wiki/Getting-started#shortcuts">NMatrix Getting Started guide</a> for the most recent information.</p>
 
 
@@ -218,9 +218,9 @@ vector.pretty_print
   
   <entry>
     <title type="html"><![CDATA[First NMatrix Alpha Released]]></title>
-    <link href="http://SciRuby.github.com/blog/2012/04/11/first-nmatrix-alpha-released/"/>
+    <link href="http://sciruby.com/blog/2012/04/11/first-nmatrix-alpha-released/"/>
     <updated>2012-04-11T13:36:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2012/04/11/first-nmatrix-alpha-released</id>
+    <id>http://sciruby.com/blog/2012/04/11/first-nmatrix-alpha-released</id>
     <content type="html"><![CDATA[<p class="warning"><strong>Warning:</strong> Code in this blog post is very old and likely will not work with the current version of NMatrix. Please check the <a href="https://github.com/SciRuby/nmatrix/wiki/">NMatrix wiki</a> for the most recent information.</p>
 
 
@@ -338,9 +338,9 @@ dense = n.cast(:dense, :int64)
   
   <entry>
     <title type="html"><![CDATA[Numeric Matrix Considerations]]></title>
-    <link href="http://SciRuby.github.com/blog/2012/02/11/numeric-matrix-considerations/"/>
+    <link href="http://sciruby.com/blog/2012/02/11/numeric-matrix-considerations/"/>
     <updated>2012-02-11T17:35:00-06:00</updated>
-    <id>http://SciRuby.github.com/blog/2012/02/11/numeric-matrix-considerations</id>
+    <id>http://sciruby.com/blog/2012/02/11/numeric-matrix-considerations</id>
     <content type="html"><![CDATA[<p>Maybe you've been wondering why the SciRuby people have been so quiet lately.</p>
 
 <p>Mostly, we've been working on <a href="http://github.com/SciRuby/nmatrix">NMatrix</a>, which is our prototype linear algebra library, written as a Ruby C extension.<!--more--></p>

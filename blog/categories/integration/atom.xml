@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Integration | SciRuby]]></title>
-  <link href="http://SciRuby.github.com/blog/categories/integration/atom.xml" rel="self"/>
-  <link href="http://SciRuby.github.com/"/>
-  <updated>2015-08-25T08:49:29-05:00</updated>
-  <id>http://SciRuby.github.com/</id>
+  <link href="http://sciruby.com/blog/categories/integration/atom.xml" rel="self"/>
+  <link href="http://sciruby.com/"/>
+  <updated>2015-08-25T08:52:04-05:00</updated>
+  <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Benchmarks for Integration Gem]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/07/28/benchmarks-for-integration-gem/"/>
+    <link href="http://sciruby.com/blog/2014/07/28/benchmarks-for-integration-gem/"/>
     <updated>2014-07-28T02:44:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/07/28/benchmarks-for-integration-gem</id>
+    <id>http://sciruby.com/blog/2014/07/28/benchmarks-for-integration-gem</id>
     <content type="html"><![CDATA[<p>The Integration gem now includes quite a few functions from which to
 choose. To make this choice easier, I have done some benchmarking to
 see how fast and acuurate each of these functions are.  The results of
@@ -230,9 +230,9 @@ running the benchmarks with your desired functions.</p>
   
   <entry>
     <title type="html"><![CDATA[Usage: Integration Gem Improvements]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/07/02/usage-integration-gem-improvements/"/>
+    <link href="http://sciruby.com/blog/2014/07/02/usage-integration-gem-improvements/"/>
     <updated>2014-07-02T17:43:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/07/02/usage-integration-gem-improvements</id>
+    <id>http://sciruby.com/blog/2014/07/02/usage-integration-gem-improvements</id>
     <content type="html"><![CDATA[<h2>Numerical Integration</h2>
 
 <p>Integration is the process of finding the summation of the value of a function at small intervals, when the width of the intervals is infinitesimally small.
@@ -270,9 +270,9 @@ rectangle,:trapezoid,:simpson, :adaptive_quadrature , :gauss, :romberg, :monte_c
   
   <entry>
     <title type="html"><![CDATA[Updates: Minimization and Integration]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/06/24/updates-minimization-and-integration/"/>
+    <link href="http://sciruby.com/blog/2014/06/24/updates-minimization-and-integration/"/>
     <updated>2014-06-24T14:32:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/06/24/updates-minimization-and-integration</id>
+    <id>http://sciruby.com/blog/2014/06/24/updates-minimization-and-integration</id>
     <content type="html"><![CDATA[<h2>Minimization</h2>
 
 <p>The Minimization gem now supports the following unidimensional function minimizations
@@ -315,9 +315,9 @@ JScience and JRuby.</p>
   
   <entry>
     <title type="html"><![CDATA[Introduction: Minimization and Integration (Lahiru)]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/06/18/introduction-minimization-and-integration/"/>
+    <link href="http://sciruby.com/blog/2014/06/18/introduction-minimization-and-integration/"/>
     <updated>2014-06-18T16:45:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/06/18/introduction-minimization-and-integration</id>
+    <id>http://sciruby.com/blog/2014/06/18/introduction-minimization-and-integration</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor's Note:</strong> We have two students
 working on numerical minimization and integration this summer, Rajat and
 Lahiru. Rajat's introductory post appeared two weeks ago.</p>
@@ -354,9 +354,9 @@ test cases.</p>
   
   <entry>
     <title type="html"><![CDATA[Introduction to the Minimization and Integration project (Rajat)]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project/"/>
+    <link href="http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project/"/>
     <updated>2014-06-04T14:23:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project</id>
+    <id>http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor's Note:</strong> We have two students
 working on numerical minimization and integration this summer, Rajat and
 Lahiru. Lahiru will be writing a separate post about his work.</p>

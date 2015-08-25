@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Visualization | SciRuby]]></title>
-  <link href="http://SciRuby.github.com/blog/categories/visualization/atom.xml" rel="self"/>
-  <link href="http://SciRuby.github.com/"/>
-  <updated>2015-08-25T08:49:29-05:00</updated>
-  <id>http://SciRuby.github.com/</id>
+  <link href="http://sciruby.com/blog/categories/visualization/atom.xml" rel="self"/>
+  <link href="http://sciruby.com/"/>
+  <updated>2015-08-25T08:52:04-05:00</updated>
+  <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GnuplotRB and GSoC 2015]]></title>
-    <link href="http://SciRuby.github.com/blog/2015/08/18/gnuplotrb-project/"/>
+    <link href="http://sciruby.com/blog/2015/08/18/gnuplotrb-project/"/>
     <updated>2015-08-18T23:26:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2015/08/18/gnuplotrb-project</id>
+    <id>http://sciruby.com/blog/2015/08/18/gnuplotrb-project</id>
     <content type="html"><![CDATA[<h2>Introduction</h2>
 
 <p>This summer I've been participating in Google Summer of Code
@@ -65,7 +65,7 @@
 
 <p>Plot examples:</p>
 
-<p><img src="http://SciRuby.github.com/images/gnuplotrb-gsoc2015/plots.jpg" alt="Plot example" style="width: 100%;"/></p>
+<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/plots.jpg" alt="Plot example" style="width: 100%;"/></p>
 
 <p>For code examples please see
  <a href="https://github.com/dilcom/gnuplotrb/blob/master/README.rdoc">the repository README</a>,
@@ -81,7 +81,7 @@
 <p>Here is a multiplot example
  (taken from <a href="http://nbviewer.ipython.org/github/SciRuby/sciruby-notebooks/blob/master/Data%20Analysis/Analyzing%20baby%20names/Use%20Case%20-%20Daru%20for%20analyzing%20baby%20names%20data.ipynb">Sameer's notebook</a>):</p>
 
-<p><img src="http://SciRuby.github.com/images/gnuplotrb-gsoc2015/multiplot.jpg" alt="Multiplot example" style="width: 80%; align: middle;"/></p>
+<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/multiplot.jpg" alt="Multiplot example" style="width: 80%; align: middle;"/></p>
 
 <h3>Animated plots</h3>
 
@@ -90,7 +90,7 @@
  multiplot does and outputs them one-by-one as frames of gif animation.
  <a href="http://nbviewer.ipython.org/github/dilcom/gnuplotrb/blob/master/notebooks/animated_plots.ipynb">Animation notebook</a>.</p>
 
-<p><img src="http://SciRuby.github.com/images/gnuplotrb-gsoc2015/trajectory.gif" alt="Trajectory example" style="width: 80%; align: middle;"/></p>
+<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/trajectory.gif" alt="Trajectory example" style="width: 80%; align: middle;"/></p>
 
 <h3>Fit</h3>
 
@@ -149,9 +149,9 @@
   
   <entry>
     <title type="html"><![CDATA[Summary of work on daru this summer for GSOC 2015]]></title>
-    <link href="http://SciRuby.github.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015/"/>
+    <link href="http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015/"/>
     <updated>2015-08-16T23:53:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015</id>
+    <id>http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015</id>
     <content type="html"><![CDATA[<p>Over this summer as a part of <a href="www.google-melange.com">Google Summer of Code 2015</a>, <a href="www.github.com/v0dro/daru/">daru</a> received a lot of upgrades and new features which have it made a pretty robust tool for data analysis in pure Ruby. Of course, a lot of work still remains for bringing daru at par with the other data analysis solutions on offer today, but I feel the work done this summer has put daru on that path.</p>
 
 <p>The new features led to the inclusion of daru in many of SciRuby's gems, which use daru's data storage, access and indexing features for storing and carrying around data. <a href="https://github.com/SciRuby/statsample">Statsample</a>, <a href="https://github.com/SciRuby/statsample-glm">statsample-glm</a>, <a href="https://github.com/SciRuby/statsample-timeseries">statsample-timeseries</a>, <a href="https://github.com/SciRuby/statsample-bivariate-extension">statsample-bivariate-extensions</a> are all now compatible with daru and use <code>Daru::Vector</code> and <code>Daru::DataFrame</code> as their primary data structures. I also overhauled Daru's <a href="http://nbviewer.ipython.org/github/SciRuby/sciruby-notebooks/blob/master/Visualization/Visualizing%20data%20with%20daru%20DataFrame.ipynb">plotting functionality</a>, that interfaced with <a href="https://github.com/domitry/nyaplot">nyaplot</a> for creating interactive plots directly from the data.</p>
@@ -200,10 +200,10 @@
   
   <entry>
     <title type="html"><![CDATA[Nyaplot: interactive plots generator with Ruby]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby/"/>
+    <link href="http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby/"/>
     <updated>2014-08-23T10:07:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby</id>
-    <content type="html"><![CDATA[<iframe width="853" height="480" src="http://SciRuby.github.com//www.youtube.com/embed/ZxjqsIluM88" frameborder="0" allowfullscreen></iframe>
+    <id>http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby</id>
+    <content type="html"><![CDATA[<iframe width="853" height="480" src="http://sciruby.com//www.youtube.com/embed/ZxjqsIluM88" frameborder="0" allowfullscreen></iframe>
 
 
 <h2>Introduction</h2>
@@ -354,9 +354,9 @@ summer thanks to all people related to this project.</p>
   
   <entry>
     <title type="html"><![CDATA[The Nyaplot internal event handler]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/07/09/nyaplot-internal-event-handler/"/>
+    <link href="http://sciruby.com/blog/2014/07/09/nyaplot-internal-event-handler/"/>
     <updated>2014-07-09T17:01:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/07/09/nyaplot-internal-event-handler</id>
+    <id>http://sciruby.com/blog/2014/07/09/nyaplot-internal-event-handler</id>
     <content type="html"><![CDATA[<p><img src="https://dl.dropboxusercontent.com/u/47978121/gsoc/multiple_panes.png" alt="Nyaplot multi-pane example" /></p>
 
 <h2>Introduction</h2>
@@ -428,9 +428,9 @@ events in DataFrame is both natural and efficient for Nyaplot.</p>
   
   <entry>
     <title type="html"><![CDATA[The progress of the GSoC D3/Visualization Project]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/07/02/progress-of-d3-project/"/>
+    <link href="http://sciruby.com/blog/2014/07/02/progress-of-d3-project/"/>
     <updated>2014-07-02T17:09:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/07/02/progress-of-d3-project</id>
+    <id>http://sciruby.com/blog/2014/07/02/progress-of-d3-project</id>
     <content type="html"><![CDATA[<p>This week is the half-way point of this year's Google Summer of
 Code. Let me report the progress during the term.</p>
 

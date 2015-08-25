@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Students | SciRuby]]></title>
-  <link href="http://SciRuby.github.com/blog/categories/students/atom.xml" rel="self"/>
-  <link href="http://SciRuby.github.com/"/>
-  <updated>2015-08-25T08:49:29-05:00</updated>
-  <id>http://SciRuby.github.com/</id>
+  <link href="http://sciruby.com/blog/categories/students/atom.xml" rel="self"/>
+  <link href="http://sciruby.com/"/>
+  <updated>2015-08-25T08:52:04-05:00</updated>
+  <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GSoC 2015: New NMatrix gems for advanced linear algebra features]]></title>
-    <link href="http://SciRuby.github.com/blog/2015/08/19/gsoc-2015-nmatrix/"/>
+    <link href="http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix/"/>
     <updated>2015-08-19T09:57:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2015/08/19/gsoc-2015-nmatrix</id>
+    <id>http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix</id>
     <content type="html"><![CDATA[<p>My Google Summer of Code project was working on the <a href="https://github.com/SciRuby/nmatrix">NMatrix project</a>, moving
 functionality that depends on external libraries from the core <code>nmatrix</code>
 gem to optional plugin gems. NMatrix is a Ruby library for linear algebra,
@@ -167,9 +167,9 @@ and feedback throughout the summer.</p>
   
   <entry>
     <title type="html"><![CDATA[GnuplotRB and GSoC 2015]]></title>
-    <link href="http://SciRuby.github.com/blog/2015/08/18/gnuplotrb-project/"/>
+    <link href="http://sciruby.com/blog/2015/08/18/gnuplotrb-project/"/>
     <updated>2015-08-18T23:26:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2015/08/18/gnuplotrb-project</id>
+    <id>http://sciruby.com/blog/2015/08/18/gnuplotrb-project</id>
     <content type="html"><![CDATA[<h2>Introduction</h2>
 
 <p>This summer I've been participating in Google Summer of Code
@@ -217,7 +217,7 @@ and feedback throughout the summer.</p>
 
 <p>Plot examples:</p>
 
-<p><img src="http://SciRuby.github.com/images/gnuplotrb-gsoc2015/plots.jpg" alt="Plot example" style="width: 100%;"/></p>
+<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/plots.jpg" alt="Plot example" style="width: 100%;"/></p>
 
 <p>For code examples please see
  <a href="https://github.com/dilcom/gnuplotrb/blob/master/README.rdoc">the repository README</a>,
@@ -233,7 +233,7 @@ and feedback throughout the summer.</p>
 <p>Here is a multiplot example
  (taken from <a href="http://nbviewer.ipython.org/github/SciRuby/sciruby-notebooks/blob/master/Data%20Analysis/Analyzing%20baby%20names/Use%20Case%20-%20Daru%20for%20analyzing%20baby%20names%20data.ipynb">Sameer's notebook</a>):</p>
 
-<p><img src="http://SciRuby.github.com/images/gnuplotrb-gsoc2015/multiplot.jpg" alt="Multiplot example" style="width: 80%; align: middle;"/></p>
+<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/multiplot.jpg" alt="Multiplot example" style="width: 80%; align: middle;"/></p>
 
 <h3>Animated plots</h3>
 
@@ -242,7 +242,7 @@ and feedback throughout the summer.</p>
  multiplot does and outputs them one-by-one as frames of gif animation.
  <a href="http://nbviewer.ipython.org/github/dilcom/gnuplotrb/blob/master/notebooks/animated_plots.ipynb">Animation notebook</a>.</p>
 
-<p><img src="http://SciRuby.github.com/images/gnuplotrb-gsoc2015/trajectory.gif" alt="Trajectory example" style="width: 80%; align: middle;"/></p>
+<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/trajectory.gif" alt="Trajectory example" style="width: 80%; align: middle;"/></p>
 
 <h3>Fit</h3>
 
@@ -301,9 +301,9 @@ and feedback throughout the summer.</p>
   
   <entry>
     <title type="html"><![CDATA[Ruby Wrappers for SymEngine, a C++ symbolic manipulation library]]></title>
-    <link href="http://SciRuby.github.com/blog/2015/08/17/ruby-wrappers-for-symengine/"/>
+    <link href="http://sciruby.com/blog/2015/08/17/ruby-wrappers-for-symengine/"/>
     <updated>2015-08-17T14:30:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2015/08/17/ruby-wrappers-for-symengine</id>
+    <id>http://sciruby.com/blog/2015/08/17/ruby-wrappers-for-symengine</id>
     <content type="html"><![CDATA[<p>I am sure you have heard about <a href="http://www.wolframalpha.com/">Wolfram Alpha</a>. Some of you would have used its <a href="http://www.wolframalpha.com/examples/Math.html">Mathematics section</a> at some point of time to cross check your solution to a maths problem. If you haven't, please do. A computer algebra system (CAS) does the same thing. Algebraic computation or symbolic computation are all used interchangeably. A CAS solves problems the same way a human does, but way more quickly and precisely. There is very less chance for an error, that we humans often make.</p>
 
 <h2>Introduction</h2>
@@ -570,9 +570,9 @@ to check what was actually happening. That cleared things out, and made the it e
   
   <entry>
     <title type="html"><![CDATA[Summary of work on daru this summer for GSOC 2015]]></title>
-    <link href="http://SciRuby.github.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015/"/>
+    <link href="http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015/"/>
     <updated>2015-08-16T23:53:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015</id>
+    <id>http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015</id>
     <content type="html"><![CDATA[<p>Over this summer as a part of <a href="www.google-melange.com">Google Summer of Code 2015</a>, <a href="www.github.com/v0dro/daru/">daru</a> received a lot of upgrades and new features which have it made a pretty robust tool for data analysis in pure Ruby. Of course, a lot of work still remains for bringing daru at par with the other data analysis solutions on offer today, but I feel the work done this summer has put daru on that path.</p>
 
 <p>The new features led to the inclusion of daru in many of SciRuby's gems, which use daru's data storage, access and indexing features for storing and carrying around data. <a href="https://github.com/SciRuby/statsample">Statsample</a>, <a href="https://github.com/SciRuby/statsample-glm">statsample-glm</a>, <a href="https://github.com/SciRuby/statsample-timeseries">statsample-timeseries</a>, <a href="https://github.com/SciRuby/statsample-bivariate-extension">statsample-bivariate-extensions</a> are all now compatible with daru and use <code>Daru::Vector</code> and <code>Daru::DataFrame</code> as their primary data structures. I also overhauled Daru's <a href="http://nbviewer.ipython.org/github/SciRuby/sciruby-notebooks/blob/master/Visualization/Visualizing%20data%20with%20daru%20DataFrame.ipynb">plotting functionality</a>, that interfaced with <a href="https://github.com/domitry/nyaplot">nyaplot</a> for creating interactive plots directly from the data.</p>
@@ -621,10 +621,10 @@ to check what was actually happening. That cleared things out, and made the it e
   
   <entry>
     <title type="html"><![CDATA[Nyaplot: interactive plots generator with Ruby]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby/"/>
+    <link href="http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby/"/>
     <updated>2014-08-23T10:07:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby</id>
-    <content type="html"><![CDATA[<iframe width="853" height="480" src="http://SciRuby.github.com//www.youtube.com/embed/ZxjqsIluM88" frameborder="0" allowfullscreen></iframe>
+    <id>http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby</id>
+    <content type="html"><![CDATA[<iframe width="853" height="480" src="http://sciruby.com//www.youtube.com/embed/ZxjqsIluM88" frameborder="0" allowfullscreen></iframe>
 
 
 <h2>Introduction</h2>

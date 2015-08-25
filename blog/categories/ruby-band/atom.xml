@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ruby-band | SciRuby]]></title>
-  <link href="http://SciRuby.github.com/blog/categories/ruby-band/atom.xml" rel="self"/>
-  <link href="http://SciRuby.github.com/"/>
-  <updated>2015-08-25T08:49:29-05:00</updated>
-  <id>http://SciRuby.github.com/</id>
+  <link href="http://sciruby.com/blog/categories/ruby-band/atom.xml" rel="self"/>
+  <link href="http://sciruby.com/"/>
+  <updated>2015-08-25T08:52:04-05:00</updated>
+  <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GSOC 2013: Data mining in JRuby with Ruby Band]]></title>
-    <link href="http://SciRuby.github.com/blog/2013/09/24/gsoc-2013-data-mining-in-jruby-with-ruby-band/"/>
+    <link href="http://sciruby.com/blog/2013/09/24/gsoc-2013-data-mining-in-jruby-with-ruby-band/"/>
     <updated>2013-09-24T10:44:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2013/09/24/gsoc-2013-data-mining-in-jruby-with-ruby-band</id>
+    <id>http://sciruby.com/blog/2013/09/24/gsoc-2013-data-mining-in-jruby-with-ruby-band</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor's Note:</strong> This is the first of four blog posts detailing
 our Google Summer of Code 2013 students' work, edited by John Woods.</p>
 

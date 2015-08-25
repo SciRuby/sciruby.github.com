@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: GSL | SciRuby]]></title>
-  <link href="http://SciRuby.github.com/blog/categories/gsl/atom.xml" rel="self"/>
-  <link href="http://SciRuby.github.com/"/>
-  <updated>2015-08-25T08:49:29-05:00</updated>
-  <id>http://SciRuby.github.com/</id>
+  <link href="http://sciruby.com/blog/categories/gsl/atom.xml" rel="self"/>
+  <link href="http://sciruby.com/"/>
+  <updated>2015-08-25T08:52:04-05:00</updated>
+  <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Updates: Minimization and Integration]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/06/24/updates-minimization-and-integration/"/>
+    <link href="http://sciruby.com/blog/2014/06/24/updates-minimization-and-integration/"/>
     <updated>2014-06-24T14:32:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/06/24/updates-minimization-and-integration</id>
+    <id>http://sciruby.com/blog/2014/06/24/updates-minimization-and-integration</id>
     <content type="html"><![CDATA[<h2>Minimization</h2>
 
 <p>The Minimization gem now supports the following unidimensional function minimizations
@@ -60,9 +60,9 @@ JScience and JRuby.</p>
   
   <entry>
     <title type="html"><![CDATA[Introduction to the Minimization and Integration project (Rajat)]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project/"/>
+    <link href="http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project/"/>
     <updated>2014-06-04T14:23:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project</id>
+    <id>http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor's Note:</strong> We have two students
 working on numerical minimization and integration this summer, Rajat and
 Lahiru. Lahiru will be writing a separate post about his work.</p>

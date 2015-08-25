@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: NMatrix | SciRuby]]></title>
-  <link href="http://SciRuby.github.com/blog/categories/nmatrix/atom.xml" rel="self"/>
-  <link href="http://SciRuby.github.com/"/>
-  <updated>2015-08-25T08:49:29-05:00</updated>
-  <id>http://SciRuby.github.com/</id>
+  <link href="http://sciruby.com/blog/categories/nmatrix/atom.xml" rel="self"/>
+  <link href="http://sciruby.com/"/>
+  <updated>2015-08-25T08:52:04-05:00</updated>
+  <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GSoC 2015: New NMatrix gems for advanced linear algebra features]]></title>
-    <link href="http://SciRuby.github.com/blog/2015/08/19/gsoc-2015-nmatrix/"/>
+    <link href="http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix/"/>
     <updated>2015-08-19T09:57:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2015/08/19/gsoc-2015-nmatrix</id>
+    <id>http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix</id>
     <content type="html"><![CDATA[<p>My Google Summer of Code project was working on the <a href="https://github.com/SciRuby/nmatrix">NMatrix project</a>, moving
 functionality that depends on external libraries from the core <code>nmatrix</code>
 gem to optional plugin gems. NMatrix is a Ruby library for linear algebra,
@@ -167,9 +167,9 @@ and feedback throughout the summer.</p>
   
   <entry>
     <title type="html"><![CDATA[NMatrix's first beta release (belated announcement)]]></title>
-    <link href="http://SciRuby.github.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement/"/>
+    <link href="http://sciruby.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement/"/>
     <updated>2015-02-14T14:56:00-06:00</updated>
-    <id>http://SciRuby.github.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement</id>
+    <id>http://sciruby.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement</id>
     <content type="html"><![CDATA[<p>Almost two months ago, in December, we <a href="https://rubygems.org/gems/nmatrix">release our first beta of NMatrix</a>, our
 linear algebra library for the Ruby language.</p>
 
@@ -228,9 +228,9 @@ our <a href="https://groups.google.com/forum/#!forum/sciruby-dev">mailing list</
   
   <entry>
     <title type="html"><![CDATA[Introducing the FFTW SciRuby GSoC project]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project/"/>
+    <link href="http://sciruby.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project/"/>
     <updated>2014-06-04T12:30:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project</id>
+    <id>http://sciruby.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project</id>
     <content type="html"><![CDATA[<p>My name is Magdalen Berns and I am a physics student with a technical
 background in live audio. I am particularly interested in using science
 and technology to improve access for all.</p>
@@ -289,9 +289,9 @@ community, after all!</p>
   
   <entry>
     <title type="html"><![CDATA[NMatrix nearing beta release]]></title>
-    <link href="http://SciRuby.github.com/blog/2013/09/18/nmatrix-nearing-beta-release/"/>
+    <link href="http://sciruby.com/blog/2013/09/18/nmatrix-nearing-beta-release/"/>
     <updated>2013-09-18T15:18:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2013/09/18/nmatrix-nearing-beta-release</id>
+    <id>http://sciruby.com/blog/2013/09/18/nmatrix-nearing-beta-release</id>
     <content type="html"><![CDATA[<p>As of this writing, NMatrix v0.0.9 is available on RubyGems. It is likely that the next version will be a beta release
 candidate, as there's only one critical feature still missing (<code>==</code> between matrices of different storage types).</p>
 
@@ -414,9 +414,9 @@ Rubyist.</p>
   
   <entry>
     <title type="html"><![CDATA[How to use NMatrix's shortcuts]]></title>
-    <link href="http://SciRuby.github.com/blog/2012/12/07/how-to-use-nmatrix-shortcuts/"/>
+    <link href="http://sciruby.com/blog/2012/12/07/how-to-use-nmatrix-shortcuts/"/>
     <updated>2012-12-07T12:30:00-06:00</updated>
-    <id>http://SciRuby.github.com/blog/2012/12/07/how-to-use-nmatrix-shortcuts</id>
+    <id>http://sciruby.com/blog/2012/12/07/how-to-use-nmatrix-shortcuts</id>
     <content type="html"><![CDATA[<p class="warning"><strong>Warning:</strong> This code predates v0.0.9 alpha, which is when the NMatrix constructor changed. Please check the <a href="https://github.com/SciRuby/nmatrix/wiki/Getting-started#shortcuts">NMatrix Getting Started guide</a> for the most recent information.</p>
 
 

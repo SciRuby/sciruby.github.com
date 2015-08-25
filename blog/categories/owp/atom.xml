@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: OWP | SciRuby]]></title>
-  <link href="http://SciRuby.github.com/blog/categories/owp/atom.xml" rel="self"/>
-  <link href="http://SciRuby.github.com/"/>
-  <updated>2015-08-25T08:49:29-05:00</updated>
-  <id>http://SciRuby.github.com/</id>
+  <link href="http://sciruby.com/blog/categories/owp/atom.xml" rel="self"/>
+  <link href="http://sciruby.com/"/>
+  <updated>2015-08-25T08:52:04-05:00</updated>
+  <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Call for funding: more women needed in open source science software]]></title>
-    <link href="http://SciRuby.github.com/blog/2013/11/01/call-for-funding-more-women-needed-in-open-source-science-software/"/>
+    <link href="http://sciruby.com/blog/2013/11/01/call-for-funding-more-women-needed-in-open-source-science-software/"/>
     <updated>2013-11-01T16:24:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2013/11/01/call-for-funding-more-women-needed-in-open-source-science-software</id>
+    <id>http://sciruby.com/blog/2013/11/01/call-for-funding-more-women-needed-in-open-source-science-software</id>
     <content type="html"><![CDATA[<p><a href="http://www.ncwit.org/blog/did-you-know-demographics-technical-women">Women make up 51% of the American workforce, and yet only 20% of software engineers are female.</a> Worldwide,
 the situation is similar. <a href="http://www.networkworld.com/community/node/58218">In open source software engineering, the statistics are worse: only 1.5&ndash;5% are female.</a></p>
 

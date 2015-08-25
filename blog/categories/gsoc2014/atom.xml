@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: GSOC2014 | SciRuby]]></title>
-  <link href="http://SciRuby.github.com/blog/categories/gsoc2014/atom.xml" rel="self"/>
-  <link href="http://SciRuby.github.com/"/>
-  <updated>2015-08-25T08:49:29-05:00</updated>
-  <id>http://SciRuby.github.com/</id>
+  <link href="http://sciruby.com/blog/categories/gsoc2014/atom.xml" rel="self"/>
+  <link href="http://sciruby.com/"/>
+  <updated>2015-08-25T08:52:04-05:00</updated>
+  <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
     
@@ -15,10 +15,10 @@
   
   <entry>
     <title type="html"><![CDATA[Nyaplot: interactive plots generator with Ruby]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby/"/>
+    <link href="http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby/"/>
     <updated>2014-08-23T10:07:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby</id>
-    <content type="html"><![CDATA[<iframe width="853" height="480" src="http://SciRuby.github.com//www.youtube.com/embed/ZxjqsIluM88" frameborder="0" allowfullscreen></iframe>
+    <id>http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby</id>
+    <content type="html"><![CDATA[<iframe width="853" height="480" src="http://sciruby.com//www.youtube.com/embed/ZxjqsIluM88" frameborder="0" allowfullscreen></iframe>
 
 
 <h2>Introduction</h2>
@@ -169,9 +169,9 @@ summer thanks to all people related to this project.</p>
   
   <entry>
     <title type="html"><![CDATA[Benchmarks for Integration Gem]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/07/28/benchmarks-for-integration-gem/"/>
+    <link href="http://sciruby.com/blog/2014/07/28/benchmarks-for-integration-gem/"/>
     <updated>2014-07-28T02:44:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/07/28/benchmarks-for-integration-gem</id>
+    <id>http://sciruby.com/blog/2014/07/28/benchmarks-for-integration-gem</id>
     <content type="html"><![CDATA[<p>The Integration gem now includes quite a few functions from which to
 choose. To make this choice easier, I have done some benchmarking to
 see how fast and acuurate each of these functions are.  The results of
@@ -384,9 +384,9 @@ running the benchmarks with your desired functions.</p>
   
   <entry>
     <title type="html"><![CDATA[The Nyaplot internal event handler]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/07/09/nyaplot-internal-event-handler/"/>
+    <link href="http://sciruby.com/blog/2014/07/09/nyaplot-internal-event-handler/"/>
     <updated>2014-07-09T17:01:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/07/09/nyaplot-internal-event-handler</id>
+    <id>http://sciruby.com/blog/2014/07/09/nyaplot-internal-event-handler</id>
     <content type="html"><![CDATA[<p><img src="https://dl.dropboxusercontent.com/u/47978121/gsoc/multiple_panes.png" alt="Nyaplot multi-pane example" /></p>
 
 <h2>Introduction</h2>
@@ -458,9 +458,9 @@ events in DataFrame is both natural and efficient for Nyaplot.</p>
   
   <entry>
     <title type="html"><![CDATA[Usage: Integration Gem Improvements]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/07/02/usage-integration-gem-improvements/"/>
+    <link href="http://sciruby.com/blog/2014/07/02/usage-integration-gem-improvements/"/>
     <updated>2014-07-02T17:43:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/07/02/usage-integration-gem-improvements</id>
+    <id>http://sciruby.com/blog/2014/07/02/usage-integration-gem-improvements</id>
     <content type="html"><![CDATA[<h2>Numerical Integration</h2>
 
 <p>Integration is the process of finding the summation of the value of a function at small intervals, when the width of the intervals is infinitesimally small.
@@ -498,9 +498,9 @@ rectangle,:trapezoid,:simpson, :adaptive_quadrature , :gauss, :romberg, :monte_c
   
   <entry>
     <title type="html"><![CDATA[The progress of the GSoC D3/Visualization Project]]></title>
-    <link href="http://SciRuby.github.com/blog/2014/07/02/progress-of-d3-project/"/>
+    <link href="http://sciruby.com/blog/2014/07/02/progress-of-d3-project/"/>
     <updated>2014-07-02T17:09:00-05:00</updated>
-    <id>http://SciRuby.github.com/blog/2014/07/02/progress-of-d3-project</id>
+    <id>http://sciruby.com/blog/2014/07/02/progress-of-d3-project</id>
     <content type="html"><![CDATA[<p>This week is the half-way point of this year's Google Summer of
 Code. Let me report the progress during the term.</p>
 
