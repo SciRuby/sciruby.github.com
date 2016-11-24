@@ -4,7 +4,7 @@
   <title><![CDATA[Category: SymEngine | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/symengine/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2015-08-25T08:54:40-05:00</updated>
+  <updated>2016-11-24T12:03:59-05:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Ruby Wrappers for SymEngine, a C++ symbolic manipulation library]]></title>
     <link href="http://sciruby.com/blog/2015/08/17/ruby-wrappers-for-symengine/"/>
-    <updated>2015-08-17T14:30:00-05:00</updated>
+    <updated>2015-08-17T14:30:00-04:00</updated>
     <id>http://sciruby.com/blog/2015/08/17/ruby-wrappers-for-symengine</id>
     <content type="html"><![CDATA[<p>I am sure you have heard about <a href="http://www.wolframalpha.com/">Wolfram Alpha</a>. Some of you would have used its <a href="http://www.wolframalpha.com/examples/Math.html">Mathematics section</a> at some point of time to cross check your solution to a maths problem. If you haven't, please do. A computer algebra system (CAS) does the same thing. Algebraic computation or symbolic computation are all used interchangeably. A CAS solves problems the same way a human does, but way more quickly and precisely. There is very less chance for an error, that we humans often make.</p>
 

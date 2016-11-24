@@ -4,7 +4,7 @@
   <title><![CDATA[Category: GSL | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/gsl/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2015-08-25T08:54:40-05:00</updated>
+  <updated>2016-11-24T12:03:59-05:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Updates: Minimization and Integration]]></title>
     <link href="http://sciruby.com/blog/2014/06/24/updates-minimization-and-integration/"/>
-    <updated>2014-06-24T14:32:00-05:00</updated>
+    <updated>2014-06-24T14:32:00-04:00</updated>
     <id>http://sciruby.com/blog/2014/06/24/updates-minimization-and-integration</id>
     <content type="html"><![CDATA[<h2>Minimization</h2>
 
@@ -61,7 +61,7 @@ JScience and JRuby.</p>
   <entry>
     <title type="html"><![CDATA[Introduction to the Minimization and Integration project (Rajat)]]></title>
     <link href="http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project/"/>
-    <updated>2014-06-04T14:23:00-05:00</updated>
+    <updated>2014-06-04T14:23:00-04:00</updated>
     <id>http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor's Note:</strong> We have two students
 working on numerical minimization and integration this summer, Rajat and

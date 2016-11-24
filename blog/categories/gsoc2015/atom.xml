@@ -4,7 +4,7 @@
   <title><![CDATA[Category: GSOC2015 | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/gsoc2015/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2015-08-25T08:54:40-05:00</updated>
+  <updated>2016-11-24T12:03:59-05:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Statistical linear mixed models in Ruby with mixed_models (GSoC2015)]]></title>
     <link href="http://sciruby.com/blog/2015/08/19/gsoc-2015-mixed-models/"/>
-    <updated>2015-08-19T12:00:00-05:00</updated>
+    <updated>2015-08-19T12:00:00-04:00</updated>
     <id>http://sciruby.com/blog/2015/08/19/gsoc-2015-mixed-models</id>
     <content type="html"><![CDATA[<p>Google Summer of Code 2015 is coming to an end. During this summer, I have learned too many things to list here about statistical modeling, Ruby and software development in general, and I had a lot of fun in the process!</p>
 
@@ -302,7 +302,7 @@ y = X * beta + b + epsilon,
   <entry>
     <title type="html"><![CDATA[GSoC 2015: New NMatrix gems for advanced linear algebra features]]></title>
     <link href="http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix/"/>
-    <updated>2015-08-19T09:57:00-05:00</updated>
+    <updated>2015-08-19T09:57:00-04:00</updated>
     <id>http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix</id>
     <content type="html"><![CDATA[<p>My Google Summer of Code project was working on the <a href="https://github.com/SciRuby/nmatrix">NMatrix project</a>, moving
 functionality that depends on external libraries from the core <code>nmatrix</code>
@@ -454,7 +454,7 @@ and feedback throughout the summer.</p>
   <entry>
     <title type="html"><![CDATA[GnuplotRB and GSoC 2015]]></title>
     <link href="http://sciruby.com/blog/2015/08/18/gnuplotrb-project/"/>
-    <updated>2015-08-18T23:26:00-05:00</updated>
+    <updated>2015-08-18T23:26:00-04:00</updated>
     <id>http://sciruby.com/blog/2015/08/18/gnuplotrb-project</id>
     <content type="html"><![CDATA[<h2>Introduction</h2>
 
@@ -503,7 +503,7 @@ and feedback throughout the summer.</p>
 
 <p>Plot examples:</p>
 
-<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/plots.jpg" alt="Plot example" style="width: 100%;"/></p>
+<p><img src="{{ site.url }}/images/gnuplotrb-gsoc2015/plots.jpg" alt="Plot example" style="width: 100%;"/></p>
 
 <p>For code examples please see
  <a href="https://github.com/dilcom/gnuplotrb/blob/master/README.rdoc">the repository README</a>,
@@ -519,7 +519,7 @@ and feedback throughout the summer.</p>
 <p>Here is a multiplot example
  (taken from <a href="http://nbviewer.ipython.org/github/SciRuby/sciruby-notebooks/blob/master/Data%20Analysis/Analyzing%20baby%20names/Use%20Case%20-%20Daru%20for%20analyzing%20baby%20names%20data.ipynb">Sameer's notebook</a>):</p>
 
-<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/multiplot.jpg" alt="Multiplot example" style="width: 80%; align: middle;"/></p>
+<p><img src="{{ site.url }}/images/gnuplotrb-gsoc2015/multiplot.jpg" alt="Multiplot example" style="width: 80%; align: middle;"/></p>
 
 <h3>Animated plots</h3>
 
@@ -528,7 +528,7 @@ and feedback throughout the summer.</p>
  multiplot does and outputs them one-by-one as frames of gif animation.
  <a href="http://nbviewer.ipython.org/github/dilcom/gnuplotrb/blob/master/notebooks/animated_plots.ipynb">Animation notebook</a>.</p>
 
-<p><img src="http://sciruby.com/images/gnuplotrb-gsoc2015/trajectory.gif" alt="Trajectory example" style="width: 80%; align: middle;"/></p>
+<p><img src="{{ site.url }}/images/gnuplotrb-gsoc2015/trajectory.gif" alt="Trajectory example" style="width: 80%; align: middle;"/></p>
 
 <h3>Fit</h3>
 
@@ -588,7 +588,7 @@ and feedback throughout the summer.</p>
   <entry>
     <title type="html"><![CDATA[Ruby Wrappers for SymEngine, a C++ symbolic manipulation library]]></title>
     <link href="http://sciruby.com/blog/2015/08/17/ruby-wrappers-for-symengine/"/>
-    <updated>2015-08-17T14:30:00-05:00</updated>
+    <updated>2015-08-17T14:30:00-04:00</updated>
     <id>http://sciruby.com/blog/2015/08/17/ruby-wrappers-for-symengine</id>
     <content type="html"><![CDATA[<p>I am sure you have heard about <a href="http://www.wolframalpha.com/">Wolfram Alpha</a>. Some of you would have used its <a href="http://www.wolframalpha.com/examples/Math.html">Mathematics section</a> at some point of time to cross check your solution to a maths problem. If you haven't, please do. A computer algebra system (CAS) does the same thing. Algebraic computation or symbolic computation are all used interchangeably. A CAS solves problems the same way a human does, but way more quickly and precisely. There is very less chance for an error, that we humans often make.</p>
 
@@ -857,7 +857,7 @@ to check what was actually happening. That cleared things out, and made the it e
   <entry>
     <title type="html"><![CDATA[Summary of work on daru this summer for GSOC 2015]]></title>
     <link href="http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015/"/>
-    <updated>2015-08-16T23:53:00-05:00</updated>
+    <updated>2015-08-16T23:53:00-04:00</updated>
     <id>http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015</id>
     <content type="html"><![CDATA[<p>Over this summer as a part of <a href="www.google-melange.com">Google Summer of Code 2015</a>, <a href="www.github.com/v0dro/daru/">daru</a> received a lot of upgrades and new features which have it made a pretty robust tool for data analysis in pure Ruby. Of course, a lot of work still remains for bringing daru at par with the other data analysis solutions on offer today, but I feel the work done this summer has put daru on that path.</p>
 

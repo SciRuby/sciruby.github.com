@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Introductions | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/introductions/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2015-08-25T08:54:40-05:00</updated>
+  <updated>2016-11-24T12:03:59-05:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Interview with the SciRuby Team]]></title>
     <link href="http://sciruby.com/blog/2011/08/17/interview-with-the-sciruby-team/"/>
-    <updated>2011-08-17T21:59:00-05:00</updated>
+    <updated>2011-08-17T21:59:00-04:00</updated>
     <id>http://sciruby.com/blog/2011/08/17/interview-with-the-sciruby-team</id>
     <content type="html"><![CDATA[<p>We just had an interview published today over at <a href="http://www.floss4science.com/interview-sciruby-team/">Floss for Science</a>,
  and we're super excited because it's our very first media coverage.<!--more--></p>
@@ -38,7 +38,7 @@
   <entry>
     <title type="html"><![CDATA[First Post!]]></title>
     <link href="http://sciruby.com/blog/2011/08/15/first-post/"/>
-    <updated>2011-08-15T19:50:00-05:00</updated>
+    <updated>2011-08-15T19:50:00-04:00</updated>
     <id>http://sciruby.com/blog/2011/08/15/first-post</id>
     <content type="html"><![CDATA[<p>I thought I'd start by introducing myself. I'm the project director for SciRuby, and I'm a molecular biology doctoral
  student at the University of Texas. I work in the <a href="http://marcottelab.org/">Marcotte Lab</a>, and actually occupy the

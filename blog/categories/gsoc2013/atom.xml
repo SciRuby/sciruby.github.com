@@ -4,7 +4,7 @@
   <title><![CDATA[Category: GSOC2013 | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/gsoc2013/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2015-08-25T08:54:40-05:00</updated>
+  <updated>2016-11-24T12:03:59-05:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Some words from GSoC 2013 alumni]]></title>
     <link href="http://sciruby.com/blog/2014/01/28/gsoc-alumni/"/>
-    <updated>2014-01-28T16:07:00-06:00</updated>
+    <updated>2014-01-28T16:07:00-05:00</updated>
     <id>http://sciruby.com/blog/2014/01/28/gsoc-alumni</id>
     <content type="html"><![CDATA[<p>In 2013, SciRuby was a mentoring organization for the Google Summer of Code. We
 asked our alumni:</p>
@@ -190,7 +190,7 @@ there's anything I can do to get involved this year, I'll be available.<p>
   <entry>
     <title type="html"><![CDATA[Statistics with Ruby: Time Series and General Linear Models]]></title>
     <link href="http://sciruby.com/blog/2013/11/07/statistics-with-ruby-time-series-and-general-linear-models/"/>
-    <updated>2013-11-07T13:15:00-06:00</updated>
+    <updated>2013-11-07T13:15:00-05:00</updated>
     <id>http://sciruby.com/blog/2013/11/07/statistics-with-ruby-time-series-and-general-linear-models</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor's Note:</strong> This is the third of four blog posts detailing our Google Summer of
 Code 2013 students' work, edited by John Woods.</p>
@@ -333,7 +333,7 @@ The <a href="http://rubydoc.info/gems/statsample-glm/Statsample/Regression">docu
   <entry>
     <title type="html"><![CDATA[Ruby and the Semantic Web, RDF, and SPARQL: PubliSci]]></title>
     <link href="http://sciruby.com/blog/2013/10/12/ruby-and-the-semantic-web-rdf-sparql-publisci/"/>
-    <updated>2013-10-12T16:36:00-05:00</updated>
+    <updated>2013-10-12T16:36:00-04:00</updated>
     <id>http://sciruby.com/blog/2013/10/12/ruby-and-the-semantic-web-rdf-sparql-publisci</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor's Note:</strong> This is the second of four blog posts detailing our Google Summer of
 Code 2013 students' work. I edited it to include a very incomplete list of public RDF repositories. &mdash;John Woods</p>
@@ -457,7 +457,7 @@ PubliSci::Writers::ARFF.new.from_store(repo)
   <entry>
     <title type="html"><![CDATA[GSOC 2013: Data mining in JRuby with Ruby Band]]></title>
     <link href="http://sciruby.com/blog/2013/09/24/gsoc-2013-data-mining-in-jruby-with-ruby-band/"/>
-    <updated>2013-09-24T10:44:00-05:00</updated>
+    <updated>2013-09-24T10:44:00-04:00</updated>
     <id>http://sciruby.com/blog/2013/09/24/gsoc-2013-data-mining-in-jruby-with-ruby-band</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor's Note:</strong> This is the first of four blog posts detailing
 our Google Summer of Code 2013 students' work, edited by John Woods.</p>

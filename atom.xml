@@ -4,7 +4,7 @@
   <title><![CDATA[SciRuby]]></title>
   <link href="http://sciruby.com/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2015-08-25T08:54:40-05:00</updated>
+  <updated>2016-11-24T12:03:53-05:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -14,9 +14,818 @@
 
   
   <entry>
+    <title type="html"><![CDATA[GSoC 2016: SpiceRub::KernelPool and Kernels]]></title>
+    <link href="http://sciruby.com/blog/2016/11/24/spicerub-kernelpool-and-kernels/"/>
+    <updated>2016-11-24T11:54:35-05:00</updated>
+    <id>http://sciruby.com/blog/2016/11/24/spicerub-kernelpool-and-kernels</id>
+    <content type="html"><![CDATA[<p>So this post comes rather late, but I&#8217;d still like to talk about what I did in the first week, and a little into the second week.
+Firstly, thanks to a pull request offered by my GSoC mentor John (<a href="https://github.com/mohawkjohn">@mohawkjohn</a>), I now have rake tasks set up properly in the repository and rake seems to be working.</p>
+
+<p>There are installation instructions in the <a href="https://github.com/gau27/spice_rub/blob/master/README.rdoc">readme</a> and there are already some sample Kernel files in
+the spec folder to try out various routines on. Apart from cloning the repository, one additional thing you will need to do is <a href="https://naif.jpl.nasa.gov/naif/toolkit_C.html">download the SPICE toolkit</a>. You may want to keep the entire compressed file for later, but you&#8217;ll only need the <code>cspice.a</code> file in the <code>lib/</code> subdirectory. After this follow the instructions in the <a href="https://github.com/gau27/spice_rub/blob/master/README.rdoc">readme</a> and you should be good to go. (Be sure to run <code>bundle install</code> to install any dependencies that you don&#8217;t already have.)</p>
+
+<p>After you&#8217;re done compiling and installing, run <code>rake pry</code> in the gem root directory.</p>
+
+<p>If you remember, almost any useful task involving the SPICE Toolkit is preceded by loading data through kernel files. The relevant routine to do this is called <code>furnsh_c()</code> , and the most direct way to access it through Ruby is by calling the function <code>SpiceRub::Native.furnsh</code>. (However, this is not recommended because SpiceRub has a specific Ruby class unifying all the kernel related methods, and also because SPICE maintains its own internal variables for both tracking loaded kernel files and unloading them.)</p>
+
+<p>Below is a crude dependency sequence:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">KernelPool</span><span class="o">.</span><span class="n">load</span> <span class="o">-&gt;</span>  <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Native</span><span class="o">.</span><span class="n">furnsh</span> <span class="o">-&gt;</span> <span class="n">furnsh_c</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Ruby</span> <span class="no">Interface</span>            <span class="o">-&gt;</span>  <span class="n">C</span> <span class="no">Accessor</span>              <span class="o">-&gt;</span> <span class="no">External</span> <span class="n">library</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Ruby</span>                      <span class="o">-&gt;</span>  <span class="no">Native</span> <span class="no">Ruby</span><span class="o">-</span><span class="n">C</span> <span class="no">API</span>       <span class="o">-&gt;</span> <span class="no">Native</span> <span class="mi">3</span><span class="n">rd</span> <span class="no">Party</span> <span class="n">C</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>That&#8217;s the basic design of the wrapper, so here are a few simple examples on using the Kernel API. <code>=&gt;</code> denotes the interpreted output of pry.</p>
+
+<p>First of all, the main KernelPool class is a singleton class, that means it can only be instantiated with the <code>#instance</code> method and the usual <code>#new</code> is private.
+Any subsequent calls to <code>#instance</code> will produce the same object.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span> <span class="o">=</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">KernelPool</span><span class="o">.</span><span class="n">instance</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::KernelPool:0x00000002db3218&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">rogue_kernel_pool</span> <span class="o">=</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">KernelPool</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="no">NoMethodError</span><span class="p">:</span> <span class="kp">private</span> <span class="nb">method</span> <span class="sb">`new&#39; called for SpiceRub::KernelPool:Class</span>
+</span><span class='line'><span class="sb">from (pry):2:in `</span><span class="n">__pry__</span><span class="err">&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">rogue_kernel_pool</span> <span class="o">=</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">KernelPool</span><span class="o">.</span><span class="n">instance</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::KernelPool:0x00000002db3218&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">rogue_kernel_pool</span> <span class="o">==</span> <span class="n">kernel_pool</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="kp">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>This is to make sure there is only one KernelPool state being maintained at a time. Now we have a bunch of kernel files in the <code>spec/data/kernels</code> folder which we&#8217;ll use for this example. There is an accessor attribute called <code>@path</code> which can be used to point to a particular folder.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;spec/data/kernels&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>From here on it&#8217;s required that you&#8217;re running pry or irb from the gem root folder in order for the paths to match in these examples.</p>
+
+<p>Now let&#8217;s load a couple of kernel files, you can type <code>system("ls", kernel_pool.path)</code> into your console to get a list of all the test kernels available in that folder. The KernelPool object has a <code>#load</code> method to load kernel files. If the variable path is set, then you only need to enter the file name, otherwise the entire path needs to be provided. An integer denoting the index of the kernel in the pool is returned if the load is successful.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;naif0011.tls&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that this is the same as providing the full relative path of <code>spec/data/kernels/naif0011.tls</code> when the <code>path</code>  variable is not set or nil.</p>
+
+<p>Let&#8217;s load two more files:-</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;moon_pa_de421_1900-2050.bpc&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;de405_1960_2020.bsp&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::KernelPool:0x00000002db3218</span>
+</span><span class='line'> <span class="vi">@path</span><span class="o">=</span><span class="s2">&quot;spec/data/kernels&quot;</span><span class="p">,</span>
+</span><span class='line'> <span class="vi">@pool</span><span class="o">=</span>
+</span><span class='line'>  <span class="o">[</span><span class="c1">#&lt;SpiceRub::KernelPool::SpiceKernel:0x0000000270fab0 @loaded=true, @path_to=&quot;spec/data/kernels/naif0011.tls&quot;&gt;,</span>
+</span><span class='line'>   <span class="c1">#&lt;SpiceRub::KernelPool::SpiceKernel:0x000000026bd698 @loaded=true, @path_to=&quot;spec/data/kernels/moon_pa_de421_1900-2050.bpc&quot;&gt;,</span>
+</span><span class='line'>   <span class="c1">#&lt;SpiceRub::KernelPool::SpiceKernel:0x000000024ce698 @loaded=true, @path_to=&quot;spec/data/kernels/de405_1960_2020.bsp&quot;&gt;]&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So now if you try to view the <code>@pool</code> member of <code>kernel_pool</code>, you&#8217;ll find three SpiceKernel objects with <code>@loaded=true</code> and their respective file paths.
+There isn&#8217;t much to do with a <code>SpiceKernel</code> object except unload it, or check its state. Note that you can only load kernel files into a <code>KernelPool</code> object and unload them via the <code>SpiceKernel</code> object.</p>
+
+<p>You can access the kernel pool by calling the <code>#[]</code> operator and using the index that was returned on load:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::KernelPool::SpiceKernel:0x0000000270fab0 @loaded=true, @path_to=&quot;spec/data/kernels/naif0011.tls&quot;&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">3</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">unload!</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So here we unload the first kernel and note that the count drops to 2. If you look up <code>kernel_pool[0]</code>, you&#8217;ll find that the kernel is still present &mdash; but its <code>@loaded</code> variable has been set to false, which means that it has been removed from the CSPICE internal kernel pool.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::KernelPool::SpiceKernel:0x0000000270fab0 @loaded=false, @path_to=&quot;spec/data/kernels/naif0011.tls&quot;&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To unload all kernels simultaneously and delete the kernel pool, use <code>#clear!</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">clear!</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">empty?</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">pool</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And that about wraps up this blog post on basic kernel handling. Since we know how to load data but not use it yet, I&#8217;ll cover that and the various kernel types in the next blog post. Thank you for reading.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GSoC 2016 : A Look at SpiceRub::Body]]></title>
+    <link href="http://sciruby.com/blog/2016/08/21/body-tutorial/"/>
+    <updated>2016-08-21T09:30:35-04:00</updated>
+    <id>http://sciruby.com/blog/2016/08/21/body-tutorial</id>
+    <content type="html"><![CDATA[<p>One of the main goals of this project was to make the ephemerides functions easily available to an end user. Ephemerides basically refers to an object in space whose motion is being tracked and observed. SPICE required you to provide the following parameters to observe a body in space.</p>
+
+<p><code>Target</code> : The body of interest</p>
+
+<p><code>Frame</code> : A rotational frame of reference (Default is J2000 [Not to be confused with the J2000 epoch])</p>
+
+<p><code>Observer</code> : An observing body whose viewpoint is used to chart the vector</p>
+
+<p><code>Epoch</code> : An epoch in Ephemeris Time</p>
+
+<p>SPICE has a certain integer convention for the kind of bodies that it has support for. Each body can be referenced via a string or an integer id. While there isn&#8217;t an actual strict range for integer ID classification , it is mentioned <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">here</a> and can be summed up in the following <code>if</code> and <code>elsif</code> clauses. (In Ruby constant strings are better off as symbols, so the constructor takes either an integer ID of a string symbol)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">if</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">2000000</span>
+</span><span class='line'>    <span class="ss">:asteroid</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">1000000</span>
+</span><span class='line'>    <span class="ss">:comet</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">1000</span>
+</span><span class='line'>    <span class="ss">:body</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">10</span>
+</span><span class='line'>    <span class="n">body_id</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">99</span> <span class="o">?</span>
+</span><span class='line'>      <span class="ss">:planet</span> <span class="p">:</span> <span class="ss">:satellite</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">==</span> <span class="mi">10</span>
+</span><span class='line'>    <span class="ss">:star</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="ss">:barycenter</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1000</span>
+</span><span class='line'>    <span class="ss">:spacecraft</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">100000</span>
+</span><span class='line'>    <span class="ss">:instrument</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="ss">:spacecraft</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It was very tempting to involve inheritance and extend a base Body class onto these potential classes, but I simply did not see the need for it at this point. The way it is at the moment, the <code>Body</code> object has a reader attribute type that stores some metadata about the body for the user&#8217;s convenience. Perhaps as coverage of SPICE improves, this minor thing can be changed later on.</p>
+
+<p>To create a Body object, you instantiate with either a body name or a body id. Certain bodies such as instruments will require additional kernels to be loaded. To proceed seamlessly, load a leap seconds kernel, a planetary constants kernel, and an ephemeris kernel. (All avaialable in <code>spec/data/kernels</code>)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Body</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">399</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Body:0x00000002769da8</span>
+</span><span class='line'>     <span class="vi">@code</span><span class="o">=</span><span class="mi">399</span><span class="p">,</span>
+</span><span class='line'>     <span class="vi">@frame</span><span class="o">=</span><span class="ss">:J2000</span><span class="p">,</span>
+</span><span class='line'>     <span class="vi">@name</span><span class="o">=</span><span class="ss">:earth</span><span class="p">,</span>
+</span><span class='line'>     <span class="vi">@type</span><span class="o">=</span><span class="ss">:planet</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Body</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:earth</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Body:0x000000026c73c8</span>
+</span><span class='line'>   <span class="vi">@code</span><span class="o">=</span><span class="mi">399</span><span class="p">,</span>
+</span><span class='line'>   <span class="vi">@frame</span><span class="o">=</span><span class="ss">:J2000</span><span class="p">,</span>
+</span><span class='line'>   <span class="vi">@name</span><span class="o">=</span><span class="ss">:earth</span><span class="p">,</span>
+</span><span class='line'>   <span class="vi">@type</span><span class="o">=</span><span class="ss">:planet</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Body</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:moon</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Body:0x0000000214ac88</span>
+</span><span class='line'>   <span class="vi">@code</span><span class="o">=</span><span class="mi">301</span><span class="p">,</span>
+</span><span class='line'>   <span class="vi">@frame</span><span class="o">=</span><span class="ss">:J2000</span><span class="p">,</span>
+</span><span class='line'>   <span class="vi">@name</span><span class="o">=</span><span class="ss">:moon</span><span class="p">,</span>
+</span><span class='line'>   <span class="vi">@type</span><span class="o">=</span><span class="ss">:satellite</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>399</code> and <code>:earth</code> map to the same body in SPICE data. The frame of reference can also be specified as a named parameter during instantiation to set a custom default frame for that particular object.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Body</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">399</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="no">IAU_EARTH</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Body:0x000000020b1df8</span>
+</span><span class='line'>     <span class="vi">@code</span><span class="o">=</span><span class="mi">399</span><span class="p">,</span>
+</span><span class='line'>     <span class="vi">@frame</span><span class="o">=</span><span class="ss">:IAU_EARTH</span><span class="p">,</span>
+</span><span class='line'>     <span class="vi">@name</span><span class="o">=</span><span class="ss">:earth</span><span class="p">,</span>
+</span><span class='line'>     <span class="vi">@type</span><span class="o">=</span><span class="ss">:planet</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In SPICE, a <code>state</code> is a 6 length column vector that stores position and velocity in 3D cartesian co-ordinates</p>
+
+<p>As a base case, let&#8217;s find out the the position of the Earth with respect to itself.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">earth</span><span class="o">.</span><span class="n">position_at</span><span class="p">(</span><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">observer</span><span class="p">:</span> <span class="n">earth</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span>
+</span><span class='line'><span class="o">[</span>
+</span><span class='line'>  <span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span>   <span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span>   <span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The origin as seen from itself is still the origin, so this makes sense. The methods <code>#velocity_at</code> and <code>#state_at</code> take an identical set of parameters. While there is a bit of redundancy going on, splitting them makes the API more elegant, but the basic relationship between these three vectors is the following :-</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">state</span> <span class="o">=</span> <span class="o">[</span>
+</span><span class='line'>          <span class="n">position</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="n">position</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="n">position</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>          <span class="n">velocity</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="n">velocity</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="n">velocity</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span>
+</span><span class='line'>        <span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>One thing to note is that State/Velocity/Position vectors will always be returned as an <code>NMatrix</code> object, SciRuby&#8217;s numerical matrix core, to allow for calculations via the NMatrix API.</p>
+
+<p>As an example that is used in the code, 1 line can turn a position vector into distance from origin. (Using Euclidean distance)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">position</span> <span class="o">=</span> <span class="n">earth</span><span class="o">.</span><span class="n">position_at</span><span class="p">(</span><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">observer</span><span class="p">:</span> <span class="n">observer</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="p">(</span><span class="n">position</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This basically performs the computation, <code>SquareRootOf( x ^ 2 + y ^ 2 + z ^ 2 )</code> Which becomes the basis for the method, <code>#distance_from</code> .</p>
+
+<p>As a simple imprecise experiment, let&#8217;s find out how the speed of light can be &#8220;estimated&#8221; up with this data.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">distance</span> <span class="o">=</span> <span class="n">moon</span><span class="o">.</span><span class="n">distance_from</span><span class="p">(</span><span class="n">earth</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">367441</span><span class="o">.</span><span class="mo">0260</span><span class="mi">814745</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">time</span> <span class="o">=</span> <span class="n">moon</span><span class="o">.</span><span class="n">light_time_from</span><span class="p">(</span><span class="n">earth</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">1</span><span class="o">.</span><span class="mi">2256513340354764</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">distance</span> <span class="o">/</span> <span class="n">time</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">299792</span><span class="o">.</span><span class="mi">458</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The unit of distance here is <code>Km</code>, so the speed of light by this measurement is about pretty close to the textbook figure of <code>3 x 10 ^ 8  m/s</code>.</p>
+
+<p>There is also a function to check if a list of bodies are within a radial proximity from an observing body. We already calculated the distance of the moon to be about 367k Km. The function <code>within_proximity</code> returns a list of all bodies that are within the specified radial distance from the calling body object.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#assuming venus and mercury are instantiated</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">earth</span><span class="o">.</span><span class="n">within_proximity</span><span class="p">(</span><span class="o">[</span><span class="n">moon</span><span class="p">,</span> <span class="n">venus</span><span class="p">,</span> <span class="n">mercury</span><span class="o">]</span><span class="p">,</span> <span class="mi">400000</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="c1">#&lt;SpiceRub::Body:0x0000000191c4f8</span>
+</span><span class='line'>  <span class="vi">@code</span><span class="o">=</span><span class="mi">301</span><span class="p">,</span>
+</span><span class='line'>  <span class="vi">@frame</span><span class="o">=</span><span class="ss">:J2000</span><span class="p">,</span>
+</span><span class='line'>  <span class="vi">@name</span><span class="o">=</span><span class="ss">:moon</span><span class="p">,</span>
+</span><span class='line'>  <span class="vi">@type</span><span class="o">=</span><span class="ss">:satellite</span><span class="o">&gt;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now that we&#8217;ve come to the end of the functionality, I would like to state that there is another named argument <code>aberration_correction:</code> which is basically an error reduction method to provide a more accurate result than the default observation. The default <code>:none</code> option for aberration correction basically provides the geometric observations without any corrections for reception or transmission of photons. For a list of various aberration correction methods available, have a look at the documentation for <a href="ftp://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/spkpos_c.html">spkpos_c</a> to find out if you need an aberration correction on SPICE data.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">d1</span> <span class="o">=</span> <span class="n">moon</span><span class="o">.</span><span class="n">distance_from</span><span class="p">(</span><span class="n">earth</span><span class="p">,</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">aberration_correction</span><span class="p">:</span> <span class="ss">:none</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">369111</span><span class="o">.</span><span class="mo">055033313</span><span class="mi">8</span>
+</span><span class='line'><span class="n">d2</span> <span class="o">=</span> <span class="n">moon</span><span class="o">.</span><span class="n">distance_from</span><span class="p">(</span><span class="n">earth</span><span class="p">,</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">aberration_correction</span><span class="p">:</span> <span class="ss">:LT</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">369146</span><span class="o">.</span><span class="mi">60640691273</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">d2</span> <span class="o">-</span> <span class="n">d1</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">35</span><span class="o">.</span><span class="mi">55137359892251</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you want to look at it another way, no aberration correction would give you the textbook response of rigid geometry, while introducing an aberration correction would give you a somewhat more realistic output accounting for the errors that do happen when these observations are made.</p>
+
+<p>Finally, if you need to generate a continuous time series for a body, then <code>SpiceRub::Time</code> has two functions to aid in that</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">linear_time_series</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">now</span> <span class="o">+</span> <span class="mi">86400</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001fe8b60 @et=525180780.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001fe8a20 @et=525209580.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001fe88b8 @et=525238380.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001fe8750 @et=525267180.18277323&gt;</span>
+</span><span class='line'>   <span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this case, I took a start time and an end time that was one day after and requested 4 linearly spaced epochs. This is basically an interface to <code>NMatrix.linspace</code>.</p>
+
+<p>The other function requires you to input a start time and an end time and a step size that keeps getting added to the start time till the end time is reached. As a contrived example, we&#8217;ll take two epochs, 5 days apart and ask for a step size of a day, expecting 6 elements.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">now</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">86400</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="mi">86400</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001646580 @et=525180780.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f315b8 @et=525267180.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f31590 @et=525353580.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f31568 @et=525439980.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f31540 @et=525526380.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f31518 @et=525612780.18277323&gt;</span>
+</span><span class='line'>   <span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And that&#8217;s it for this blog post. I would appreciate any feedback regarding this as I&#8217;ve been juggling the design back and forth very frequently. There is large potential of expansion of the <code>Body</code> class, particularly creating new classes as when different Bobdy objects would have a corresponding function. (For example, the function <code>getfov_c</code> which returns the field of view of an instrument could be an instance function attached to the <code>Instrument</code> subclass of <code>Body</code>, but this is just potential expansions in the future.)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GSoc 2016 : A Look at SpiceRub::Time]]></title>
+    <link href="http://sciruby.com/blog/2016/08/21/time-tutorial/"/>
+    <updated>2016-08-21T07:30:35-04:00</updated>
+    <id>http://sciruby.com/blog/2016/08/21/time-tutorial</id>
+    <content type="html"><![CDATA[<p>Many popular programming languages these days ship with powerful Time classes/interfaces to make the inevitable task of dealing with time related computations a more DRY experience. Humans like their time representations to be stringy concatenations of various numbers and alphabets that enable a large variety of date and time formats to mean the same thing and still make instant sense to the human eye. It was the creation of time zones that made our convenient 24 hour clocks stay the way they are without experiencing day and night at the same &#8220;time&#8221; across the globe. So now <code>00:00 A.M. UTC</code> is <code>5:30 A.M. IST</code> for me, and the world remains sane.</p>
+
+<p>But what happens when you accept the fact that you&#8217;re just a speck of micro-dust adjusting time relatively for an only slightly bigger speck of dust floating in the universe? 24 hours in a day and thus we reset after 2300, but consider this ; how would a resident of Venus know when tea-time is on Venus if he had an Earth wristwatch that reset after 24 hours? Barely a tenth of Venus&#8217; day is complete in that time! (If you know anybody intent on relocating to Mars, do not gift them a clock/watch)</p>
+
+<p>So a decimal floating point representation must be the answer for uniformity. Time zones can be dealt with, we&#8217;ll just pick a convenient point in time and count the seconds from there onwards so that the location on Earth doesn&#8217;t matter henceforth. It&#8217;ll drive humans insane with the arithmetic but machines will work just fine with this. This sort of a time system is called epoch time.</p>
+
+<p>And so the internal time of most Unix machines is the number of seconds after Midnight on <code>Thursday, 1 January 1970 UTC</code>. ( And this very convention is going to open a can of worms by <a href="https://en.wikipedia.org/wiki/Year_2038_problem">2038</a> if there is even a small set of critical machines that haven&#8217;t moved on from 32 bit architectures)</p>
+
+<p>But we&#8217;re still not okay universally. Try going on an infinite journey to space and you&#8217;ll find that counting seconds leads to some inconsistencies with your local time when you try to synchronize with Earth. How can the number of seconds after January 1970 be different in any case? Well your MacBook Pro has not been adjusted for &#8230; relativity! Gravity bends light and thus the perception of time. There&#8217;s a lot more mass, and thus a lot more gravitatonal fields in neighborhoods away from Earth. The exact details of how this works is beyond the scope of this blog.</p>
+
+<p>If the past few paragraphs were incessant and seemingly irrelevant, they were there to drive home the point that Earth time simply will not do when we step out of the ghetto to see what&#8217;s happening. But Astronomy&#8217;s been around for way longer, and astro-physicists came forth with a time system adjusted for the relativity effects of the solar system, called Barycentric Dynamical Time, or <code>TDB</code>. Like our machines, it counts the seconds after a certain known reference time point, except that it adjusts for relativity and can become a standard for astronomical time.</p>
+
+<p>There are many similar time scales like this, but SPICE has chosen to use <code>TDB</code> as the standard for most of their design. Within the SPICE API, TDB is the same as <code>Ephemeris Time</code> which is the main system used to specify time points of astronomical bodies. Even though Spacecrafts have their clocks co-ordinated with UTC on Earth, you would require that time in <code>Ephemeris Time</code> to be able to calculate its position and velocity using SPICE. <code>SpiceRub::Time</code> is built for this very purpose, to revolve around a main attribute <code>@et</code> for <code>Ephemeris Time</code> and provide many methods to convert to and from.</p>
+
+<p>If you&#8217;d like to proceed with the examples, you&#8217;d need a <code>Leap Second Kernel</code> file to use <code>SpiceRub::Time</code> . This is a generic kernel so you can easily use <code>naif0011.tls</code> in <code>spec/data/kernels</code> of the repository folder.</p>
+
+<p>So Ephemeris Time is the number of seconds elapsed after <code>Noon January 1, 2000, TDB</code>. This point in time is also known as the <code>J2000</code> epoch. We find that out in an instant by using the <code>Time.parse</code> function which is a wrapper function for SPICE&#8217;s <code>str2et_c</code> that converts many formats of strings to <code>Ephemeris Time</code>. You can have a look at the various string formats supported in its documentation <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/str2et_c.html">here</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;12:00 Jan 1 2000 TDB&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Time:0x0000000325b1f8 @et=0.0&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So as a base case, using the reference epoch gives us 0 seconds as we would expect. Now would also be a good time to find out the discrepancy in <code>UTC</code> as well.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;12:00 Jan 1 2000 UTC&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Time:0x000000031c28e0 @et=64.18392728473108&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So right away we know that UTC was 64ish seconds off from TDB / ET at the time of the reference J2000 epoch. What would the difference be around right now?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">now</span> <span class="o">=</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Time:0x000000030bf8f8 @et=525173312.1827749&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">(</span><span class="n">now</span> <span class="o">-</span> <span class="n">now</span><span class="o">.</span><span class="n">to_utc</span><span class="p">)</span><span class="o">.</span><span class="n">to_f</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">68</span><span class="o">.</span><span class="mi">18277490139008</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Well, here&#8217;s a surprise, it&#8217;s 68.18 now. Before I explain why that is, a brief overview of what the above code does :-</p>
+
+<p><code>Time.now</code> is a convenient way to specify your current UTC timezone. It uses Ruby&#8217;s core <code>Time.now</code> method so this method is only good if you&#8217;re working in UTC or Earth like Timezones. For a similar purpose, the function <code>Time.from_time</code> let&#8217;s you create a SpiceRub Time object from a Ruby Time object.</p>
+
+<p>The <code>+/-</code> operators return a new Time object where the right operand is added/subtracted to the left operand&#8217;s <code>@et</code> when it is a float or integer. If a Time object is supplied , then it does the same with the right operand&#8217;s ephemeris time instead. (Note that there really isn&#8217;t a significant meaning to having a Time object whose @et is the difference/sum of two other epochs, however you can increase a certain epoch or decrease it by a constant offset of seconds)</p>
+
+<p>In our case we used <code>#to_utc</code> to convert from ephemeris time to UTC, and then the minus operator gave us a Time object that wasn&#8217;t really an epoch, but a difference of two epochs, so using <code>#to_f</code> got us exactly that.</p>
+
+<p>It appears that UTC has changed by 4 seconds since 2000 with respect to ephemeris time. This is actually the adjustment of &#8220;leap seconds&#8221; that gets added to UTC to prevent it from falling too far behind other time systems. (Humans really like to hack everything, don&#8217;t they?)</p>
+
+<p>To verify this yourself, open up the kernel <code>naif0011.tls</code> in your text editor and Ctrl-F for <code>DELTET/DELTA_AT</code> you&#8217;ll find a list like representation of the following sort :-</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">DELTET</span><span class="o">/</span><span class="no">DELTA_AT</span>        <span class="o">=</span> <span class="p">(</span> <span class="mi">10</span><span class="p">,</span>   <span class="err">@</span><span class="mi">1972</span><span class="o">-</span><span class="no">JAN</span><span class="o">-</span><span class="mi">1</span>
+</span><span class='line'>                           <span class="o">.</span><span class="n">.</span><span class="p">,</span>   <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>                           <span class="mi">32</span><span class="p">,</span>   <span class="err">@</span><span class="mi">1999</span><span class="o">-</span><span class="no">JAN</span><span class="o">-</span><span class="mi">1</span>
+</span><span class='line'>                           <span class="mi">33</span><span class="p">,</span>   <span class="err">@</span><span class="mi">2006</span><span class="o">-</span><span class="no">JAN</span><span class="o">-</span><span class="mi">1</span>
+</span><span class='line'>                           <span class="mi">34</span><span class="p">,</span>   <span class="err">@</span><span class="mi">2009</span><span class="o">-</span><span class="no">JAN</span><span class="o">-</span><span class="mi">1</span>
+</span><span class='line'>                           <span class="mi">35</span><span class="p">,</span>   <span class="err">@</span><span class="mi">2012</span><span class="o">-</span><span class="no">JUL</span><span class="o">-</span><span class="mi">1</span>
+</span><span class='line'>                           <span class="mi">36</span><span class="p">,</span>   <span class="err">@</span><span class="mi">2015</span><span class="o">-</span><span class="no">JUL</span><span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here you can see that just before the year 2000, there were 32 leap seconds added to UTC , and in 2015 when the last leap second was added, there were 36. It&#8217;s an ongoing and indefinite process and so there really is no way to account for leap second errors far in the future for leap seconds that are yet to be added. As of now, the next scheduled addition is in December, 2016.</p>
+
+<p>Coming back to our Time object, let&#8217;s look at its basic construction. One tricky task in the API was the option to specify different epochs of reference in different time scales, like International Atomic Time. As of now, <code>Time.new</code> requires that you have kept your word of using the J2000 epoch and allows you to use a named parameter <code>seconds:</code> for specifying the time scale. The use of <code>scale:</code>was avoided as it sometimes is also used to refer to the reference epoch used.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">epochs</span> <span class="o">=</span> <span class="o">[</span><span class="ss">:utc</span><span class="p">,</span> <span class="ss">:tdb</span><span class="p">,</span> <span class="ss">:tai</span><span class="o">].</span><span class="n">map</span>
+</span><span class='line'>  <span class="p">{</span> <span class="o">|</span><span class="n">scale</span><span class="o">|</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">scale</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="c1">#&lt;SpiceRub::Time:0x00000002756fc8 @et=64.18392728466942&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002756eb0 @et=0&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002756cf8 @et=32.18392727400827&gt;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>:tai</code> here refers to International Atomic Time. For a list of more parameters and their keyword abbreviations, have a look at <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/unitim_c.html">this</a> SPICE documentation for the function that the conversion is wrapped on top of.</p>
+
+<p>But there is also a way to reference other epochs without doing the manual conversions yourself, you can call the class method <code>Time.at</code> to perform the same function as the constructor, with the option of a different reference epoch. The resultant Time object will however have its internal time referring to J2000.</p>
+
+<p>A more readable way would involve step by step calculations, but that would consume runtime resources everytime <code>Time.at</code> is called, so I&#8217;ve basically pre-calculated the ephemeris times of the reference epochs and subtracted them from the epoch.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">case</span> <span class="n">reference</span><span class="o">.</span><span class="n">downcase</span>
+</span><span class='line'>  <span class="k">when</span> <span class="ss">:j2100</span>
+</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">3155760000</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">when</span> <span class="ss">:j2000</span><span class="p">,</span> <span class="ss">:et</span>
+</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">when</span> <span class="ss">:j1950</span>
+</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1577880000</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">when</span> <span class="ss">:j1900</span>
+</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">3155760000</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">when</span> <span class="ss">:gps</span>
+</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">630763148</span><span class="o">.</span><span class="mi">8159368</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">when</span> <span class="ss">:unix</span>
+</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">946727958</span><span class="o">.</span><span class="mi">8160644</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To quickly verify the last one with the <code>#to_s</code> method</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">-</span><span class="mi">946727958</span><span class="o">.</span><span class="mi">8160644</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Thu Jan 01 00:00:00 UTC 1970&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s exactly the unix epoch! Let&#8217;s try out 1 day (86400 seconds) after this epoch</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">86400</span><span class="p">,</span> <span class="ss">:unix</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Thu Jan 01 23:59:59 UTC 1970&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Just a second short of heading into the next day, because we&#8217;ve added 86400 TDB seconds and converted the time into a UTC string.</p>
+
+<p>There are some more functions provided to work in tandem with the <code>Body</code> class that I&#8217;ll explain more about in the next blog post, but this more or less covers the core of <code>SpiceRub:Time</code>. Till then, thanks for reading :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GSoC 2016 : SpiceRub::KernelPool and Kernels]]></title>
+    <link href="http://sciruby.com/blog/2016/06/10/week1_soc/"/>
+    <updated>2016-06-10T22:30:35-04:00</updated>
+    <id>http://sciruby.com/blog/2016/06/10/week1_soc</id>
+    <content type="html"><![CDATA[<p>So this post comes rather late, but I&#8217;d still like to talk about what I did in the first week, and a little into the second week.
+Firstly, thanks to a pull request offered by my GSoC mentor John (@mohawkjohn), I now have rake tasks set up properly in the repository and rake seems to be working.</p>
+
+<p>There are installation instructions in the <a href="https://github.com/gau27/spice_rub/blob/master/README.rdoc">ReadMe</a> and there are already some sample Kernel files in
+the spec folder to try out various routines on. Apart from cloning the repository, one additional thing you will need to do is download the SPICE toolkit from <a href="https://naif.jpl.nasa.gov/naif/toolkit_C.html">here</a>. You may want to keep the entire compressed file for later, but you&#8217;ll only need the <code>cspice.a</code> file in the lib/ subdirectory. After this follow the instructions in the <a href="https://github.com/gau27/spice_rub/blob/master/README.rdoc">ReadMe</a> and you should be good to go. Be sure to run <code>bundle install</code> to install any dependencies that you don&#8217;t already have.</p>
+
+<p>After you&#8217;re done compiling/installing, run <code>rake pry</code> in the gem root directory. If you remember, almost any useful task involving the SPICE Toolkit is preceded by loading data through kernel files. The relevant routine to do this is called <code>furnsh_c()</code> , and the most direct way to access it through Ruby is by calling the function <code>SpiceRub::Native.furnsh</code>. This is not recommended because SpiceRub has a specific Ruby class unifying all the kernel related methods and also because SPICE maintains its own internal variables for tracking loaded kernel files / unloading them. Below is a crude dependency sequence :-</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">KernelPool</span><span class="o">.</span><span class="n">load</span> <span class="o">-&gt;</span>  <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Native</span><span class="o">.</span><span class="n">furnsh</span> <span class="o">-&gt;</span> <span class="n">furnsh_c</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Ruby</span> <span class="no">Interface</span>            <span class="o">-&gt;</span>  <span class="n">C</span> <span class="no">Accessor</span>              <span class="o">-&gt;</span> <span class="no">External</span> <span class="n">library</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Ruby</span>                      <span class="o">-&gt;</span>  <span class="no">Native</span> <span class="no">Ruby</span><span class="o">-</span><span class="n">C</span> <span class="no">API</span>       <span class="o">-&gt;</span> <span class="no">Native</span> <span class="mi">3</span><span class="n">rd</span> <span class="no">Party</span> <span class="n">C</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>That&#8217;s the basic design of the wrapper, so here&#8217;s a few simple examples on using the Kernel API. <code>=&gt;</code> denotes the interpreted output of pry.</p>
+
+<p>First of all, the main KernelPool class is a singleton class, that means it can only be instantiated with the <code>#instance</code> method and the usual <code>#new</code> is private.
+Any subsequent calls to <code>#instance</code> will produce the same object.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span> <span class="o">=</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">KernelPool</span><span class="o">.</span><span class="n">instance</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::KernelPool:0x00000002db3218&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">rogue_kernel_pool</span> <span class="o">=</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">KernelPool</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="no">NoMethodError</span><span class="p">:</span> <span class="kp">private</span> <span class="nb">method</span> <span class="sb">`new&#39; called for SpiceRub::KernelPool:Class</span>
+</span><span class='line'><span class="sb">from (pry):2:in `</span><span class="n">__pry__</span><span class="err">&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">rogue_kernel_pool</span> <span class="o">=</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">KernelPool</span><span class="o">.</span><span class="n">instance</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::KernelPool:0x00000002db3218&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">rogue_kernel_pool</span> <span class="o">==</span> <span class="n">kernel_pool</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="kp">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>This is to make sure there is only one KernelPool state being maintained at a time. Now we have a bunch of kernel files in the <code>spec/data/kernels</code>
+folder which we&#8217;ll use for this example. There is an accessor attribute called <code>@path</code> which can be used to point to a particular folder.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;spec/data/kernels&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>From here on it&#8217;s required that you&#8217;re running pry or irb from the gem root folder in order for the paths to match in these examples.</p>
+
+<p>Now let&#8217;s load a couple of kernel files, you can type <code>system("ls", kernel_pool.path)</code> into your console to get a list of all the test kernels available
+in that folder. The KernelPool object has a <code>#load</code> method to load kernel files. If the variable path is set, then you only need to enter the file name,
+otherwise the entire path needs to be provided. An integer denoting the index of the kernel in the pool is returned if the load is successful.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;naif0011.tls&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that this is the same as providing the full relative path of <code>spec/data/kernels/naif0011.tls</code> when the <code>path</code>  variable is not set or nil.</p>
+
+<p>Let&#8217;s load two more files:-</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;moon_pa_de421_1900-2050.bpc&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;de405_1960_2020.bsp&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">2</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::KernelPool:0x00000002db3218</span>
+</span><span class='line'> <span class="vi">@path</span><span class="o">=</span><span class="s2">&quot;spec/data/kernels&quot;</span><span class="p">,</span>
+</span><span class='line'> <span class="vi">@pool</span><span class="o">=</span>
+</span><span class='line'>  <span class="o">[</span><span class="c1">#&lt;SpiceRub::KernelPool::SpiceKernel:0x0000000270fab0 @loaded=true, @path_to=&quot;spec/data/kernels/naif0011.tls&quot;&gt;,</span>
+</span><span class='line'>   <span class="c1">#&lt;SpiceRub::KernelPool::SpiceKernel:0x000000026bd698 @loaded=true, @path_to=&quot;spec/data/kernels/moon_pa_de421_1900-2050.bpc&quot;&gt;,</span>
+</span><span class='line'>   <span class="c1">#&lt;SpiceRub::KernelPool::SpiceKernel:0x000000024ce698 @loaded=true, @path_to=&quot;spec/data/kernels/de405_1960_2020.bsp&quot;&gt;]&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So now if you try to view the <code>@pool</code> member of kernel_pool, you&#8217;ll find 3 SpiceKernel objects with <code>@loaded=true</code> and their respective file paths.
+There isn&#8217;t much to do with a <code>SpiceKernel</code> object except unload it, or check its state. Note that you can only load kernel files into a <code>KernelPool</code> object and unload
+them via the <code>SpiceKernel</code> object.</p>
+
+<p>You can access the kernel pool by calling the <code>#[]</code> operator and using the index that was returned on load :-</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::KernelPool::SpiceKernel:0x0000000270fab0 @loaded=true, @path_to=&quot;spec/data/kernels/naif0011.tls&quot;&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">3</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">unload!</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So here we unload the first kernel and note that the count drops to 2. If you look up <code>kernel_pool[0]</code>, you&#8217;ll find that the kernel
+is still present but it&#8217;s <code>@loaded</code> variable has been set to false which means that it has been removed from the CSPICE internal kernel pool.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::KernelPool::SpiceKernel:0x0000000270fab0 @loaded=false, @path_to=&quot;spec/data/kernels/naif0011.tls&quot;&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To unload all kernels simultaneously and delete the kernel pool, use <code>#clear!</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">clear!</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">empty?</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="kp">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">pool</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And that about wraps up this blog post on basic kernel handling. Since we know how to load data but not use it yet, I&#8217;ll cover that and the various kernel types
+in the next blog post. Thank you for reading :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Statistical linear mixed models in Ruby with mixed_models (GSoC2015)]]></title>
     <link href="http://sciruby.com/blog/2015/08/19/gsoc-2015-mixed-models/"/>
-    <updated>2015-08-19T12:00:00-05:00</updated>
+    <updated>2015-08-19T12:00:00-04:00</updated>
     <id>http://sciruby.com/blog/2015/08/19/gsoc-2015-mixed-models</id>
     <content type="html"><![CDATA[<p>Google Summer of Code 2015 is coming to an end. During this summer, I have learned too many things to list here about statistical modeling, Ruby and software development in general, and I had a lot of fun in the process!</p>
 
@@ -333,7 +1142,7 @@ A good reference on such models is <a href="http://lme4.r-forge.r-project.org/bo
   <entry>
     <title type="html"><![CDATA[GSoC 2015: New NMatrix gems for advanced linear algebra features]]></title>
     <link href="http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix/"/>
-    <updated>2015-08-19T09:57:00-05:00</updated>
+    <updated>2015-08-19T09:57:00-04:00</updated>
     <id>http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix</id>
     <content type="html"><![CDATA[<p>My Google Summer of Code project was working on the <a href="https://github.com/SciRuby/nmatrix">NMatrix project</a>, moving
 functionality that depends on external libraries from the core <code>nmatrix</code>
@@ -501,7 +1310,7 @@ and feedback throughout the summer.</p>
   <entry>
     <title type="html"><![CDATA[GnuplotRB and GSoC 2015]]></title>
     <link href="http://sciruby.com/blog/2015/08/18/gnuplotrb-project/"/>
-    <updated>2015-08-18T23:26:00-05:00</updated>
+    <updated>2015-08-18T23:26:00-04:00</updated>
     <id>http://sciruby.com/blog/2015/08/18/gnuplotrb-project</id>
     <content type="html"><![CDATA[<h2>Introduction</h2>
 
@@ -635,7 +1444,7 @@ and feedback throughout the summer.</p>
   <entry>
     <title type="html"><![CDATA[Ruby Wrappers for SymEngine, a C++ symbolic manipulation library]]></title>
     <link href="http://sciruby.com/blog/2015/08/17/ruby-wrappers-for-symengine/"/>
-    <updated>2015-08-17T14:30:00-05:00</updated>
+    <updated>2015-08-17T14:30:00-04:00</updated>
     <id>http://sciruby.com/blog/2015/08/17/ruby-wrappers-for-symengine</id>
     <content type="html"><![CDATA[<p>I am sure you have heard about <a href="http://www.wolframalpha.com/">Wolfram Alpha</a>. Some of you would have used its <a href="http://www.wolframalpha.com/examples/Math.html">Mathematics section</a> at some point of time to cross check your solution to a maths problem. If you haven&#8217;t, please do. A computer algebra system (CAS) does the same thing. Algebraic computation or symbolic computation are all used interchangeably. A CAS solves problems the same way a human does, but way more quickly and precisely. There is very less chance for an error, that we humans often make.</p>
 
@@ -995,7 +1804,7 @@ to check what was actually happening. That cleared things out, and made the it e
   <entry>
     <title type="html"><![CDATA[Summary of work on daru this summer for GSOC 2015]]></title>
     <link href="http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015/"/>
-    <updated>2015-08-16T23:53:00-05:00</updated>
+    <updated>2015-08-16T23:53:00-04:00</updated>
     <id>http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015</id>
     <content type="html"><![CDATA[<p>Over this summer as a part of <a href="www.google-melange.com">Google Summer of Code 2015</a>, <a href="www.github.com/v0dro/daru/">daru</a> received a lot of upgrades and new features which have it made a pretty robust tool for data analysis in pure Ruby. Of course, a lot of work still remains for bringing daru at par with the other data analysis solutions on offer today, but I feel the work done this summer has put daru on that path.</p>
 
@@ -1046,7 +1855,7 @@ to check what was actually happening. That cleared things out, and made the it e
   <entry>
     <title type="html"><![CDATA[NMatrix's first beta release (belated announcement)]]></title>
     <link href="http://sciruby.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement/"/>
-    <updated>2015-02-14T14:56:00-06:00</updated>
+    <updated>2015-02-14T14:56:00-05:00</updated>
     <id>http://sciruby.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement</id>
     <content type="html"><![CDATA[<p>Almost two months ago, in December, we <a href="https://rubygems.org/gems/nmatrix">release our first beta of NMatrix</a>, our
 linear algebra library for the Ruby language.</p>
@@ -1107,7 +1916,7 @@ our <a href="https://groups.google.com/forum/#!forum/sciruby-dev">mailing list</
   <entry>
     <title type="html"><![CDATA[Nyaplot: interactive plots generator with Ruby]]></title>
     <link href="http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby/"/>
-    <updated>2014-08-23T10:07:00-05:00</updated>
+    <updated>2014-08-23T10:07:00-04:00</updated>
     <id>http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby</id>
     <content type="html"><![CDATA[<iframe width="853" height="480" src="http://sciruby.com//www.youtube.com/embed/ZxjqsIluM88" frameborder="0" allowfullscreen></iframe>
 
@@ -1270,7 +2079,7 @@ summer thanks to all people related to this project.</p>
   <entry>
     <title type="html"><![CDATA[Benchmarks for Integration Gem]]></title>
     <link href="http://sciruby.com/blog/2014/07/28/benchmarks-for-integration-gem/"/>
-    <updated>2014-07-28T02:44:00-05:00</updated>
+    <updated>2014-07-28T02:44:00-04:00</updated>
     <id>http://sciruby.com/blog/2014/07/28/benchmarks-for-integration-gem</id>
     <content type="html"><![CDATA[<p>The Integration gem now includes quite a few functions from which to
 choose. To make this choice easier, I have done some benchmarking to
@@ -1491,7 +2300,7 @@ running the benchmarks with your desired functions.</p>
   <entry>
     <title type="html"><![CDATA[The Nyaplot internal event handler]]></title>
     <link href="http://sciruby.com/blog/2014/07/09/nyaplot-internal-event-handler/"/>
-    <updated>2014-07-09T17:01:00-05:00</updated>
+    <updated>2014-07-09T17:01:00-04:00</updated>
     <id>http://sciruby.com/blog/2014/07/09/nyaplot-internal-event-handler</id>
     <content type="html"><![CDATA[<p><img src="https://dl.dropboxusercontent.com/u/47978121/gsoc/multiple_panes.png" alt="Nyaplot multi-pane example" /></p>
 
@@ -1565,7 +2374,7 @@ events in DataFrame is both natural and efficient for Nyaplot.</p>
   <entry>
     <title type="html"><![CDATA[Usage: Integration Gem Improvements]]></title>
     <link href="http://sciruby.com/blog/2014/07/02/usage-integration-gem-improvements/"/>
-    <updated>2014-07-02T17:43:00-05:00</updated>
+    <updated>2014-07-02T17:43:00-04:00</updated>
     <id>http://sciruby.com/blog/2014/07/02/usage-integration-gem-improvements</id>
     <content type="html"><![CDATA[<h2>Numerical Integration</h2>
 
@@ -1606,7 +2415,7 @@ Instead of <code>{:method=&gt;:simpson}</code> in the above code, you can use an
   <entry>
     <title type="html"><![CDATA[The progress of the GSoC D3/Visualization Project]]></title>
     <link href="http://sciruby.com/blog/2014/07/02/progress-of-d3-project/"/>
-    <updated>2014-07-02T17:09:00-05:00</updated>
+    <updated>2014-07-02T17:09:00-04:00</updated>
     <id>http://sciruby.com/blog/2014/07/02/progress-of-d3-project</id>
     <content type="html"><![CDATA[<p>This week is the half-way point of this year&#8217;s Google Summer of
 Code. Let me report the progress during the term.</p>
@@ -1709,7 +2518,7 @@ pull-requests, even during the GSoC term.</p>
   <entry>
     <title type="html"><![CDATA[Updates: Minimization and Integration]]></title>
     <link href="http://sciruby.com/blog/2014/06/24/updates-minimization-and-integration/"/>
-    <updated>2014-06-24T14:32:00-05:00</updated>
+    <updated>2014-06-24T14:32:00-04:00</updated>
     <id>http://sciruby.com/blog/2014/06/24/updates-minimization-and-integration</id>
     <content type="html"><![CDATA[<h2>Minimization</h2>
 
@@ -1754,7 +2563,7 @@ JScience and JRuby.</p>
   <entry>
     <title type="html"><![CDATA[Progress on Minimization methods]]></title>
     <link href="http://sciruby.com/blog/2014/06/19/progress-on-minimization-methods/"/>
-    <updated>2014-06-19T01:00:00-05:00</updated>
+    <updated>2014-06-19T01:00:00-04:00</updated>
     <id>http://sciruby.com/blog/2014/06/19/progress-on-minimization-methods</id>
     <content type="html"><![CDATA[<h2>Current Progress on Minimization Gem</h2>
 
@@ -1769,7 +2578,7 @@ JScience and JRuby.</p>
   <entry>
     <title type="html"><![CDATA[Introduction: Minimization and Integration (Lahiru)]]></title>
     <link href="http://sciruby.com/blog/2014/06/18/introduction-minimization-and-integration/"/>
-    <updated>2014-06-18T16:45:00-05:00</updated>
+    <updated>2014-06-18T16:45:00-04:00</updated>
     <id>http://sciruby.com/blog/2014/06/18/introduction-minimization-and-integration</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor&#8217;s Note:</strong> We have two students
 working on numerical minimization and integration this summer, Rajat and
@@ -1808,7 +2617,7 @@ test cases.</p>
   <entry>
     <title type="html"><![CDATA[Introduction to the Minimization and Integration project (Rajat)]]></title>
     <link href="http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project/"/>
-    <updated>2014-06-04T14:23:00-05:00</updated>
+    <updated>2014-06-04T14:23:00-04:00</updated>
     <id>http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project</id>
     <content type="html"><![CDATA[<p class="note"><strong>Editor&#8217;s Note:</strong> We have two students
 working on numerical minimization and integration this summer, Rajat and
@@ -1869,7 +2678,7 @@ minimization methods.</p>
   <entry>
     <title type="html"><![CDATA[Introducing the FFTW SciRuby GSoC project]]></title>
     <link href="http://sciruby.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project/"/>
-    <updated>2014-06-04T12:30:00-05:00</updated>
+    <updated>2014-06-04T12:30:00-04:00</updated>
     <id>http://sciruby.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project</id>
     <content type="html"><![CDATA[<p>My name is Magdalen Berns and I am a physics student with a technical
 background in live audio. I am particularly interested in using science
@@ -1924,413 +2733,6 @@ welcome as the project progresses. This gem is being written for the
 community, after all!</p>
 
 <p>You can find me on Twitter (Facebook) or GitHub under the username @thisMagpie.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Introducing the GSoC 2014 D3 Project]]></title>
-    <link href="http://sciruby.com/blog/2014/06/02/introducing-gsoc-2014-the-d3-project/"/>
-    <updated>2014-06-02T14:00:00-05:00</updated>
-    <id>http://sciruby.com/blog/2014/06/02/introducing-gsoc-2014-the-d3-project</id>
-    <content type="html"><![CDATA[<p>Hello. I am Naoki, one of four Google Summer of Code (GSoC) 2014
-students in SciRuby. Let me introduce my project. The goal of the GSoC
-2014 D3 Project is to create a new plotting library for
-SciRuby. <a href="http://d3js.org/">D3.js</a> is the most suitable JavaScript
-library to achieve this goal.</p>
-
-<p>There are several non-Ruby plotting software libraries in the wild,
-like ggplot, matplotlib, and ggplot2. Actually, SciRuby already has
-its own plotting libraries named
-<a href="https://github.com/SciRuby/plotrb">Plotrb</a> and
-<a href="https://github.com/SciRuby/rubyvis">Rubyvis</a>. The main feature of my
-project compared with those software packages is <em>interactivity</em>.
-Interactivity has various meanings here: interactivity when generating
-plots, interactivity when viewing them, and server&ndash;client
-interactivity. My project includes all of those.</p>
-
-<p>My project can be divided into two components, one JavaScript and the
-other Ruby. JavaScript serves as a back-end, and Ruby as a
-front-end. I&#8217;m currently working on the former part. Have a look at a
-few examples I&#8217;ve assembled:</p>
-
-<ul>
-<li><a href="http://bl.ocks.org/domitry/b8785f02f36deef567ce">Multiple panes</a></li>
-<li><a href="http://bl.ocks.org/domitry/2f53781449025f772676">Bar chart</a></li>
-<li><a href="http://bl.ocks.org/domitry/e9a914b78f3a576ed3bb">Line</a></li>
-<li><a href="http://bl.ocks.org/domitry/308e27d8d12c1374e61f">Scatter</a></li>
-<li><a href="http://bl.ocks.org/domitry/f215d5ff3bd3f5fec2ad">Another theme</a></li>
-</ul>
-
-
-<p>This project involves a number of challenges, but I believe it to be
-achievable during this Summer of Code. Thank you for reading!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby Science Foundation selected for GSoC 2014]]></title>
-    <link href="http://sciruby.com/blog/2014/02/24/gsoc-2014/"/>
-    <updated>2014-02-24T21:45:00-06:00</updated>
-    <id>http://sciruby.com/blog/2014/02/24/gsoc-2014</id>
-    <content type="html"><![CDATA[<p>We&#8217;re excited to announce that the Ruby Science Foundation has been selected as
-a mentoring organization for <a href="https://www.google-melange.com/gsoc/homepage/google/gsoc2014">Google Summer of Code 2014</a>!</p>
-
-<p>Last year
-was our first year as a mentoring organization, and we had a great group of
-students working with us on machine learning, timeseries statistics, the
-semantic web, and scientific plotting.</p>
-
-<p>This year we&#8217;ve got a super set of
-possible projects including more flexible matrix computations, automatic Ruby
-interface generation for scientific libraries, a dataframe library for
-structuring and manipulating datasets, interactive plotting, a scientific
-notebook, high-performance minimization and integration libraries, and a
-semantic web datastore backend for scientific computing.</p>
-
-<p>If you&#8217;re interested in applying as a student, learning more, or even
-contributing independent of GSoC, head over to our <a href="https://github.com/SciRuby/sciruby/wiki/Google-Summer-of-Code-2014-Ideas">GSoC 2014 ideas page</a>
-to see what projects we think are great.  Don&#8217;t hesitate to tell us if you&#8217;ve
-got an amazing idea for a different project, too! If you&#8217;re still left
-wondering where to start, check out the <a href="https://github.com/sciruby/nmatrix/issues">issue tracker for NMatrix</a>, the matrix computation
-library used as the basis for a number of our projects, and our top priority at
-the moment.</p>
-
-<p>Good luck to all the GSoC applicants out there, and happy coding!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Some words from GSoC 2013 alumni]]></title>
-    <link href="http://sciruby.com/blog/2014/01/28/gsoc-alumni/"/>
-    <updated>2014-01-28T16:07:00-06:00</updated>
-    <id>http://sciruby.com/blog/2014/01/28/gsoc-alumni</id>
-    <content type="html"><![CDATA[<p>In 2013, SciRuby was a mentoring organization for the Google Summer of Code. We
-asked our alumni:</p>
-
-<p>1) How did you experience GSoC/SciRuby and what has it brought you?</p>
-
-<p>2) What advice would you give new applicants?</p>
-
-<p>Monica Dragan from Romania worked on <a href="https://github.com/monicadragan/GeneValidator">gene validation</a>, see also her
-<a href="http://gene-prediction.blogspot.nl/2013/08/start-using-our-gene-validation-tool.html">blog</a>. Actually, Monica
-was part of a different GSoC organisation,
-<a href="http://informatics.nescent.org/wiki/Phyloinformatics_Summer_of_Code_2013">PhyloSoC</a>,
-but also participated in our Ruby-centric meetings and code reviews. She shared
-her SciRuby GSoC experience:</p>
-
-<p class="note"><strong>Monica:</strong>
-During the GSoC period I developed a bioinformatics tool written in Ruby. First of all I learned a new programming
-language, as I had no experience with Ruby before. On this GSoC occasion I had the opportunity to get in touch with the
-community and I met people passionate about their work, with whom I continued
- the collaboration afterwards. But what I really gained from this experience is that I increased my enthusiasm about
- bioinformatics and I confirmed myself that this is the field I want to focus on in the next years.
-</p>
-
-
-<p>Alberto Arrigoni from Italy worked on <a href="http://sciruby.com/blog/2013/09/24/gsoc-2013-data-mining-in-jruby-with-ruby-band/">data mining and machine learning algorithms for Ruby</a> and shared
-his GSoC experience:</p>
-
-<p class="note"><strong>Alberto:</strong>
-As a PhD student in the field of bioinformatics, my GSOC experience was very exciting and useful at different levels. On a training level, I had the
-unique chance to learn more in depth some topics of machine learning I had
-wanted to explore in the past, but never had quite the opportunity or the
-resources. On a more technical level, I appreciated the support of the GSOC
-mentors and the Sciruby community, which counts numerous experts and a very
-active mailing list.
-</p>
-
-
-<p>Ankur Goel from India worked on
-<a href="http://rubygems.org/gems/statsample-timeseries">statsample-timeseries</a> for Ruby.
-Ankur shared,</p>
-
-<p class="note"><strong>Ankur:</strong>
-It was the best learning experience. I learnt quite a lot of statistics while
-working on my TimeSeries extension; after GSoC, I picked up Machine Learning
-course and I was able to relate it to very easily after working on regression
-techniques in GLM extension. I can&#8217;t thank enough for the opportunity provided
-and the trust endowed by my mentor on me. Learning to write quality code and
-getting reviews was a cherry on cake! 
-</p>
-
-
-<p>Will Strinz from Madison, USA, worked on <a href="http://localhost:4000/blog/2013/10/12/ruby-and-the-semantic-web-rdf-sparql-publisci/">RDF generators for Ruby</a> for the
-semantic web:</p>
-
-<p class="note"><strong>Will:</strong>
-GSoC 2013 was a new experience for me in terms of managing my own time,
-planning my own project, and keeping up consistent interaction with my mentors
-across time zones. Despite a decent amount of prior experience with Ruby, it
-was also a challenge and an opportunity for me to really understand the tools
-and practices I knew, and learn to use the ones I wasn&#8217;t familiar with.
-
-As for what it&#8217;s brought me, aside from a job I secured partly through skills
-and project portfolio I gained during GSoC, and the power of knowing how to do
-just about any programming task using Ruby, I learned a lot about how to manage
-a project and interact with people in the real world.
-
-Communicating properly and in a timely manner over email and other asynchronous
-services is absolutely critical to the work I do now, and a lot harder than
-people make it out to be. Staying in touch with my mentors and making sure we
-were all on the same page about my project was something I spent a lot of time
-on, and in doing so I gained a lot of comfort with the process.
-
-Additionally, GSoC was my first true experience designing a large piece of
-software, where I couldn&#8217;t just give up and trash it when the code started
-getting messy or confusing. It really forced me to adopt good practices around
-testing and organization, especially since I had better programmers than myself
-looking over my work.
-
-Software architecture is something you just don&#8217;t learn in college level CS
-courses, and by the time I&#8217;d graduated, I&#8217;d started hearing a lot of my CS
-professors saying this too. Some day in the future, maybe soon, there will be
-classes taught about just this subject, but for now there&#8217;s no better way to
-learn about it than by working on a real project, with some accountability and
-motivation to actually get it done.
-
-
-</p>
-
-
-<p>Our alumni give new GSoC applicants the following advice:</p>
-
-<p class="note"><strong>Monica:</strong>
-GSoC is a great experience that you should try as a student! What is cool about GSoC is that you work on the project you are keen on and manage your time as
- you wish. Also, working remotely involves additional challenges. In the end you improve your experience and get to know a lot of new and great people.
-
-</p>
-
-
-
-
-<p class="note"><strong>Alberto:</strong>
-
-I think one of the best features offered by the GSOC is the possibility to
-collaborate with (and learn from) people who share the same scientific
-interests and have very different backgrounds and skills. Though this may be
-somewhat &#8216;expected&#8217; for mentors, I was also lucky to find other GSOC students
-willing to bond and share experiences and opinions. My advice is to be
-cooperative and try to learn as much as possible from/with them!  
-
-</p>
-
-
-
-
-<p class="note"><strong>Ankur:</strong>
-Work really hard. Do your homework before you ask questions or before quoting
-anything in proposal. Writing a good proposal is necessary, and you must really
-be aware of what you are writing - a good research is necessary. SciRuby
-community members are readily available to help you at mailing list and #sciruby channel. A thorough discussion with the mentor will help you out.
-</p>
-
-
-
-
-<p class="note"><strong>Will:</strong>
-To new applicants this year I&#8217;d stress one thing above all else; get in
-touch with people on the sciruby mailing list. Introduce yourself as soon as
-possible, and start discussing your project ideas when you have something in
-mind. People on the mailing list are very friendly and helpful, so don&#8217;t be
-afraid to start a conversation, but also expect constructive criticism of your
-proposals.
-
-Answering any questions or concerns promptly and thoroughly not only shows that
-your know your stuff and are passionate about your project, it also shows that
-you are a good fit for GSoC in general. Don&#8217;t assume you&#8217;re in just because
-you&#8217;ve had a good dialogue, but plan and communicate as though you are; don&#8217;t
-wait for the project to start to fill in details or contact your prospective
-mentors personally.
-
-Once you&#8217;ve submitted a proposal, all of this goes double. The closer you get
-to the deadline, the less time there will be to polish your application and
-respond to questions, so make sure you&#8217;re doing it quickly and effectively.
-</p>
-
-
-<p>Our SciRuby GSoC alumni added:</p>
-
-<p class="note"><strong>Monica:</strong>
-If I don&#8217;t join this year, I wish you good luck with the new students!
-</p>
-
-
-
-
-<p class="note"><strong>Ankur:</strong>
-I will be happy to sign up again as student, this year!
-</p>
-
-
-
-
-<p class="note"><strong>Will:</strong>
-I know I&#8217;ve said this already, but GSoC last year was a defining moment in my
-path to becoming a software developer, career-wise sure, but more importantly
-in the coder vs hacker vs computer scientist vs software developer sense. If
-there&#8217;s anything I can do to get involved this year, I&#8217;ll be available.<p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Statistics with Ruby: Time Series and General Linear Models]]></title>
-    <link href="http://sciruby.com/blog/2013/11/07/statistics-with-ruby-time-series-and-general-linear-models/"/>
-    <updated>2013-11-07T13:15:00-06:00</updated>
-    <id>http://sciruby.com/blog/2013/11/07/statistics-with-ruby-time-series-and-general-linear-models</id>
-    <content type="html"><![CDATA[<p class="note"><strong>Editor&#8217;s Note:</strong> This is the third of four blog posts detailing our Google Summer of
-Code 2013 students&#8217; work, edited by John Woods.</p>
-
-
-
-
-<p class="note"><strong>Gem Maintainer&#8217;s Note:</strong> These gems have changed recently. Edits reflect the changes.</p>
-
-
-<h2>Introduction</h2>
-
-<p><a href="https://github.com/clbustos/statsample/">Statsample</a> is a basic and advanced statistics suite in Ruby. It attempts to support JRuby and MRI/YARV equally, and also provides pure Ruby implementations for many functions.</p>
-
-<p>Statsample is a ruby gem for statistical analysis in ruby.</p>
-
-<p>It includes a rich API, except for problems involving time series and generalized linear models (GLM), for which the functionality was rather basic.</p>
-
-<p>So, in this <a href="https://www.google-melange.com/gsoc/homepage/google/gsoc2013">Google Summer of Code 2013</a> program, working on the SciRuby Project, I released two extensions:</p>
-
-<ul>
-<li><a href="http://github.com/sciruby/statsample-timeseries">Statsample TimeSeries</a></li>
-<li><a href="https://github.com/sciruby/statsample-glm">Statsample GLM</a></li>
-</ul>
-
-
-<p>These gems aim to take Statsample further and incorporate various functionalities and estimation techniques on continuous data.</p>
-
-<h2>Statsample TimeSeries</h2>
-
-<p><a href="https://rubygems.org/gems/statsample-timeseries"><em>Statsample TimeSeries</em></a> is equipped with a variety of operations. A few of those functionalities are:</p>
-
-<ul>
-<li>_<a href="http://en.wikipedia.org/wiki/Autocorrelation">Autocorrelation</a> of series: For finding repeating patterns (like a periodic signal) in noisy data or for identifying persistence (if it rained today, will it rain tomorrow?).</li>
-<li><a href="http://en.wikipedia.org/wiki/Autoregressive_moving_average_model">Autoregressive and Moving Average</a>: Autoregressive models (AR and ARMA) are useful for describing random processes such as found in nature and economics believed to be
-predictable from past behavior (e.g., El Niño, the stock market).</li>
-<li><a href="http://en.wikipedia.org/wiki/Partial_autocorrelation_function">Partial autocorrelation</a> with Yule&ndash;Walker, a method for calculating the coefficients of autoregressive models.</li>
-<li><a href="http://en.wikipedia.org/wiki/Levinson_recursion">Levinson&ndash;Durbin</a> estimation: for <a href="http://www.mathworks.com/help/dsp/ref/levinsondurbin.html">solving linear equations</a> involving a <a href="http://en.wikipedia.org/wiki/Toeplitz_matrix">Toeplitz matrix</a>, such as in signal processing or cyclic signals.</li>
-<li><a href="http://en.wikipedia.org/wiki/Kalman_filter">Kalman filtering</a> (or linear quadratic estimation): often used for determining position and motion of a moving object based on sensor information (e.g., for drawing a vehicle&#8217;s position on a map using GPS data, or for aircraft or spacecraft navigation based on sensor inputs)</li>
-</ul>
-
-
-<p>To get your hands dirty,</p>
-
-<ul>
-<li>Install Statsample with <code>gem install statsample</code>.</li>
-<li>Next, install the TimeSeries extension with <code>gem install statsample-timeseries</code>.</li>
-</ul>
-
-
-<p>EDIT: Statsample-timeseries now uses <a href="www.github.com/v0dro/daru/">daru</a> for data storage and cleaning. Thus all ephemeral time series statistics functions (moving average, acf, etc.) have been moved to Daru::Vector, which can be indexed on a DateTimeIndex, which lets you access data indexed by a time stamp. See the <a href="https://github.com/v0dro/daru/blob/master/README.md">daru README</a> for examples.</p>
-
-<p><code>Statsample::TimeSeries::Series</code> has been deprecated in favour of <code>Daru::Vector</code>.</p>
-
-<p>To demonstrate:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;daru&#39;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;statsample-timeseries&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">ts</span> <span class="o">=</span> <span class="no">Daru</span><span class="o">::</span><span class="no">Vector</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">100</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="p">},</span> <span class="n">index</span><span class="p">:</span> <span class="no">Daru</span><span class="o">::</span><span class="no">DateTimeIndex</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="ss">:start</span> <span class="o">=&gt;</span> <span class="s1">&#39;2012-2&#39;</span><span class="p">,</span> <span class="ss">:periods</span> <span class="o">=&gt;</span> <span class="mi">100</span><span class="p">))</span>
-</span><span class='line'><span class="n">ts</span><span class="o">.</span><span class="n">acf</span> <span class="c1"># Calculate auto-correlation</span>
-</span><span class='line'><span class="n">ts</span><span class="o">.</span><span class="n">pacf</span> <span class="c1"># Calculate partial autocorrelation</span>
-</span><span class='line'><span class="c1"># Partial autocorrelation with 11 lags by maximum likelihood estimation</span>
-</span><span class='line'><span class="n">ts</span><span class="o">.</span><span class="n">pacf</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;mle&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="n">ts</span><span class="o">.</span><span class="n">ar</span> <span class="c1"># Autoregressive coefficients</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># ARIMA(2, 1, 1)</span>
-</span><span class='line'><span class="n">k_obj</span> <span class="o">=</span> <span class="no">Statsample</span><span class="o">::</span><span class="no">TimeSeries</span><span class="o">.</span><span class="n">arima</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</span><span class='line'><span class="n">k_obj</span><span class="o">.</span><span class="n">ar</span> <span class="c1"># autoregressive coefficients</span>
-</span><span class='line'><span class="n">k_obj</span><span class="o">.</span><span class="n">ma</span> <span class="c1"># moving average coefficients</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Statsample GLM</h2>
-
-<p><a href="https://rubygems.org/gems/statsample-glm"><em>Statsample GLM</em></a> includes many helpful regression techniques, which can be used for regression analysis on data.
-Some of those techniques are:</p>
-
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Poisson_regression">Poisson Regression</a>: used to model contingency tables and counts</li>
-<li><a href="http://en.wikipedia.org/wiki/Logistic_regression">Logistic Regression</a></li>
-<li>Exponential Regression: one case of <a href="http://en.wikipedia.org/wiki/Nonlinear_regression">nonlinear regression</a> (examples might include the <a href="http://mathbits.com/MathBits/TISection/Statistics2/exponential.htm">temperature of a cup of coffee</a> left in a cold room, or the decay of an orbit)</li>
-<li><a href="http://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares">Iteratively Reweighted Least Squares</a>: used to mitigate the effects of outliers</li>
-</ul>
-
-
-<p>The top level module for regression techniques is <code>Statsample::GLM</code>.</p>
-
-<p>Using it is as simple as ever:</p>
-
-<ul>
-<li>First, install <code>statsample</code> by <code>gem install statsample</code>.</li>
-<li>Then, install GLM by <code>gem install</code>statsample-glm`.</li>
-</ul>
-
-
-<p>Let&#8217;s get started:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;daru&#39;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;statsample-glm&#39;</span>
-</span><span class='line'><span class="c1"># Create the datasets:</span>
-</span><span class='line'><span class="n">x1</span> <span class="o">=</span> <span class="no">Daru</span><span class="o">::</span><span class="no">Vector</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="mi">537322309644812</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">717124209978434</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">519166718891331</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">434970973986765</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">761822002215759</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">51170030921189</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">883854199811195</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">908689798854196</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">70331977539793</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">246971150634099</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">59077593922623</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">721548040910253</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">467025703920194</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">510132788447137</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">430106510266798</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">144353683251536</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">54943800728303</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">849307651309298</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">640304240933579</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">31462478279425</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">399783455165345</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mo">0453055645017</span><span class="mi">902</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mi">58212161987746</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">16484414309359</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">08829266466281</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">243893919684792</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">96655661929441</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">301335373291024</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">665832694463588</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mo">0120650</span><span class="mi">855753837</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">5116066367604</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">557300353673344</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">12829931872045</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">234443748015922</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mo">034</span><span class="mi">86690662651</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">275544751380246</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">231465849558696</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">356880153225012</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">57746647541923</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">35758352580655</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">23971669378224</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">662466275100489</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">313263561921793</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">08783223256362</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">41964722846899</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">29325100940785</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">72153880625103</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">440580131022748</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mo">0351</span><span class="mi">917814720056</span><span class="p">,</span> <span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">142353224879252</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'><span class="n">x2</span> <span class="o">=</span> <span class="no">Daru</span><span class="o">::</span><span class="no">Vector</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">[-</span><span class="mi">0</span><span class="o">.</span><span class="mi">866655707911859</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">367820249977585</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">361486610435</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">857332626245179</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">133438466268095</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">716104533073575</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">77206093023382</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">10136697295802</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">777086491435508</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">204573554913706</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">963353531412233</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">10103024900542</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">404372761837392</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">230226345183469</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mo">0363730246</span><span class="mi">866971</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">838265540390497</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">12543549657924</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">57929175648001</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">747060244805248</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">58946979365152</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">531952663697324</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">53338594419818</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">521992029051441</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">41631763288724</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">611402316795129</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">518355638373296</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">515192557101107</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">672697937866108</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">84347042325327</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">21195540664804</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">269869371631611</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">296155694010096</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mi">18097898069634</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">21314663927206</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">49193669881581</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">38969280369493</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">400680808117106</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">87282814976479</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">82394870451051</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">637864732838274</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">141155946382493</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mo">06</span><span class="mi">99950644281617</span><span class="p">,</span><span class="mi">1</span><span class="o">.</span><span class="mi">32568550595165</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">412599258349398</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">14436832227506</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">16507785388489</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mi">16782049922428</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">24318371493798</span><span class="p">,</span><span class="mi">0</span><span class="o">.</span><span class="mi">258954871320764</span><span class="p">,</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">151966534521183</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">y</span> <span class="o">=</span> <span class="no">Daru</span><span class="o">::</span><span class="no">Vector</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">x</span> <span class="o">=</span> <span class="no">Daru</span><span class="o">::</span><span class="no">DataFrame</span><span class="o">.</span><span class="n">new</span><span class="p">({</span><span class="s2">&quot;x1&quot;</span><span class="o">=&gt;</span><span class="n">x1</span><span class="p">,</span><span class="s2">&quot;x2&quot;</span><span class="o">=&gt;</span><span class="n">x2</span><span class="p">})</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">obj</span> <span class="o">=</span> <span class="no">Statsample</span><span class="o">::</span><span class="no">GLM</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="ss">:binomial</span><span class="p">)</span>
-</span><span class='line'><span class="c1"># =&gt; Returns logistic regression object</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <a href="http://rubydoc.info/gems/statsample-glm/Statsample/Regression">documentation and API details is available here</a></p>
-
-<p>We have some more plans for GLM module. First in the list is to make the algorithms work with singular value decomposition, because manual inversion of matrices is not fun for larger values in a Poisson regression.</p>
-
-<h2>Conclusion</h2>
-
-<p>I have <a href="http://ankurgoel.com">blogged about most of the functionalities</a>; additional information is available there.</p>
-
-<p>For more updated use cases refer to the notebooks in the respective project READMEs.</p>
-
-<p>Please explore and use the libraries; I eagerly await your input, suggestions and questions. Feel free to leave any questions on <a href="http://github.com/SciRuby/statsample-glm/issues">the Statsample GLM tracker</a> or <a href="[the%20Statsample%20GLM%20tracker](http://github.com/SciRuby/statsample-glm/issues">the Statsample TimeSeries tracker</a>.</p>
-
-<p>I had an amazing summer!</p>
-
-<p>Stay tuned and Enjoy.</p>
 ]]></content>
   </entry>
   
