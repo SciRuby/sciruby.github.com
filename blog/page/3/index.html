@@ -9,9 +9,9 @@
   <meta name="author" content="SciRuby">
 
   
-  <meta name="description" content="Hello. I am Naoki, one of four Google Summer of Code (GSoC) 2014
-students in SciRuby. Let me introduce my project. The goal of the GSoC
-2014 D3 &hellip;">
+  <meta name="description" content="My name is Magdalen Berns and I am a physics student with a technical
+background in live audio. I am particularly interested in using science
+and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,6 +84,99 @@ students in SciRuby. Let me introduce my project. The goal of the GSoC
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project/">Introducing the FFTW SciRuby GSoC Project</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+<span class="byline author vcard"><span class="fn">Magdalen Berns</span></span>
+ &bull; 
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-04T12:30:00-04:00" pubdate data-updated="true">Jun 4<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>My name is Magdalen Berns and I am a physics student with a technical
+background in live audio. I am particularly interested in using science
+and technology to improve access for all.</p>
+
+<p>This summer, I will be working on implementing the external library
+appropriately named &#8220;Fastest Fourier Transform in the West&#8221; version 3
+(FFTW3) C and Fortran API in Ruby for this year&#8217;s Google Summer of Code
+(GSoC).</p>
+
+<p>The primary aim of the project is to give SciRuby the capability to
+handle signal analysis, processing and synthesis by performing discrete
+fast Fourier transform operations on NMatrix objects.</p>
+
+<p>After some investigation during the preparation stages of GSoC, it was
+determined that implementing FFTW3 is more desirable than starting from
+scratch in pure Ruby because the FFTW3 API is already extensively used,
+developed, and optimised far beyond what would be achievable in just
+three months. So, putting FFTW3 in the driving seat allows the SciRuby
+project to take advantage of the good work of the FFTW3 developers by
+bringing it to Ruby.</p>
+
+<p>Putting NMatrix to the test with FFTW3 should give users the
+opportunity to test drive NMatrix &mdash; and SciRuby&#8217;s NMatrix developers a
+chance to root out bugs.</p>
+
+<p>Since a gem called ruby-fftw3 already existed to perform FFTW3 operations
+on NArray objects, I forked that repository as a starting point. <a href="https://github.com/thisMagpie/fftw">Things are progressing on my Github fork</a> right now.</p>
+
+<p>My mentor for this project is Colin Fuller who is an exceptionally
+talented programmer &mdash; and he really knows his git too. He has been a
+great help as I adapt to the learning curve of working in C and
+Ruby (languages which I am less familiar with than say, Java or
+JavaScript).</p>
+
+<p>As I work, I intend to share useful gems of information I gather. Those, in addition to my weekly project updates, will appear right here in this blog so others can hopefully benefit.</p>
+
+<p>I have already posted a few useful bits and bobs on
+<a href="http://thismagpie.com">thismagpie.com</a> which relate to my work so far.
+I hope to add those to the SciRuby blog, too, provided
+the readers are interested in that and time permits. Of course, readers here can feel free to have a browse
+of the keywords <a href="http://thismagpie.com/keyword/sciruby">sciruby</a>,
+<a href="http://thismagpie.com/keyword/ruby">ruby</a> and
+<a href="http://thismagpie.com/keyword/git">git</a> on there for the time being.
+I sometimes add posts, manuals and tutorials from external sites where I
+find useful ones on the web too, so watch out for these too.</p>
+
+<p>Please, feel free to watch or follow along as the project comes together
+and those inclined are welcome to share constructive comments and advice
+or raise bugs on the fftw3 issue tracker. Input about my work is very
+welcome as the project progresses. This gem is being written for the
+community, after all!</p>
+
+<p>You can find me on Twitter (Facebook) or GitHub under the username @thisMagpie.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1144,53 +1237,6 @@ Rubyist.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/07/how-to-use-nmatrix-shortcuts/">How to Use NMatrix&#8217;s Shortcuts</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-<span class="byline author vcard"><span class="fn">Carlos Agarie</span></span>
- &bull; 
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-07T12:30:00-05:00" pubdate data-updated="true">Dec 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p class="warning"><strong>Warning:</strong> This code predates v0.0.9 alpha, which is when the NMatrix constructor changed. Please check the <a href="https://github.com/SciRuby/nmatrix/wiki/Getting-started#shortcuts">NMatrix Getting Started guide</a> for the most recent information.</p>
-
-
-<p>John Woods <a href="https://github.com/SciRuby/nmatrix/commit/2b480ce0985affc7218fc341fcb4e5024b30545b">merged my last pull request to NMatrix</a> recently and I wanted to write about why we created these shortcuts and what can be done with them. </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/07/how-to-use-nmatrix-shortcuts/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1218,6 +1264,10 @@ Rubyist.</p>
       </li>
     
       <li class="post">
+        <a href="/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby/">GSoC 2016: NMatrix and JRuby</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/08/21/body-tutorial/">GSoC 2016 : A Look at SpiceRub::Body</a>
       </li>
     
@@ -1227,10 +1277,6 @@ Rubyist.</p>
     
       <li class="post">
         <a href="/blog/2016/06/10/week1_soc/">GSoC 2016 : SpiceRub::KernelPool and Kernels</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/19/gsoc-2015-mixed-models/">Statistical linear mixed models in Ruby with mixed_models (GSoC2015)</a>
       </li>
     
   </ul>

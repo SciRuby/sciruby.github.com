@@ -117,8 +117,8 @@ Firstly, &hellip;">
 <div class="entry-content"><p>So this post comes rather late, but I&#8217;d still like to talk about what I did in the first week, and a little into the second week.
 Firstly, thanks to a pull request offered by my GSoC mentor John (<a href="https://github.com/mohawkjohn">@mohawkjohn</a>), I now have rake tasks set up properly in the repository and rake seems to be working.</p>
 
-<p>There are installation instructions in the <a href="https://github.com/gau27/spice_rub/blob/master/README.rdoc">readme</a> and there are already some sample Kernel files in
-the spec folder to try out various routines on. Apart from cloning the repository, one additional thing you will need to do is <a href="https://naif.jpl.nasa.gov/naif/toolkit_C.html">download the SPICE toolkit</a>. You may want to keep the entire compressed file for later, but you&#8217;ll only need the <code>cspice.a</code> file in the <code>lib/</code> subdirectory. After this follow the instructions in the <a href="https://github.com/gau27/spice_rub/blob/master/README.rdoc">readme</a> and you should be good to go. (Be sure to run <code>bundle install</code> to install any dependencies that you don&#8217;t already have.)</p>
+<p>There are installation instructions in the <a href="https://github.com/sciruby/spice_rub/blob/master/README.rdoc">readme</a> and there are already some sample Kernel files in
+the spec folder to try out various routines on. Apart from cloning the repository, one additional thing you will need to do is <a href="https://naif.jpl.nasa.gov/naif/toolkit_C.html">download the SPICE toolkit</a>. You may want to keep the entire compressed file for later, but you&#8217;ll only need the <code>cspice.a</code> file in the <code>lib/</code> subdirectory. After this follow the instructions in the <a href="https://github.com/sciruby/spice_rub/blob/master/README.rdoc">readme</a> and you should be good to go. (Be sure to run <code>bundle install</code> to install any dependencies that you don&#8217;t already have.)</p>
 
 <p>After you&#8217;re done compiling and installing, run <code>rake pry</code> in the gem root directory.</p>
 
@@ -336,7 +336,7 @@ There isn&#8217;t much to do with a <code>SpiceKernel</code> object except unloa
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2016/08/21/body-tutorial/" title="Previous Post: GSoC 2016 : A Look at SpiceRub::Body">&laquo; GSoC 2016 : A Look at SpiceRub::Body</a>
+        <a class="basic-alignment left" href="/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby/" title="Previous Post: GSoC 2016: NMatrix and JRuby">&laquo; GSoC 2016: NMatrix and JRuby</a>
       
       
     </p>
@@ -368,6 +368,10 @@ There isn&#8217;t much to do with a <code>SpiceKernel</code> object except unloa
       </li>
     
       <li class="post">
+        <a href="/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby/">GSoC 2016: NMatrix and JRuby</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/08/21/body-tutorial/">GSoC 2016 : A Look at SpiceRub::Body</a>
       </li>
     
@@ -377,10 +381,6 @@ There isn&#8217;t much to do with a <code>SpiceKernel</code> object except unloa
     
       <li class="post">
         <a href="/blog/2016/06/10/week1_soc/">GSoC 2016 : SpiceRub::KernelPool and Kernels</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/19/gsoc-2015-mixed-models/">Statistical linear mixed models in Ruby with mixed_models (GSoC2015)</a>
       </li>
     
   </ul>

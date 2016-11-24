@@ -9,9 +9,8 @@
   <meta name="author" content="SciRuby">
 
   
-  <meta name="description" content="Introduction Three months of GSoC 2014 term was over this week and finally I
-released my product Nyaplot as a gem.
-This blog post was written to &hellip;">
+  <meta name="description" content="Almost two months ago, in December, we release our first beta of NMatrix, our
+linear algebra library for the Ruby language. Rather than discussing &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,6 +83,99 @@ This blog post was written to &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/02/14/nmatrix-beta-released-belated-announcement/">NMatrix&#8217;s First Beta Release (Belated Announcement)</a></h1>
+    
+    
+      <p class="meta">
+        
+  
+
+<span class="byline author vcard"><span class="fn">John Woods</span></span>
+ &bull; 
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-02-14T14:56:00-05:00" pubdate data-updated="true">Feb 14<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Almost two months ago, in December, we <a href="https://rubygems.org/gems/nmatrix">release our first beta of NMatrix</a>, our
+linear algebra library for the Ruby language.</p>
+
+<p>Rather than discussing what NMatrix has (which you can find in the <a href="https://github.com/SciRuby/nmatrix/blob/master/README.rdoc">readme</a>),
+I want to take this opportunity to discuss where we&#8217;d like it to go in the future. Think of this as our roadmap to 1.0.</p>
+
+<h2>External Library Requirements</h2>
+
+<p>NMatrix currently has an extremely limited set of Ruby gem dependencies &mdash; essentially only packable, which is
+needed for some of the I/O functionality &mdash; but as with other linear algebra libraries, its native library
+requirements can be problematic.</p>
+
+<p>Specifically, NMatrix requires ATLAS &mdash; which is virtually impossible to install on many Macs, and is no longer
+readily available with Yosemite &mdash; and also likes to have LAPACK around. Moreover, some would prefer to use other
+math libraries with NMatrix.</p>
+
+<p>There are several partial solutions. The clearest is that any components of NMatrix which require external non-standard
+libraries need to be abstracted into separate gems &mdash; such as <tt>nmatrix-atlas</tt> and <tt>nmatrix-io</tt> &mdash; and
+that these components should be interchangeable with others. NMatrix then needs to be able to fall back on either native
+C/C++ or Ruby implementations of certain functionalities.</p>
+
+<p>To this end, a number of simple LAPACK and CBLAS functions have been implemented in NMatrix, with volunteers working on
+a few others (the list is available in the README). <a href="https://github.com/SciRuby/sciruby/wiki/Google-Summer-of-Code-2015-Ideas#abstraction-of-atlascblasclapack-or-openblas-into-a-separate-gem">One of our proposed Google Summer of Code 2015 project ideas</a> involves
+breaking up NMatrix into several gems.</p>
+
+<p>The end result will be a much simpler installation process, and more freedom of choice.</p>
+
+<h2>Removal of Unnecessary Features</h2>
+
+<p>We thought it would be quite clever to include rational number support in NMatrix, including three types (32-bit, 64-bit,
+and 128-bit). Unfortunately, these types increase compilation time by about 30% (back-of-the-envelope calculation), and
+aren&#8217;t particularly useful since most matrix operations with rationals as inputs give irrational-valued matrices
+as their outputs. The inclusion of rational types also complicates the codebase.</p>
+
+<p>Additionally, rationals are computationally problematic; what happens if there is overflow? Ruby handles overflow gracefully
+in its own rational type, which NMatrix users would still be able to utilize via the <tt>:object</tt> dtype.</p>
+
+<h2>You</h2>
+
+<p>The biggest change going forward is that NMatrix development needs to support actual use-cases. In the past, we&#8217;ve aimed
+to flesh out support for sparse storage formats, as well as math operations for the dense storage-type. It is folly to
+develop features no one wants to use. Future core development, then, will aim to make NMatrix&#8217;s current feature set more
+usable.</p>
+
+<p>That means that future non-core development depends on you. What would you like to see in NMatrix? What would make it
+more useful for you?</p>
+
+<p>If you want to become involved, now is a good time. We&#8217;re getting ready to submit a Google Summer of Code application
+(our third, I believe), and we&#8217;re in need of students &mdash; <em>and especially mentors</em>. Please consider joining
+our <a href="https://groups.google.com/forum/#!forum/sciruby-dev">mailing list</a> and adding yourself as a mentor on the
+<a href="https://github.com/SciRuby/sciruby/wiki/Google-Summer-of-Code-2015-Ideas">ideas page</a>.</p>
+
+<p>Thanks so much for your support!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1135,99 +1227,6 @@ minimization methods.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project/">Introducing the FFTW SciRuby GSoC Project</a></h1>
-    
-    
-      <p class="meta">
-        
-  
-
-<span class="byline author vcard"><span class="fn">Magdalen Berns</span></span>
- &bull; 
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-04T12:30:00-04:00" pubdate data-updated="true">Jun 4<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>My name is Magdalen Berns and I am a physics student with a technical
-background in live audio. I am particularly interested in using science
-and technology to improve access for all.</p>
-
-<p>This summer, I will be working on implementing the external library
-appropriately named &#8220;Fastest Fourier Transform in the West&#8221; version 3
-(FFTW3) C and Fortran API in Ruby for this year&#8217;s Google Summer of Code
-(GSoC).</p>
-
-<p>The primary aim of the project is to give SciRuby the capability to
-handle signal analysis, processing and synthesis by performing discrete
-fast Fourier transform operations on NMatrix objects.</p>
-
-<p>After some investigation during the preparation stages of GSoC, it was
-determined that implementing FFTW3 is more desirable than starting from
-scratch in pure Ruby because the FFTW3 API is already extensively used,
-developed, and optimised far beyond what would be achievable in just
-three months. So, putting FFTW3 in the driving seat allows the SciRuby
-project to take advantage of the good work of the FFTW3 developers by
-bringing it to Ruby.</p>
-
-<p>Putting NMatrix to the test with FFTW3 should give users the
-opportunity to test drive NMatrix &mdash; and SciRuby&#8217;s NMatrix developers a
-chance to root out bugs.</p>
-
-<p>Since a gem called ruby-fftw3 already existed to perform FFTW3 operations
-on NArray objects, I forked that repository as a starting point. <a href="https://github.com/thisMagpie/fftw">Things are progressing on my Github fork</a> right now.</p>
-
-<p>My mentor for this project is Colin Fuller who is an exceptionally
-talented programmer &mdash; and he really knows his git too. He has been a
-great help as I adapt to the learning curve of working in C and
-Ruby (languages which I am less familiar with than say, Java or
-JavaScript).</p>
-
-<p>As I work, I intend to share useful gems of information I gather. Those, in addition to my weekly project updates, will appear right here in this blog so others can hopefully benefit.</p>
-
-<p>I have already posted a few useful bits and bobs on
-<a href="http://thismagpie.com">thismagpie.com</a> which relate to my work so far.
-I hope to add those to the SciRuby blog, too, provided
-the readers are interested in that and time permits. Of course, readers here can feel free to have a browse
-of the keywords <a href="http://thismagpie.com/keyword/sciruby">sciruby</a>,
-<a href="http://thismagpie.com/keyword/ruby">ruby</a> and
-<a href="http://thismagpie.com/keyword/git">git</a> on there for the time being.
-I sometimes add posts, manuals and tutorials from external sites where I
-find useful ones on the web too, so watch out for these too.</p>
-
-<p>Please, feel free to watch or follow along as the project comes together
-and those inclined are welcome to share constructive comments and advice
-or raise bugs on the fftw3 issue tracker. Input about my work is very
-welcome as the project progresses. This gem is being written for the
-community, after all!</p>
-
-<p>You can find me on Twitter (Facebook) or GitHub under the username @thisMagpie.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1255,6 +1254,10 @@ community, after all!</p>
       </li>
     
       <li class="post">
+        <a href="/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby/">GSoC 2016: NMatrix and JRuby</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/08/21/body-tutorial/">GSoC 2016 : A Look at SpiceRub::Body</a>
       </li>
     
@@ -1264,10 +1267,6 @@ community, after all!</p>
     
       <li class="post">
         <a href="/blog/2016/06/10/week1_soc/">GSoC 2016 : SpiceRub::KernelPool and Kernels</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/19/gsoc-2015-mixed-models/">Statistical linear mixed models in Ruby with mixed_models (GSoC2015)</a>
       </li>
     
   </ul>
