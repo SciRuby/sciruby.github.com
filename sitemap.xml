@@ -175,28 +175,32 @@
         <lastmod>2016-11-24T12:14:00-05:00</lastmod>
     </url>
     <url>
-        <loc>http://sciruby.com/blog/2016/08/21/time-tutorial/</loc>
-        <lastmod>2016-11-24T12:14:00-05:00</lastmod>
-    </url>
-    <url>
-        <loc>http://sciruby.com/blog/2016/08/21/body-tutorial/</loc>
-        <lastmod>2016-11-24T12:14:00-05:00</lastmod>
-    </url>
-    <url>
         <loc>http://sciruby.com/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby/</loc>
         <lastmod>2016-11-24T12:14:05-05:00</lastmod>
     </url>
     <url>
+        <loc>http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-time/</loc>
+        <lastmod>2016-11-24T12:37:21-05:00</lastmod>
+    </url>
+    <url>
+        <loc>http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body/</loc>
+        <lastmod>2016-11-24T12:37:13-05:00</lastmod>
+    </url>
+    <url>
         <loc>http://sciruby.com/blog/2016/11/24/spicerub-kernelpool-and-kernels/</loc>
-        <lastmod>2016-11-24T12:14:00-05:00</lastmod>
+        <lastmod>2016-11-24T12:32:40-05:00</lastmod>
+    </url>
+    <url>
+        <loc>http://sciruby.com/blog/2016/11/24/gsoc-2016-adding-categorical-data-support/</loc>
+        <lastmod>2016-11-24T12:54:41-05:00</lastmod>
     </url>
     <url>
         <loc>http://sciruby.com/blog/archives/</loc>
-        <lastmod>2016-11-24T12:14:05-05:00</lastmod>
+        <lastmod>2016-11-24T12:54:41-05:00</lastmod>
     </url>
     <url>
         <loc>http://sciruby.com/blog/</loc>
-        <lastmod>2016-11-24T12:14:05-05:00</lastmod>
+        <lastmod>2016-11-24T12:54:41-05:00</lastmod>
     </url>
     <url>
         <loc>http://sciruby.com/docs/</loc>
@@ -204,7 +208,7 @@
     </url>
     <url>
         <loc>http://sciruby.com/</loc>
-        <lastmod>2016-11-24T12:14:05-05:00</lastmod>
+        <lastmod>2016-11-24T12:54:41-05:00</lastmod>
     </url>
     <url>
         <loc>http://sciruby.com/nmatrix/</loc>

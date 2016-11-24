@@ -9,7 +9,9 @@
   <meta name="author" content="SciRuby">
 
   
-  <meta name="description" content="One of the main goals of this project was to make the ephemerides functions easily available to an end user. Ephemerides basically refers to an &hellip;">
+  <meta name="description" content="One of the main goals of this project was to make the ephemerides
+functions easily available to an end user. Ephemerides basically
+refers to an &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sciruby.com/blog/2016/08/21/body-tutorial/">
+  <link rel="canonical" href="http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -92,7 +94,7 @@
         
   
 
-<span class="byline author vcard"><span class="fn">SciRuby</span></span>
+<span class="byline author vcard"><span class="fn">Gaurav Tamba</span></span>
  &bull; 
         
 
@@ -106,24 +108,34 @@
   
 
 
-<time datetime="2016-08-21T09:30:35-04:00" pubdate data-updated="true">Aug 21<span>st</span>, 2016</time>
+<time datetime="2016-11-24T12:23:00-05:00" pubdate data-updated="true">Nov 24<span>th</span>, 2016</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>One of the main goals of this project was to make the ephemerides functions easily available to an end user. Ephemerides basically refers to an object in space whose motion is being tracked and observed. SPICE required you to provide the following parameters to observe a body in space.</p>
+<div class="entry-content"><p>One of the main goals of this project was to make the ephemerides
+functions easily available to an end user. Ephemerides basically
+refers to an object in space whose motion is being tracked and
+observed. SPICE required you to provide the following parameters to
+observe a body in space.</p>
 
-<p><code>Target</code> : The body of interest</p>
+<ul>
+<li><code>Target</code>: The body of interest</li>
+<li><code>Frame</code>: A rotational frame of reference (Default is J2000 [Not to be confused with the J2000 epoch])</li>
+<li><code>Observer</code>: An observing body whose viewpoint is used to chart the vector</li>
+<li><code>Epoch</code> : An epoch in Ephemeris Time</li>
+</ul>
 
-<p><code>Frame</code> : A rotational frame of reference (Default is J2000 [Not to be confused with the J2000 epoch])</p>
 
-<p><code>Observer</code> : An observing body whose viewpoint is used to chart the vector</p>
-
-<p><code>Epoch</code> : An epoch in Ephemeris Time</p>
-
-<p>SPICE has a certain integer convention for the kind of bodies that it has support for. Each body can be referenced via a string or an integer id. While there isn&#8217;t an actual strict range for integer ID classification , it is mentioned <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">here</a> and can be summed up in the following <code>if</code> and <code>elsif</code> clauses. (In Ruby constant strings are better off as symbols, so the constructor takes either an integer ID of a string symbol)</p>
+<p>SPICE has an integer-key convention for the kind of bodies that it
+has support for. Each body can be referenced via a string or an
+integer id. While there isn&#8217;t an actual strict range for integer ID
+classification, it is mentioned <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">here</a> and can be summed up
+in the following <code>if</code> and <code>elsif</code> clauses. (In Ruby constant strings
+are better off as symbols, so the constructor takes either an integer
+ID of a string symbol)</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -166,9 +178,18 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>It was very tempting to involve inheritance and extend a base Body class onto these potential classes, but I simply did not see the need for it at this point. The way it is at the moment, the <code>Body</code> object has a reader attribute type that stores some metadata about the body for the user&#8217;s convenience. Perhaps as coverage of SPICE improves, this minor thing can be changed later on.</p>
+<p>It was very tempting to involve inheritance and extend a base Body
+class onto these potential classes, but I simply did not see the need
+for it at this point. The way it is at the moment, the <code>Body</code> object
+has a reader attribute type that stores some metadata about the body
+for the user&#8217;s convenience. Perhaps as coverage of SPICE improves,
+this minor thing can be changed later on.</p>
 
-<p>To create a Body object, you instantiate with either a body name or a body id. Certain bodies such as instruments will require additional kernels to be loaded. To proceed seamlessly, load a leap seconds kernel, a planetary constants kernel, and an ephemeris kernel. (All avaialable in <code>spec/data/kernels</code>)</p>
+<p>To create a Body object, you instantiate with either a body name or a
+body id. Certain bodies such as instruments will require additional
+kernels to be loaded. To proceed seamlessly, load a leap seconds
+kernel, a planetary constants kernel, and an ephemeris kernel. (All
+avaialable in <code>spec/data/kernels</code>)</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -213,7 +234,10 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><code>399</code> and <code>:earth</code> map to the same body in SPICE data. The frame of reference can also be specified as a named parameter during instantiation to set a custom default frame for that particular object.</p>
+<p><code>399</code> and <code>:earth</code> map to the same body in SPICE data. The frame of
+reference can also be specified as a named parameter during
+instantiation to set a custom default frame for that particular
+object.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -230,9 +254,11 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>In SPICE, a <code>state</code> is a 6 length column vector that stores position and velocity in 3D cartesian co-ordinates</p>
+<p>In SPICE, a <code>state</code> is a 6 length column vector that stores position
+and velocity in 3D cartesian co-ordinates</p>
 
-<p>As a base case, let&#8217;s find out the the position of the Earth with respect to itself.</p>
+<p>As a base case, let&#8217;s find out the the position of the Earth with
+respect to itself.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -247,7 +273,11 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The origin as seen from itself is still the origin, so this makes sense. The methods <code>#velocity_at</code> and <code>#state_at</code> take an identical set of parameters. While there is a bit of redundancy going on, splitting them makes the API more elegant, but the basic relationship between these three vectors is the following :-</p>
+<p>The origin as seen from itself is still the origin, so this makes
+sense. The methods <code>#velocity_at</code> and <code>#state_at</code> take an identical
+set of parameters. While there is a bit of redundancy going on,
+splitting them makes the API more elegant, but the basic relationship
+between these three vectors is the following :-</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -260,9 +290,12 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>One thing to note is that State/Velocity/Position vectors will always be returned as an <code>NMatrix</code> object, SciRuby&#8217;s numerical matrix core, to allow for calculations via the NMatrix API.</p>
+<p>One thing to note is that state/velocity/position vectors will always
+be returned as an <code>NMatrix</code> object, SciRuby&#8217;s numerical matrix core,
+to allow for calculations via the NMatrix API.</p>
 
-<p>As an example that is used in the code, 1 line can turn a position vector into distance from origin. (Using Euclidean distance)</p>
+<p>As an example that is used in the code, one line can turn a position
+vector into distance from origin (here using Euclidean distance):</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -271,9 +304,8 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>This basically performs the computation, <code>SquareRootOf( x ^ 2 + y ^ 2 + z ^ 2 )</code> Which becomes the basis for the method, <code>#distance_from</code> .</p>
-
-<p>As a simple imprecise experiment, let&#8217;s find out how the speed of light can be &#8220;estimated&#8221; up with this data.</p>
+<p>As a simple imprecise experiment, let&#8217;s find out how the speed of
+light can be &#8220;estimated&#8221; up with this data.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -294,9 +326,14 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The unit of distance here is <code>Km</code>, so the speed of light by this measurement is about pretty close to the textbook figure of <code>3 x 10 ^ 8  m/s</code>.</p>
+<p>The unit of distance here is kilometers, so the speed of light by this
+measurement is about pretty close to the textbook figure of 3e+8 m/s.</p>
 
-<p>There is also a function to check if a list of bodies are within a radial proximity from an observing body. We already calculated the distance of the moon to be about 367k Km. The function <code>within_proximity</code> returns a list of all bodies that are within the specified radial distance from the calling body object.</p>
+<p>There is also a function to check if a list of bodies are within a
+radial proximity from an observing body. We already calculated the
+distance of the moon to be about 367,000 km. The function
+<code>within_proximity</code> returns a list of all bodies that are within the
+specified radial distance from the calling body object.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -317,7 +354,15 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Now that we&#8217;ve come to the end of the functionality, I would like to state that there is another named argument <code>aberration_correction:</code> which is basically an error reduction method to provide a more accurate result than the default observation. The default <code>:none</code> option for aberration correction basically provides the geometric observations without any corrections for reception or transmission of photons. For a list of various aberration correction methods available, have a look at the documentation for <a href="ftp://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/spkpos_c.html">spkpos_c</a> to find out if you need an aberration correction on SPICE data.</p>
+<p>Now that we&#8217;ve come to the end of the functionality, I would like to
+mention that there is another named argument <code>aberration_correction</code>
+which is basically an error reduction method to provide a more
+accurate result than the default observation. The default <code>:none</code>
+option for aberration correction basically provides the geometric
+observations without any corrections for reception or transmission of
+photons. For a list of various aberration correction methods
+available, have a look at the documentation for <a href="ftp://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/spkpos_c.html">spkpos_c</a> to
+find out if you need an aberration correction on SPICE data.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -336,9 +381,14 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>If you want to look at it another way, no aberration correction would give you the textbook response of rigid geometry, while introducing an aberration correction would give you a somewhat more realistic output accounting for the errors that do happen when these observations are made.</p>
+<p>If you want to look at it another way, no aberration correction would
+give you the textbook response of rigid geometry, while introducing an
+aberration correction would give you a somewhat more realistic output
+accounting for the errors that do happen when these observations are
+made.</p>
 
-<p>Finally, if you need to generate a continuous time series for a body, then <code>SpiceRub::Time</code> has two functions to aid in that</p>
+<p>Finally, if you need to generate a continuous time series for a body,
+then <code>SpiceRub::Time</code> has two functions to aid in that:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -357,9 +407,15 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>In this case, I took a start time and an end time that was one day after and requested 4 linearly spaced epochs. This is basically an interface to <code>NMatrix.linspace</code>.</p>
+<p>In this case, I took a start time and an end time that was one day
+after and requested 4 linearly spaced epochs. This is basically an
+interface to <code>NMatrix.linspace</code>.</p>
 
-<p>The other function requires you to input a start time and an end time and a step size that keeps getting added to the start time till the end time is reached. As a contrived example, we&#8217;ll take two epochs, 5 days apart and ask for a step size of a day, expecting 6 elements.</p>
+<p>The other function requires you to input a start time and an end time
+and a step size that keeps getting added to the start time till the
+end time is reached. As a contrived example, we&#8217;ll take two epochs,
+five days apart and ask for a step size of a day, expecting six
+elements.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -382,7 +438,14 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>And that&#8217;s it for this blog post. I would appreciate any feedback regarding this as I&#8217;ve been juggling the design back and forth very frequently. There is large potential of expansion of the <code>Body</code> class, particularly creating new classes as when different Bobdy objects would have a corresponding function. (For example, the function <code>getfov_c</code> which returns the field of view of an instrument could be an instance function attached to the <code>Instrument</code> subclass of <code>Body</code>, but this is just potential expansions in the future.)</p>
+<p>And that&#8217;s it for this blog post. I would appreciate any feedback
+regarding this as I&#8217;ve been juggling the design back and forth very
+frequently. There is large potential of expansion of the <code>Body</code> class,
+particularly creating new classes as when different Bobdy objects
+would have a corresponding function. (For example, the function
+<code>getfov_c</code> which returns the field of view of an instrument could be
+an instance function attached to the <code>Instrument</code> subclass of <code>Body</code>,
+but this is just potential expansions in the future.)</p>
 </div>
 
 
@@ -391,7 +454,7 @@
       
   
 
-<span class="byline author vcard">Posted by <span class="fn">SciRuby</span></span>
+<span class="byline author vcard">Posted by <span class="fn">Gaurav Tamba</span></span>
 
       
 
@@ -405,12 +468,12 @@
   
 
 
-<time datetime="2016-08-21T09:30:35-04:00" pubdate data-updated="true">Aug 21<span>st</span>, 2016</time>
+<time datetime="2016-11-24T12:23:00-05:00" pubdate data-updated="true">Nov 24<span>th</span>, 2016</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/gsoc/'>gsoc</a>
+    <a class='category' href='/blog/categories/gsoc-/'>GSOC,</a>, <a class='category' href='/blog/categories/gsoc2016-/'>GSOC2016,</a>, <a class='category' href='/blog/categories/spice-/'>SPICE,</a>, <a class='category' href='/blog/categories/spicerub-/'>SpiceRub,</a>, <a class='category' href='/blog/categories/students/'>Students</a>
   
 </span>
 
@@ -419,7 +482,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sciruby.com/blog/2016/08/21/body-tutorial/" data-via="sciruby" data-counturl="http://sciruby.com/blog/2016/08/21/body-tutorial/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body/" data-via="sciruby" data-counturl="http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body/" >Tweet</a>
   
   
   
@@ -430,14 +493,20 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2016/08/21/time-tutorial/" title="Previous Post: GSoc 2016 : A Look at SpiceRub::Time">&laquo; GSoc 2016 : A Look at SpiceRub::Time</a>
+        <a class="basic-alignment left" href="/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-time/" title="Previous Post: GSoC 2016 : A Look at SpiceRub::Time">&laquo; GSoC 2016 : A Look at SpiceRub::Time</a>
       
       
-        <a class="basic-alignment right" href="/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby/" title="Next Post: GSoC 2016: NMatrix and JRuby">GSoC 2016: NMatrix and JRuby &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2016/11/24/spicerub-kernelpool-and-kernels/" title="Next Post: GSoC 2016: SpiceRub::KernelPool and Kernels">GSoC 2016: SpiceRub::KernelPool and Kernels &raquo;</a>
       
     </p>
   </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -454,23 +523,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/11/24/gsoc-2016-adding-categorical-data-support/">GSoC 2016: Adding Categorical Data Support</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/11/24/spicerub-kernelpool-and-kernels/">GSoC 2016: SpiceRub::KernelPool and Kernels</a>
       </li>
     
       <li class="post">
+        <a href="/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body/">GSoC 2016 : A Look at SpiceRub::Body</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-time/">GSoC 2016 : A Look at SpiceRub::Time</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby/">GSoC 2016: NMatrix and JRuby</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/08/21/body-tutorial/">GSoC 2016 : A Look at SpiceRub::Body</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/08/21/time-tutorial/">GSoc 2016 : A Look at SpiceRub::Time</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/06/10/week1_soc/">GSoC 2016 : SpiceRub::KernelPool and Kernels</a>
       </li>
     
   </ul>
@@ -542,7 +611,10 @@
       var disqus_shortname = 'sciruby';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body/';
+        var disqus_url = 'http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

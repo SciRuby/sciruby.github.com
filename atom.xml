@@ -4,7 +4,7 @@
   <title><![CDATA[SciRuby]]></title>
   <link href="http://sciruby.com/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2016-11-24T12:18:40-05:00</updated>
+  <updated>2016-11-24T12:54:38-05:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -14,9 +14,222 @@
 
   
   <entry>
+    <title type="html"><![CDATA[GSoC 2016: Adding Categorical Data Support]]></title>
+    <link href="http://sciruby.com/blog/2016/11/24/gsoc-2016-adding-categorical-data-support/"/>
+    <updated>2016-11-24T12:44:00-05:00</updated>
+    <id>http://sciruby.com/blog/2016/11/24/gsoc-2016-adding-categorical-data-support</id>
+    <content type="html"><![CDATA[<p>Support for categorical data is important for any data analysis
+tool. This summer I implemented categorical data capabilities for:</p>
+
+<ul>
+<li>Convenient and efficient data wrangling for categorical data in <a href="https://github.com/v0dro/daru">Daru</a></li>
+<li>Visualization of categorical data</li>
+<li>Multiple linear regression and generalized linear models (GLM) with categorical variables in <a href="https://github.com/SciRuby/statsample">Statsample</a> and <a href="https://github.com/SciRuby/statsample-glm">Statsample-GLM</a></li>
+</ul>
+
+
+<p>Lets talk about each of them in detail.</p>
+
+<h4>Analyzing catgorical data with Daru</h4>
+
+<p>Categorical data is now readily recognized by
+<a href="https://github.com/v0dro/daru">Daru</a> and Daru has all the necessary
+procedures for dealing with it.</p>
+
+<p>To analyze categorical variable, simply turn the numerical vector to categorical and you are ready to go.</p>
+
+<p>We will use, for demonstration purposes, animal shelter data taken
+from the <a href="https://www.kaggle.com/c/shelter-animal-outcomes">Kaggle Competition</a>. It is
+stored in <code>shelter_data</code>.</p>
+
+<p><img src="http://i65.tinypic.com/xeliqs.png" alt="" /></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Tell Daru which variables are categorical</span>
+</span><span class='line'><span class="n">shelter_data</span><span class="o">.</span><span class="n">to_category</span> <span class="s1">&#39;OutcomeType&#39;</span><span class="p">,</span> <span class="s1">&#39;AnimalType&#39;</span><span class="p">,</span> <span class="s1">&#39;SexuponOutcome&#39;</span><span class="p">,</span> <span class="s1">&#39;Breed&#39;</span><span class="p">,</span> <span class="s1">&#39;Color&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Or quantize a numerical variable to categorical</span>
+</span><span class='line'><span class="n">shelter_data</span><span class="o">[</span><span class="s1">&#39;AgeuponOutcome&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="n">shelter_data</span><span class="o">[</span><span class="s1">&#39;AgeuponOutcome(Weeks)&#39;</span><span class="o">].</span><span class="n">cut</span> <span class="o">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">260</span><span class="p">,</span> <span class="mi">1500</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">labels</span><span class="p">:</span> <span class="o">[</span><span class="ss">:less_than_week</span><span class="p">,</span> <span class="ss">:less_than_month</span><span class="p">,</span> <span class="ss">:less_than_year</span><span class="p">,</span> <span class="ss">:one_to_five_years</span><span class="p">,</span> <span class="ss">:more_than__five_years</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Do your operations on categorical data</span>
+</span><span class='line'><span class="n">shelter_data</span><span class="o">[</span><span class="s1">&#39;AgeuponOutcome&#39;</span><span class="o">].</span><span class="n">frequencies</span><span class="o">.</span><span class="n">sort</span> <span class="n">ascending</span><span class="p">:</span> <span class="kp">false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://i67.tinypic.com/w1u3vs.png" alt="" /></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">small</span><span class="o">[</span><span class="s1">&#39;Breed&#39;</span><span class="o">].</span><span class="n">categories</span><span class="o">.</span><span class="n">size</span>
+</span><span class='line'><span class="c1">#=&gt; 1380</span>
+</span><span class='line'><span class="c1"># Merge infrequent categories to make data analysis easy</span>
+</span><span class='line'><span class="n">other_cats</span> <span class="o">=</span> <span class="n">shelter_data</span><span class="o">[</span><span class="s1">&#39;Breed&#39;</span><span class="o">].</span><span class="n">categories</span><span class="o">.</span><span class="n">select</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">shelter_data</span><span class="o">[</span><span class="s1">&#39;Breed&#39;</span><span class="o">].</span><span class="n">count</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="p">}</span>
+</span><span class='line'><span class="n">other_cats_hash</span> <span class="o">=</span> <span class="n">other_cats</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="o">[</span><span class="s1">&#39;other&#39;</span><span class="o">]*</span><span class="n">other_cats</span><span class="o">.</span><span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">to_h</span>
+</span><span class='line'><span class="n">shelter_data</span><span class="o">[</span><span class="s1">&#39;Breed&#39;</span><span class="o">].</span><span class="n">rename_categories</span> <span class="n">other_cats_hash</span>
+</span><span class='line'><span class="n">shelter_data</span><span class="o">[</span><span class="s1">&#39;Breed&#39;</span><span class="o">].</span><span class="n">frequencies</span>
+</span><span class='line'><span class="c1"># View the data</span>
+</span><span class='line'><span class="n">small</span><span class="o">[</span><span class="s1">&#39;Breed&#39;</span><span class="o">].</span><span class="n">frequencies</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">ascending</span><span class="p">:</span> <span class="kp">false</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://i64.tinypic.com/25rcu8m.png" alt="" /></p>
+
+<p>Please refer to <a href="http://lokeshh.github.io/blog/2016/06/21/categorical-data/">this blog post</a> to know more.</p>
+
+<h4>Visualizing categorical data</h4>
+
+<p>With the help of <a href="https://github.com/SciRuby/nyaplot">Nyaplot</a>, <a href="https://github.com/SciRuby/gnuplotrb">GnuplotRB</a> and <a href="https://github.com/topfunky/gruff">Gruff</a>, Daru now provides ability to visualize categorical data as it does with numerical data.</p>
+
+<p>To plot a vector with Nyaplot one needs to call the function <code>#plot</code>.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># dv is a caetgorical vector</span>
+</span><span class='line'><span class="n">dv</span> <span class="o">=</span> <span class="no">Daru</span><span class="o">::</span><span class="no">Vector</span><span class="o">.</span><span class="n">new</span> <span class="o">[</span><span class="s1">&#39;III&#39;</span><span class="o">]*</span><span class="mi">10</span> <span class="o">+</span> <span class="o">[</span><span class="s1">&#39;II&#39;</span><span class="o">]*</span><span class="mi">5</span> <span class="o">+</span> <span class="o">[</span><span class="s1">&#39;I&#39;</span><span class="o">]*</span><span class="mi">5</span><span class="p">,</span> <span class="n">type</span><span class="p">:</span> <span class="ss">:category</span><span class="p">,</span> <span class="n">categories</span><span class="p">:</span> <span class="o">[</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;II&#39;</span><span class="p">,</span> <span class="s1">&#39;III&#39;</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">dv</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">type</span><span class="p">:</span> <span class="ss">:bar</span><span class="p">,</span> <span class="nb">method</span><span class="p">:</span> <span class="ss">:fraction</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="nb">p</span><span class="p">,</span> <span class="n">d</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">p</span><span class="o">.</span><span class="n">x_label</span> <span class="s1">&#39;Categories&#39;</span>
+</span><span class='line'>  <span class="nb">p</span><span class="o">.</span><span class="n">y_label</span> <span class="s1">&#39;Fraction&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://i64.tinypic.com/2s6onsw.png" alt="" /></p>
+
+<p>Given a dataframe, one can plot the scatter plot such that the points
+color, shape and size can be varied acording to a categorical
+variable.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># df is a dataframe with categorical variable :c</span>
+</span><span class='line'><span class="n">df</span> <span class="o">=</span> <span class="no">Daru</span><span class="o">::</span><span class="no">DataFrame</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
+</span><span class='line'>  <span class="n">a</span><span class="p">:</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">0</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">b</span><span class="p">:</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">c</span><span class="p">:</span> <span class="o">[</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;II&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;III&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;III&#39;</span><span class="p">,</span> <span class="s1">&#39;II&#39;</span><span class="o">]</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'><span class="n">df</span><span class="o">.</span><span class="n">to_category</span> <span class="ss">:c</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">type</span><span class="p">:</span> <span class="ss">:scatter</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="ss">:a</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="ss">:b</span><span class="p">,</span> <span class="n">categorized</span><span class="p">:</span> <span class="p">{</span><span class="n">by</span><span class="p">:</span> <span class="ss">:c</span><span class="p">,</span> <span class="nb">method</span><span class="p">:</span> <span class="ss">:color</span><span class="p">})</span> <span class="k">do</span> <span class="o">|</span><span class="nb">p</span><span class="p">,</span> <span class="n">d</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">p</span><span class="o">.</span><span class="n">xrange</span> <span class="o">[-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="o">]</span>
+</span><span class='line'>  <span class="nb">p</span><span class="o">.</span><span class="n">yrange</span> <span class="o">[-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://i64.tinypic.com/2mcfx28.png" alt="" /></p>
+
+<p>In a similar manner Gnuplot and Gruff also support plotting of categorical variables.</p>
+
+<p>An additional work I did was to add Gruff with Daru. Now one can plot
+vectors and dataframes also using Gruff.</p>
+
+<p>See more notebooks on visualizing categorical data with Daru
+<a href="http://nbviewer.jupyter.org/github/SciRuby/sciruby-notebooks/tree/master/Data%20Analysis/Plotting/">here</a>.</p>
+
+<h4>Regression with categorical data</h4>
+
+<p>Now categorical data is supported in multiple linear regression and
+generalized linear models (GLM) in
+<a href="https://github.com/SciRuby/statsample">Statsample</a> and
+<a href="https://github.com/SciRuby/statsample-glm">Statsample-GLM</a>.</p>
+
+<p>A new formula language (like that used in R or
+<a href="https://github.com/pydata/patsy">Patsy</a>) has been introduced to ease
+the task of specifying regressions.</p>
+
+<p>Now there&#8217;s no need to manually create a dataframe for regression.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;statsample-glm&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">formula</span> <span class="o">=</span> <span class="s1">&#39;OutcomeType_Adoption~AnimalType+Breed+AgeuponOutcome(Weeks)+Color+SexuponOutcome&#39;</span>
+</span><span class='line'><span class="n">glm_adoption</span> <span class="o">=</span> <span class="no">Statsample</span><span class="o">::</span><span class="no">GLM</span><span class="o">::</span><span class="no">Regression</span><span class="o">.</span><span class="n">new</span> <span class="n">formula</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="ss">:logistic</span>
+</span><span class='line'><span class="n">glm_adoption</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">coefficients</span> <span class="ss">:hash</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#=&gt; {:AnimalType_Cat=&gt;0.8376443692275163, :&quot;Breed_Pit Bull Mix&quot;=&gt;0.28200753488859803, :&quot;Breed_German Shepherd Mix&quot;=&gt;1.0518504638731023, :&quot;Breed_Chihuahua Shorthair Mix&quot;=&gt;1.1960242033878856, :&quot;Breed_Labrador Retriever Mix&quot;=&gt;0.445803000000512, :&quot;Breed_Domestic Longhair Mix&quot;=&gt;1.898703165797653, :&quot;Breed_Siamese Mix&quot;=&gt;1.5248210169271197, :&quot;Breed_Domestic Medium Hair Mix&quot;=&gt;-0.19504965010288533, :Breed_other=&gt;0.7895601504638325, :&quot;Color_Blue/White&quot;=&gt;0.3748263925801828, :Color_Tan=&gt;0.11356334165122918, :&quot;Color_Black/Tan&quot;=&gt;-2.6507089126322114, :&quot;Color_Blue Tabby&quot;=&gt;0.5234717706465536, :&quot;Color_Brown Tabby&quot;=&gt;0.9046099720184905, :Color_White=&gt;0.07739310267363662, :Color_Black=&gt;0.859906249787038, :Color_Brown=&gt;-0.003740755055106689, :&quot;Color_Orange Tabby/White&quot;=&gt;0.2336674067343927, :&quot;Color_Black/White&quot;=&gt;0.22564205490196415, :&quot;Color_Brown Brindle/White&quot;=&gt;-0.6744314269278774, :&quot;Color_Orange Tabby&quot;=&gt;2.063785952843677, :&quot;Color_Chocolate/White&quot;=&gt;0.6417921901449108, :Color_Blue=&gt;-2.1969040091451704, :Color_Calico=&gt;-0.08386525532631824, :&quot;Color_Brown/Black&quot;=&gt;0.35936722899161305, :Color_Tricolor=&gt;-0.11440457799048752, :&quot;Color_White/Black&quot;=&gt;-2.3593561796090383, :Color_Tortie=&gt;-0.4325130799770577, :&quot;Color_Tan/White&quot;=&gt;0.09637439333330515, :&quot;Color_Brown Tabby/White&quot;=&gt;0.12304448360566177, :&quot;Color_White/Brown&quot;=&gt;0.5867441296328475, :Color_other=&gt;0.08821407092892847, :&quot;SexuponOutcome_Spayed Female&quot;=&gt;0.32626712478395975, :&quot;SexuponOutcome_Intact Male&quot;=&gt;-3.971505056680895, :&quot;SexuponOutcome_Intact Female&quot;=&gt;-3.619095491410668, :SexuponOutcome_Unknown=&gt;-102.73807712615843, :&quot;AgeuponOutcome(Weeks)&quot;=&gt;-0.006959545305620043}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Additionally, through the work of <a href="https://github.com/agisga">Alexej Grossmann</a>,
+one can also predict on new data using the model.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">predict</span> <span class="o">=</span> <span class="n">glm_adoption</span><span class="o">.</span><span class="n">predict</span> <span class="nb">test</span>
+</span><span class='line'><span class="n">predict</span><span class="o">.</span><span class="n">map!</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">5</span> <span class="o">?</span> <span class="mi">0</span> <span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+</span><span class='line'><span class="n">predict</span><span class="o">.</span><span class="n">head</span> <span class="mi">5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://i67.tinypic.com/r1af7p.png" alt="" /></p>
+
+<p>This, I believe, makes Statsample-GLM very convenient to use.</p>
+
+<p>See <a href="http://nbviewer.jupyter.org/github/SciRuby/sciruby-notebooks/blob/master/Data%20Analysis/Categorical%20Data/examples/%5BExample%5D%20Formula%20language%20in%20Statsample-GLM.ipynb">this</a> for a complete example.</p>
+
+<h4>Other</h4>
+
+<p>In addition to the aforementioned, there are some other considerable changes:</p>
+
+<ul>
+<li>Improving overall structure of indexing in Daru and adding more capabilities. See <a href="http://nbviewer.jupyter.org/github/SciRuby/sciruby-notebooks/blob/master/Data%20Analysis/Categorical%20Data/Indexing%20in%20Vector.ipynb">this</a> and <a href="http://nbviewer.jupyter.org/github/SciRuby/sciruby-notebooks/blob/master/Data%20Analysis/Categorical%20Data/Indexing%20in%20DataFrame.ipynb">this</a>.</li>
+<li><code>CategoricalIndex</code> to handle the case when index column is a categorical data. <a href="http://lokeshh.github.io/blog/2016/06/14/categorical-index/">More about it here.</a></li>
+<li>Improving missing value API in Daru. <a href="http://lokeshh.github.io/blog/2016/08/18/improve-missing-values-api-in-daru/">Read more about it here.</a></li>
+<li>Configuring guard to enable automatic testing. <a href="https://github.com/v0dro/daru/blob/master/CONTRIBUTING.md#testing">More info here.</a></li>
+</ul>
+
+
+<h4>Documentation</h4>
+
+<p><a href="http://lokeshh.github.io/blog/2016/06/21/categorical-data/">You can read about all my work in detail here.</a>. <a href="https://summerofcode.withgoogle.com/archive/2016/projects/5356167010189312/">Additionally, my project page can be found here.</a></p>
+
+<p>I hope with these additions one will be able to see data more clearly with Daru.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[GSoC 2016: SpiceRub::KernelPool and Kernels]]></title>
     <link href="http://sciruby.com/blog/2016/11/24/spicerub-kernelpool-and-kernels/"/>
-    <updated>2016-11-24T11:54:35-05:00</updated>
+    <updated>2016-11-24T12:32:35-05:00</updated>
     <id>http://sciruby.com/blog/2016/11/24/spicerub-kernelpool-and-kernels</id>
     <content type="html"><![CDATA[<p>So this post comes rather late, but I&#8217;d still like to talk about what I did in the first week, and a little into the second week.
 Firstly, thanks to a pull request offered by my GSoC mentor John (<a href="https://github.com/mohawkjohn">@mohawkjohn</a>), I now have rake tasks set up properly in the repository and rake seems to be working.</p>
@@ -193,6 +406,611 @@ There isn&#8217;t much to do with a <code>SpiceKernel</code> object except unloa
 
 
 <p>And that about wraps up this blog post on basic kernel handling. Since we know how to load data but not use it yet, I&#8217;ll cover that and the various kernel types in the next blog post. Thank you for reading.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GSoC 2016 : A Look at SpiceRub::Body]]></title>
+    <link href="http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body/"/>
+    <updated>2016-11-24T12:23:00-05:00</updated>
+    <id>http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body</id>
+    <content type="html"><![CDATA[<p>One of the main goals of this project was to make the ephemerides
+functions easily available to an end user. Ephemerides basically
+refers to an object in space whose motion is being tracked and
+observed. SPICE required you to provide the following parameters to
+observe a body in space.</p>
+
+<ul>
+<li><code>Target</code>: The body of interest</li>
+<li><code>Frame</code>: A rotational frame of reference (Default is J2000 [Not to be confused with the J2000 epoch])</li>
+<li><code>Observer</code>: An observing body whose viewpoint is used to chart the vector</li>
+<li><code>Epoch</code> : An epoch in Ephemeris Time</li>
+</ul>
+
+
+<p>SPICE has an integer-key convention for the kind of bodies that it
+has support for. Each body can be referenced via a string or an
+integer id. While there isn&#8217;t an actual strict range for integer ID
+classification, it is mentioned <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">here</a> and can be summed up
+in the following <code>if</code> and <code>elsif</code> clauses. (In Ruby constant strings
+are better off as symbols, so the constructor takes either an integer
+ID of a string symbol)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">if</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">2000000</span>
+</span><span class='line'>    <span class="ss">:asteroid</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">1000000</span>
+</span><span class='line'>    <span class="ss">:comet</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">1000</span>
+</span><span class='line'>    <span class="ss">:body</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">10</span>
+</span><span class='line'>    <span class="n">body_id</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">99</span> <span class="o">?</span>
+</span><span class='line'>      <span class="ss">:planet</span> <span class="p">:</span> <span class="ss">:satellite</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">==</span> <span class="mi">10</span>
+</span><span class='line'>    <span class="ss">:star</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="ss">:barycenter</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1000</span>
+</span><span class='line'>    <span class="ss">:spacecraft</span>
+</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">100000</span>
+</span><span class='line'>    <span class="ss">:instrument</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="ss">:spacecraft</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It was very tempting to involve inheritance and extend a base Body
+class onto these potential classes, but I simply did not see the need
+for it at this point. The way it is at the moment, the <code>Body</code> object
+has a reader attribute type that stores some metadata about the body
+for the user&#8217;s convenience. Perhaps as coverage of SPICE improves,
+this minor thing can be changed later on.</p>
+
+<p>To create a Body object, you instantiate with either a body name or a
+body id. Certain bodies such as instruments will require additional
+kernels to be loaded. To proceed seamlessly, load a leap seconds
+kernel, a planetary constants kernel, and an ephemeris kernel. (All
+avaialable in <code>spec/data/kernels</code>)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Body</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">399</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Body:0x00000002769da8</span>
+</span><span class='line'>     <span class="vi">@code</span><span class="o">=</span><span class="mi">399</span><span class="p">,</span>
+</span><span class='line'>     <span class="vi">@frame</span><span class="o">=</span><span class="ss">:J2000</span><span class="p">,</span>
+</span><span class='line'>     <span class="vi">@name</span><span class="o">=</span><span class="ss">:earth</span><span class="p">,</span>
+</span><span class='line'>     <span class="vi">@type</span><span class="o">=</span><span class="ss">:planet</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Body</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:earth</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Body:0x000000026c73c8</span>
+</span><span class='line'>   <span class="vi">@code</span><span class="o">=</span><span class="mi">399</span><span class="p">,</span>
+</span><span class='line'>   <span class="vi">@frame</span><span class="o">=</span><span class="ss">:J2000</span><span class="p">,</span>
+</span><span class='line'>   <span class="vi">@name</span><span class="o">=</span><span class="ss">:earth</span><span class="p">,</span>
+</span><span class='line'>   <span class="vi">@type</span><span class="o">=</span><span class="ss">:planet</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Body</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:moon</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Body:0x0000000214ac88</span>
+</span><span class='line'>   <span class="vi">@code</span><span class="o">=</span><span class="mi">301</span><span class="p">,</span>
+</span><span class='line'>   <span class="vi">@frame</span><span class="o">=</span><span class="ss">:J2000</span><span class="p">,</span>
+</span><span class='line'>   <span class="vi">@name</span><span class="o">=</span><span class="ss">:moon</span><span class="p">,</span>
+</span><span class='line'>   <span class="vi">@type</span><span class="o">=</span><span class="ss">:satellite</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>399</code> and <code>:earth</code> map to the same body in SPICE data. The frame of
+reference can also be specified as a named parameter during
+instantiation to set a custom default frame for that particular
+object.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Body</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">399</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="no">IAU_EARTH</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Body:0x000000020b1df8</span>
+</span><span class='line'>     <span class="vi">@code</span><span class="o">=</span><span class="mi">399</span><span class="p">,</span>
+</span><span class='line'>     <span class="vi">@frame</span><span class="o">=</span><span class="ss">:IAU_EARTH</span><span class="p">,</span>
+</span><span class='line'>     <span class="vi">@name</span><span class="o">=</span><span class="ss">:earth</span><span class="p">,</span>
+</span><span class='line'>     <span class="vi">@type</span><span class="o">=</span><span class="ss">:planet</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In SPICE, a <code>state</code> is a 6 length column vector that stores position
+and velocity in 3D cartesian co-ordinates</p>
+
+<p>As a base case, let&#8217;s find out the the position of the Earth with
+respect to itself.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">earth</span><span class="o">.</span><span class="n">position_at</span><span class="p">(</span><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">observer</span><span class="p">:</span> <span class="n">earth</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span>
+</span><span class='line'><span class="o">[</span>
+</span><span class='line'>  <span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span>   <span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span>   <span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The origin as seen from itself is still the origin, so this makes
+sense. The methods <code>#velocity_at</code> and <code>#state_at</code> take an identical
+set of parameters. While there is a bit of redundancy going on,
+splitting them makes the API more elegant, but the basic relationship
+between these three vectors is the following :-</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">state</span> <span class="o">=</span> <span class="o">[</span>
+</span><span class='line'>          <span class="n">position</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="n">position</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="n">position</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>          <span class="n">velocity</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="n">velocity</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="n">velocity</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span>
+</span><span class='line'>        <span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>One thing to note is that state/velocity/position vectors will always
+be returned as an <code>NMatrix</code> object, SciRuby&#8217;s numerical matrix core,
+to allow for calculations via the NMatrix API.</p>
+
+<p>As an example that is used in the code, one line can turn a position
+vector into distance from origin (here using Euclidean distance):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">position</span> <span class="o">=</span> <span class="n">earth</span><span class="o">.</span><span class="n">position_at</span><span class="p">(</span><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">observer</span><span class="p">:</span> <span class="n">observer</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="p">(</span><span class="n">position</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As a simple imprecise experiment, let&#8217;s find out how the speed of
+light can be &#8220;estimated&#8221; up with this data.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">distance</span> <span class="o">=</span> <span class="n">moon</span><span class="o">.</span><span class="n">distance_from</span><span class="p">(</span><span class="n">earth</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">367441</span><span class="o">.</span><span class="mo">0260</span><span class="mi">814745</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">time</span> <span class="o">=</span> <span class="n">moon</span><span class="o">.</span><span class="n">light_time_from</span><span class="p">(</span><span class="n">earth</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">1</span><span class="o">.</span><span class="mi">2256513340354764</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">distance</span> <span class="o">/</span> <span class="n">time</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">299792</span><span class="o">.</span><span class="mi">458</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The unit of distance here is kilometers, so the speed of light by this
+measurement is about pretty close to the textbook figure of 3e+8 m/s.</p>
+
+<p>There is also a function to check if a list of bodies are within a
+radial proximity from an observing body. We already calculated the
+distance of the moon to be about 367,000 km. The function
+<code>within_proximity</code> returns a list of all bodies that are within the
+specified radial distance from the calling body object.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#assuming venus and mercury are instantiated</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">earth</span><span class="o">.</span><span class="n">within_proximity</span><span class="p">(</span><span class="o">[</span><span class="n">moon</span><span class="p">,</span> <span class="n">venus</span><span class="p">,</span> <span class="n">mercury</span><span class="o">]</span><span class="p">,</span> <span class="mi">400000</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="c1">#&lt;SpiceRub::Body:0x0000000191c4f8</span>
+</span><span class='line'>  <span class="vi">@code</span><span class="o">=</span><span class="mi">301</span><span class="p">,</span>
+</span><span class='line'>  <span class="vi">@frame</span><span class="o">=</span><span class="ss">:J2000</span><span class="p">,</span>
+</span><span class='line'>  <span class="vi">@name</span><span class="o">=</span><span class="ss">:moon</span><span class="p">,</span>
+</span><span class='line'>  <span class="vi">@type</span><span class="o">=</span><span class="ss">:satellite</span><span class="o">&gt;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now that we&#8217;ve come to the end of the functionality, I would like to
+mention that there is another named argument <code>aberration_correction</code>
+which is basically an error reduction method to provide a more
+accurate result than the default observation. The default <code>:none</code>
+option for aberration correction basically provides the geometric
+observations without any corrections for reception or transmission of
+photons. For a list of various aberration correction methods
+available, have a look at the documentation for <a href="ftp://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/spkpos_c.html">spkpos_c</a> to
+find out if you need an aberration correction on SPICE data.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">d1</span> <span class="o">=</span> <span class="n">moon</span><span class="o">.</span><span class="n">distance_from</span><span class="p">(</span><span class="n">earth</span><span class="p">,</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">aberration_correction</span><span class="p">:</span> <span class="ss">:none</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">369111</span><span class="o">.</span><span class="mo">055033313</span><span class="mi">8</span>
+</span><span class='line'><span class="n">d2</span> <span class="o">=</span> <span class="n">moon</span><span class="o">.</span><span class="n">distance_from</span><span class="p">(</span><span class="n">earth</span><span class="p">,</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">aberration_correction</span><span class="p">:</span> <span class="ss">:LT</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">369146</span><span class="o">.</span><span class="mi">60640691273</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">d2</span> <span class="o">-</span> <span class="n">d1</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">35</span><span class="o">.</span><span class="mi">55137359892251</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you want to look at it another way, no aberration correction would
+give you the textbook response of rigid geometry, while introducing an
+aberration correction would give you a somewhat more realistic output
+accounting for the errors that do happen when these observations are
+made.</p>
+
+<p>Finally, if you need to generate a continuous time series for a body,
+then <code>SpiceRub::Time</code> has two functions to aid in that:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">linear_time_series</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">now</span> <span class="o">+</span> <span class="mi">86400</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001fe8b60 @et=525180780.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001fe8a20 @et=525209580.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001fe88b8 @et=525238380.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001fe8750 @et=525267180.18277323&gt;</span>
+</span><span class='line'>   <span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this case, I took a start time and an end time that was one day
+after and requested 4 linearly spaced epochs. This is basically an
+interface to <code>NMatrix.linspace</code>.</p>
+
+<p>The other function requires you to input a start time and an end time
+and a step size that keeps getting added to the start time till the
+end time is reached. As a contrived example, we&#8217;ll take two epochs,
+five days apart and ask for a step size of a day, expecting six
+elements.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">now</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">86400</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="mi">86400</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001646580 @et=525180780.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f315b8 @et=525267180.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f31590 @et=525353580.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f31568 @et=525439980.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f31540 @et=525526380.18277323&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f31518 @et=525612780.18277323&gt;</span>
+</span><span class='line'>   <span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And that&#8217;s it for this blog post. I would appreciate any feedback
+regarding this as I&#8217;ve been juggling the design back and forth very
+frequently. There is large potential of expansion of the <code>Body</code> class,
+particularly creating new classes as when different Bobdy objects
+would have a corresponding function. (For example, the function
+<code>getfov_c</code> which returns the field of view of an instrument could be
+an instance function attached to the <code>Instrument</code> subclass of <code>Body</code>,
+but this is just potential expansions in the future.)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GSoC 2016 : A Look at SpiceRub::Time]]></title>
+    <link href="http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-time/"/>
+    <updated>2016-11-24T12:22:00-05:00</updated>
+    <id>http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-time</id>
+    <content type="html"><![CDATA[<p>Many popular programming languages these days ship with powerful Time
+classes/interfaces to make the inevitable task of dealing with
+time-related computations a more DRY experience. Humans like their
+time representations to be stringy concatenations of various numbers
+and alphabets that enable a large variety of date and time formats to
+mean the same thing and still make instant sense to the human eye. It
+was the creation of time zones that made our convenient 24-hour clocks
+stay the way they are without experiencing day and night at the same
+&#8220;time&#8221; across the globe. So now <code>00:00 A.M. UTC</code> is <code>5:30 A.M. IST</code>
+for me, and the world remains sane.</p>
+
+<p>But what happens when you accept the fact that you&#8217;re just a speck of
+micro-dust adjusting time relatively for an only slightly bigger speck
+of dust floating in the universe? Twenty-four hours in a day and thus we reset
+after 2300, but consider: how would a resident of Venus know
+when tea-time is on Venus if he had an Earth wristwatch that reset
+after twenty-four hours? Barely a tenth of Venus&#8217; day is complete in that time!
+(If you know anybody intent on relocating to Mars, do not gift them a
+clock or watch.)</p>
+
+<p>So a decimal floating point representation must be the answer for
+uniformity. Time zones can be dealt with; we&#8217;ll just pick a convenient
+point in time and count the seconds from there onwards so that the
+location on Earth doesn&#8217;t matter henceforth. It&#8217;ll drive humans insane
+with the arithmetic but machines will work just fine with this. This
+sort of a time system is called epoch time.</p>
+
+<p>And so the internal time of most UNIX machines is the number of
+seconds after midnight on <code>Thursday, 1 January 1970 UTC</code>. (And this
+very convention is going to open a can of worms by
+<a href="https://en.wikipedia.org/wiki/Year_2038_problem">2038</a> if there is even a small set of critical machines
+that haven&#8217;t moved on from 32-bit architectures.)</p>
+
+<p>But we&#8217;re still not okay universally. Try going on an infinite journey
+to space and you&#8217;ll find that counting seconds leads to some
+inconsistencies with your local time when you try to synchronize with
+Earth. How can the number of seconds after January 1970 be different
+in any case? Well, your MacBook Pro has not been adjusted for
+&#8230; relativity! Gravity bends light and thus the perception of
+time. There&#8217;s a lot more mass, and thus a lot more gravitatonal fields
+in neighborhoods away from Earth. The exact details of how this works
+is beyond the scope of this blog post.</p>
+
+<p>If the past few paragraphs were incessant and seemingly irrelevant,
+they were there to drive home the point that Earth time simply will
+not do when we step out of the ghetto to see what&#8217;s happening. But
+astronomy&#8217;s been around for way longer, and astrophysicists came
+forth with a time system adjusted for the relativity effects of the
+solar system, called Barycentric Dynamical Time, or <em>TDB</em>. Like our
+machines, it counts the seconds after a certain known reference time
+point, except that it adjusts for relativity and can become a standard
+for astronomical time.</p>
+
+<p>There are many similar time scales like this, but SPICE has chosen to
+use TDB as the standard for most of their design. Within the SPICE
+API, TDB is the same as <em>Ephemeris Time</em> which is the main system used
+to specify time points of astronomical bodies. Even though spacecrafts
+have their clocks coordinated with UTC on Earth, you would require
+that time in Ephemeris Time to be able to calculate their positions and
+velocities using SPICE. <code>SpiceRub::Time</code> is built for this very purpose,
+to revolve around a main attribute <code>@et</code> for Ephemeris Time and
+provide many methods to convert to and from.</p>
+
+<p>If you&#8217;d like to proceed with the examples, you&#8217;ll need a Leap Second
+Kernel file to use <code>SpiceRub::Time</code>. This is a generic kernel, so you
+can easily use <code>naif0011.tls</code> in <code>spec/data/kernels</code> of the repository
+folder.</p>
+
+<p>So Ephemeris Time is the number of seconds elapsed after <code>Noon, January 1, 2000, TDB</code>. This point in time is also known as the <code>J2000</code>
+epoch. We find that out in an instant by using the <code>Time.parse</code>
+function which is a wrapper function for SPICE&#8217;s <code>str2et_c</code> that
+converts many formats of strings to <code>Ephemeris Time</code>. You can have a
+look at the various string formats supported in its documentation
+<a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/str2et_c.html">here</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;12:00 Jan 1 2000 TDB&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Time:0x0000000325b1f8 @et=0.0&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So as a base case, using the reference epoch gives us 0 seconds as we would expect. Now would also be a good time to find out the discrepancy in <code>UTC</code> as well.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;12:00 Jan 1 2000 UTC&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Time:0x000000031c28e0 @et=64.18392728473108&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So right away we know that UTC was 64-ish seconds off from TDB / ET at the time of the reference J2000 epoch. What would the difference be around right now?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">now</span> <span class="o">=</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Time:0x000000030bf8f8 @et=525173312.1827749&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">(</span><span class="n">now</span> <span class="o">-</span> <span class="n">now</span><span class="o">.</span><span class="n">to_utc</span><span class="p">)</span><span class="o">.</span><span class="n">to_f</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">68</span><span class="o">.</span><span class="mi">18277490139008</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Well, here&#8217;s a surprise, it&#8217;s 68.18 now. Before I explain why that is,
+here is a brief overview of what the above code does:</p>
+
+<p><code>Time.now</code> is a convenient way to specify your current UTC
+timezone. It uses Ruby&#8217;s core <code>Time.now</code> method so this method is only
+good if you&#8217;re working in UTC or Earth like Timezones. For a similar
+purpose, the function <code>Time.from_time</code> let&#8217;s you create a SpiceRub
+Time object from a Ruby Time object.</p>
+
+<p>The <code>+/-</code> operators return a new Time object where the right operand
+is added/subtracted to the left operand&#8217;s <code>@et</code> when it is a float or
+integer. If a Time object is supplied , then it does the same with the
+right operand&#8217;s ephemeris time instead. (Note that there really isn&#8217;t
+a significant meaning to having a Time object whose @et is the
+difference/sum of two other epochs, however you can increase a certain
+epoch or decrease it by a constant offset of seconds)</p>
+
+<p>In our case we used <code>#to_utc</code> to convert from ephemeris time to UTC,
+and then the minus operator gave us a Time object that wasn&#8217;t really
+an epoch, but a difference of two epochs, so using <code>#to_f</code> got us
+exactly that.</p>
+
+<p>It appears that UTC has changed by 4 seconds since 2000 with respect
+to ephemeris time. This is actually the adjustment of &#8220;leap seconds&#8221;
+that gets added to UTC to prevent it from falling too far behind other
+time systems. (Humans really like to hack everything, don&#8217;t they?)</p>
+
+<p>To verify this yourself, if you open up the kernel <code>naif0011.tls</code> in your
+text editor and search for <code>DELTET/DELTA_AT</code>, you&#8217;ll find a list like
+representation of the following sort :-</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">DELTET</span><span class="o">/</span><span class="no">DELTA_AT</span>        <span class="o">=</span> <span class="p">(</span> <span class="mi">10</span><span class="p">,</span>   <span class="err">@</span><span class="mi">1972</span><span class="o">-</span><span class="no">JAN</span><span class="o">-</span><span class="mi">1</span>
+</span><span class='line'>                           <span class="o">.</span><span class="n">.</span><span class="p">,</span>   <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>                           <span class="mi">32</span><span class="p">,</span>   <span class="err">@</span><span class="mi">1999</span><span class="o">-</span><span class="no">JAN</span><span class="o">-</span><span class="mi">1</span>
+</span><span class='line'>                           <span class="mi">33</span><span class="p">,</span>   <span class="err">@</span><span class="mi">2006</span><span class="o">-</span><span class="no">JAN</span><span class="o">-</span><span class="mi">1</span>
+</span><span class='line'>                           <span class="mi">34</span><span class="p">,</span>   <span class="err">@</span><span class="mi">2009</span><span class="o">-</span><span class="no">JAN</span><span class="o">-</span><span class="mi">1</span>
+</span><span class='line'>                           <span class="mi">35</span><span class="p">,</span>   <span class="err">@</span><span class="mi">2012</span><span class="o">-</span><span class="no">JUL</span><span class="o">-</span><span class="mi">1</span>
+</span><span class='line'>                           <span class="mi">36</span><span class="p">,</span>   <span class="err">@</span><span class="mi">2015</span><span class="o">-</span><span class="no">JUL</span><span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here you can see that just before the year 2000, there were 32 leap
+seconds added to UTC, and in 2015 when the last leap second was added,
+there were 36. It&#8217;s an ongoing and indefinite process and so there
+really is no way to account for leap second errors far in the future
+for leap seconds that are yet to be added. As of now, the next
+scheduled addition is in December, 2016.</p>
+
+<p>Coming back to our Time object, let&#8217;s look at its basic
+construction. One tricky task in the API was the option to specify
+different epochs of reference in different time scales, like
+International Atomic Time. As of now, <code>Time.new</code> requires that you
+have kept your word of using the J2000 epoch and allows you to use a
+named parameter <code>seconds:</code> for specifying the time scale. The use of
+<code>scale</code> as a key was avoided as it sometimes is also used to refer to the
+reference epoch used.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">epochs</span> <span class="o">=</span> <span class="o">[</span><span class="ss">:utc</span><span class="p">,</span> <span class="ss">:tdb</span><span class="p">,</span> <span class="ss">:tai</span><span class="o">].</span><span class="n">map</span>
+</span><span class='line'>  <span class="p">{</span> <span class="o">|</span><span class="n">scale</span><span class="o">|</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">scale</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="c1">#&lt;SpiceRub::Time:0x00000002756fc8 @et=64.18392728466942&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002756eb0 @et=0&gt;,</span>
+</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002756cf8 @et=32.18392727400827&gt;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>:tai</code> here refers to International Atomic Time. For a list of more
+parameters and their keyword abbreviations, have a look at
+<a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/unitim_c.html">this</a> SPICE documentation for the function that the
+conversion is wrapped on top of.</p>
+
+<p>But there is also a way to reference other epochs without doing the
+manual conversions yourself, you can call the class method <code>Time.at</code>
+to perform the same function as the constructor, with the option of a
+different reference epoch. The resultant Time object will however have
+its internal time referring to J2000.</p>
+
+<p>A more readable way would involve step by step calculations, but that
+would consume runtime resources everytime <code>Time.at</code> is called, so I&#8217;ve
+basically pre-calculated the ephemeris times of the reference epochs
+and subtracted them from the epoch.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">case</span> <span class="n">reference</span><span class="o">.</span><span class="n">downcase</span>
+</span><span class='line'>  <span class="k">when</span> <span class="ss">:j2100</span>
+</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">3155760000</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">when</span> <span class="ss">:j2000</span><span class="p">,</span> <span class="ss">:et</span>
+</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">when</span> <span class="ss">:j1950</span>
+</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1577880000</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">when</span> <span class="ss">:j1900</span>
+</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">3155760000</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">when</span> <span class="ss">:gps</span>
+</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">630763148</span><span class="o">.</span><span class="mi">8159368</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">when</span> <span class="ss">:unix</span>
+</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">946727958</span><span class="o">.</span><span class="mi">8160644</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To quickly verify the last one with the <code>#to_s</code> method:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">-</span><span class="mi">946727958</span><span class="o">.</span><span class="mi">8160644</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Thu Jan 01 00:00:00 UTC 1970&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s exactly the UNIX epoch! Let&#8217;s try out 1 day (86400 seconds) after
+this epoch:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">86400</span><span class="p">,</span> <span class="ss">:unix</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Thu Jan 01 23:59:59 UTC 1970&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Just a second short of heading into the next day, because we&#8217;ve added
+86400 TDB seconds and converted the time into a UTC string.</p>
+
+<p>There are some more functions provided to work in tandem with the
+<code>Body</code> class that I&#8217;ll explain more about in the next blog post, but
+this more or less covers the core of <code>SpiceRub:Time</code>. Till then,
+thanks for reading.</p>
 ]]></content>
   </entry>
   
@@ -1093,447 +1911,6 @@ project. It has been a great learning experience.</p>
 
 <p>I thank my fellow GSoC participants Rajith, Lokesh and Gaurav who
 helped me with certain aspects of my project.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[GSoC 2016 : A Look at SpiceRub::Body]]></title>
-    <link href="http://sciruby.com/blog/2016/08/21/body-tutorial/"/>
-    <updated>2016-08-21T09:30:35-04:00</updated>
-    <id>http://sciruby.com/blog/2016/08/21/body-tutorial</id>
-    <content type="html"><![CDATA[<p>One of the main goals of this project was to make the ephemerides functions easily available to an end user. Ephemerides basically refers to an object in space whose motion is being tracked and observed. SPICE required you to provide the following parameters to observe a body in space.</p>
-
-<p><code>Target</code> : The body of interest</p>
-
-<p><code>Frame</code> : A rotational frame of reference (Default is J2000 [Not to be confused with the J2000 epoch])</p>
-
-<p><code>Observer</code> : An observing body whose viewpoint is used to chart the vector</p>
-
-<p><code>Epoch</code> : An epoch in Ephemeris Time</p>
-
-<p>SPICE has a certain integer convention for the kind of bodies that it has support for. Each body can be referenced via a string or an integer id. While there isn&#8217;t an actual strict range for integer ID classification , it is mentioned <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">here</a> and can be summed up in the following <code>if</code> and <code>elsif</code> clauses. (In Ruby constant strings are better off as symbols, so the constructor takes either an integer ID of a string symbol)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">if</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">2000000</span>
-</span><span class='line'>    <span class="ss">:asteroid</span>
-</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">1000000</span>
-</span><span class='line'>    <span class="ss">:comet</span>
-</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">1000</span>
-</span><span class='line'>    <span class="ss">:body</span>
-</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">10</span>
-</span><span class='line'>    <span class="n">body_id</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">99</span> <span class="o">?</span>
-</span><span class='line'>      <span class="ss">:planet</span> <span class="p">:</span> <span class="ss">:satellite</span>
-</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">==</span> <span class="mi">10</span>
-</span><span class='line'>    <span class="ss">:star</span>
-</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="mi">0</span>
-</span><span class='line'>    <span class="ss">:barycenter</span>
-</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1000</span>
-</span><span class='line'>    <span class="ss">:spacecraft</span>
-</span><span class='line'>  <span class="k">elsif</span> <span class="n">body_id</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">100000</span>
-</span><span class='line'>    <span class="ss">:instrument</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="ss">:spacecraft</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It was very tempting to involve inheritance and extend a base Body class onto these potential classes, but I simply did not see the need for it at this point. The way it is at the moment, the <code>Body</code> object has a reader attribute type that stores some metadata about the body for the user&#8217;s convenience. Perhaps as coverage of SPICE improves, this minor thing can be changed later on.</p>
-
-<p>To create a Body object, you instantiate with either a body name or a body id. Certain bodies such as instruments will require additional kernels to be loaded. To proceed seamlessly, load a leap seconds kernel, a planetary constants kernel, and an ephemeris kernel. (All avaialable in <code>spec/data/kernels</code>)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Body</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">399</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Body:0x00000002769da8</span>
-</span><span class='line'>     <span class="vi">@code</span><span class="o">=</span><span class="mi">399</span><span class="p">,</span>
-</span><span class='line'>     <span class="vi">@frame</span><span class="o">=</span><span class="ss">:J2000</span><span class="p">,</span>
-</span><span class='line'>     <span class="vi">@name</span><span class="o">=</span><span class="ss">:earth</span><span class="p">,</span>
-</span><span class='line'>     <span class="vi">@type</span><span class="o">=</span><span class="ss">:planet</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Body</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:earth</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Body:0x000000026c73c8</span>
-</span><span class='line'>   <span class="vi">@code</span><span class="o">=</span><span class="mi">399</span><span class="p">,</span>
-</span><span class='line'>   <span class="vi">@frame</span><span class="o">=</span><span class="ss">:J2000</span><span class="p">,</span>
-</span><span class='line'>   <span class="vi">@name</span><span class="o">=</span><span class="ss">:earth</span><span class="p">,</span>
-</span><span class='line'>   <span class="vi">@type</span><span class="o">=</span><span class="ss">:planet</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Body</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:moon</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Body:0x0000000214ac88</span>
-</span><span class='line'>   <span class="vi">@code</span><span class="o">=</span><span class="mi">301</span><span class="p">,</span>
-</span><span class='line'>   <span class="vi">@frame</span><span class="o">=</span><span class="ss">:J2000</span><span class="p">,</span>
-</span><span class='line'>   <span class="vi">@name</span><span class="o">=</span><span class="ss">:moon</span><span class="p">,</span>
-</span><span class='line'>   <span class="vi">@type</span><span class="o">=</span><span class="ss">:satellite</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>399</code> and <code>:earth</code> map to the same body in SPICE data. The frame of reference can also be specified as a named parameter during instantiation to set a custom default frame for that particular object.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Body</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">399</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="no">IAU_EARTH</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Body:0x000000020b1df8</span>
-</span><span class='line'>     <span class="vi">@code</span><span class="o">=</span><span class="mi">399</span><span class="p">,</span>
-</span><span class='line'>     <span class="vi">@frame</span><span class="o">=</span><span class="ss">:IAU_EARTH</span><span class="p">,</span>
-</span><span class='line'>     <span class="vi">@name</span><span class="o">=</span><span class="ss">:earth</span><span class="p">,</span>
-</span><span class='line'>     <span class="vi">@type</span><span class="o">=</span><span class="ss">:planet</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In SPICE, a <code>state</code> is a 6 length column vector that stores position and velocity in 3D cartesian co-ordinates</p>
-
-<p>As a base case, let&#8217;s find out the the position of the Earth with respect to itself.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">earth</span><span class="o">.</span><span class="n">position_at</span><span class="p">(</span><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">observer</span><span class="p">:</span> <span class="n">earth</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span>
-</span><span class='line'><span class="o">[</span>
-</span><span class='line'>  <span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span>   <span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span>   <span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span>
-</span><span class='line'><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The origin as seen from itself is still the origin, so this makes sense. The methods <code>#velocity_at</code> and <code>#state_at</code> take an identical set of parameters. While there is a bit of redundancy going on, splitting them makes the API more elegant, but the basic relationship between these three vectors is the following :-</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">state</span> <span class="o">=</span> <span class="o">[</span>
-</span><span class='line'>          <span class="n">position</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="n">position</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="n">position</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">,</span>
-</span><span class='line'>          <span class="n">velocity</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="n">velocity</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="n">velocity</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span>
-</span><span class='line'>        <span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>One thing to note is that State/Velocity/Position vectors will always be returned as an <code>NMatrix</code> object, SciRuby&#8217;s numerical matrix core, to allow for calculations via the NMatrix API.</p>
-
-<p>As an example that is used in the code, 1 line can turn a position vector into distance from origin. (Using Euclidean distance)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">position</span> <span class="o">=</span> <span class="n">earth</span><span class="o">.</span><span class="n">position_at</span><span class="p">(</span><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">observer</span><span class="p">:</span> <span class="n">observer</span><span class="p">)</span>
-</span><span class='line'>  <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="p">(</span><span class="n">position</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This basically performs the computation, <code>SquareRootOf( x ^ 2 + y ^ 2 + z ^ 2 )</code> Which becomes the basis for the method, <code>#distance_from</code> .</p>
-
-<p>As a simple imprecise experiment, let&#8217;s find out how the speed of light can be &#8220;estimated&#8221; up with this data.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">distance</span> <span class="o">=</span> <span class="n">moon</span><span class="o">.</span><span class="n">distance_from</span><span class="p">(</span><span class="n">earth</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="mi">367441</span><span class="o">.</span><span class="mo">0260</span><span class="mi">814745</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">time</span> <span class="o">=</span> <span class="n">moon</span><span class="o">.</span><span class="n">light_time_from</span><span class="p">(</span><span class="n">earth</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="mi">1</span><span class="o">.</span><span class="mi">2256513340354764</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">distance</span> <span class="o">/</span> <span class="n">time</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="mi">299792</span><span class="o">.</span><span class="mi">458</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The unit of distance here is <code>Km</code>, so the speed of light by this measurement is about pretty close to the textbook figure of <code>3 x 10 ^ 8  m/s</code>.</p>
-
-<p>There is also a function to check if a list of bodies are within a radial proximity from an observing body. We already calculated the distance of the moon to be about 367k Km. The function <code>within_proximity</code> returns a list of all bodies that are within the specified radial distance from the calling body object.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#assuming venus and mercury are instantiated</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">earth</span><span class="o">.</span><span class="n">within_proximity</span><span class="p">(</span><span class="o">[</span><span class="n">moon</span><span class="p">,</span> <span class="n">venus</span><span class="p">,</span> <span class="n">mercury</span><span class="o">]</span><span class="p">,</span> <span class="mi">400000</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="c1">#&lt;SpiceRub::Body:0x0000000191c4f8</span>
-</span><span class='line'>  <span class="vi">@code</span><span class="o">=</span><span class="mi">301</span><span class="p">,</span>
-</span><span class='line'>  <span class="vi">@frame</span><span class="o">=</span><span class="ss">:J2000</span><span class="p">,</span>
-</span><span class='line'>  <span class="vi">@name</span><span class="o">=</span><span class="ss">:moon</span><span class="p">,</span>
-</span><span class='line'>  <span class="vi">@type</span><span class="o">=</span><span class="ss">:satellite</span><span class="o">&gt;]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now that we&#8217;ve come to the end of the functionality, I would like to state that there is another named argument <code>aberration_correction:</code> which is basically an error reduction method to provide a more accurate result than the default observation. The default <code>:none</code> option for aberration correction basically provides the geometric observations without any corrections for reception or transmission of photons. For a list of various aberration correction methods available, have a look at the documentation for <a href="ftp://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/spkpos_c.html">spkpos_c</a> to find out if you need an aberration correction on SPICE data.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">d1</span> <span class="o">=</span> <span class="n">moon</span><span class="o">.</span><span class="n">distance_from</span><span class="p">(</span><span class="n">earth</span><span class="p">,</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">aberration_correction</span><span class="p">:</span> <span class="ss">:none</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="mi">369111</span><span class="o">.</span><span class="mo">055033313</span><span class="mi">8</span>
-</span><span class='line'><span class="n">d2</span> <span class="o">=</span> <span class="n">moon</span><span class="o">.</span><span class="n">distance_from</span><span class="p">(</span><span class="n">earth</span><span class="p">,</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">aberration_correction</span><span class="p">:</span> <span class="ss">:LT</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="mi">369146</span><span class="o">.</span><span class="mi">60640691273</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">d2</span> <span class="o">-</span> <span class="n">d1</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="mi">35</span><span class="o">.</span><span class="mi">55137359892251</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you want to look at it another way, no aberration correction would give you the textbook response of rigid geometry, while introducing an aberration correction would give you a somewhat more realistic output accounting for the errors that do happen when these observations are made.</p>
-
-<p>Finally, if you need to generate a continuous time series for a body, then <code>SpiceRub::Time</code> has two functions to aid in that</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">linear_time_series</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">now</span> <span class="o">+</span> <span class="mi">86400</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span>
-</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001fe8b60 @et=525180780.18277323&gt;,</span>
-</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001fe8a20 @et=525209580.18277323&gt;,</span>
-</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001fe88b8 @et=525238380.18277323&gt;,</span>
-</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001fe8750 @et=525267180.18277323&gt;</span>
-</span><span class='line'>   <span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In this case, I took a start time and an end time that was one day after and requested 4 linearly spaced epochs. This is basically an interface to <code>NMatrix.linspace</code>.</p>
-
-<p>The other function requires you to input a start time and an end time and a step size that keeps getting added to the start time till the end time is reached. As a contrived example, we&#8217;ll take two epochs, 5 days apart and ask for a step size of a day, expecting 6 elements.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">now</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">86400</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="mi">86400</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span>
-</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000001646580 @et=525180780.18277323&gt;,</span>
-</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f315b8 @et=525267180.18277323&gt;,</span>
-</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f31590 @et=525353580.18277323&gt;,</span>
-</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f31568 @et=525439980.18277323&gt;,</span>
-</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f31540 @et=525526380.18277323&gt;,</span>
-</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002f31518 @et=525612780.18277323&gt;</span>
-</span><span class='line'>   <span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And that&#8217;s it for this blog post. I would appreciate any feedback regarding this as I&#8217;ve been juggling the design back and forth very frequently. There is large potential of expansion of the <code>Body</code> class, particularly creating new classes as when different Bobdy objects would have a corresponding function. (For example, the function <code>getfov_c</code> which returns the field of view of an instrument could be an instance function attached to the <code>Instrument</code> subclass of <code>Body</code>, but this is just potential expansions in the future.)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[GSoc 2016 : A Look at SpiceRub::Time]]></title>
-    <link href="http://sciruby.com/blog/2016/08/21/time-tutorial/"/>
-    <updated>2016-08-21T07:30:35-04:00</updated>
-    <id>http://sciruby.com/blog/2016/08/21/time-tutorial</id>
-    <content type="html"><![CDATA[<p>Many popular programming languages these days ship with powerful Time classes/interfaces to make the inevitable task of dealing with time related computations a more DRY experience. Humans like their time representations to be stringy concatenations of various numbers and alphabets that enable a large variety of date and time formats to mean the same thing and still make instant sense to the human eye. It was the creation of time zones that made our convenient 24 hour clocks stay the way they are without experiencing day and night at the same &#8220;time&#8221; across the globe. So now <code>00:00 A.M. UTC</code> is <code>5:30 A.M. IST</code> for me, and the world remains sane.</p>
-
-<p>But what happens when you accept the fact that you&#8217;re just a speck of micro-dust adjusting time relatively for an only slightly bigger speck of dust floating in the universe? 24 hours in a day and thus we reset after 2300, but consider this ; how would a resident of Venus know when tea-time is on Venus if he had an Earth wristwatch that reset after 24 hours? Barely a tenth of Venus&#8217; day is complete in that time! (If you know anybody intent on relocating to Mars, do not gift them a clock/watch)</p>
-
-<p>So a decimal floating point representation must be the answer for uniformity. Time zones can be dealt with, we&#8217;ll just pick a convenient point in time and count the seconds from there onwards so that the location on Earth doesn&#8217;t matter henceforth. It&#8217;ll drive humans insane with the arithmetic but machines will work just fine with this. This sort of a time system is called epoch time.</p>
-
-<p>And so the internal time of most Unix machines is the number of seconds after Midnight on <code>Thursday, 1 January 1970 UTC</code>. ( And this very convention is going to open a can of worms by <a href="https://en.wikipedia.org/wiki/Year_2038_problem">2038</a> if there is even a small set of critical machines that haven&#8217;t moved on from 32 bit architectures)</p>
-
-<p>But we&#8217;re still not okay universally. Try going on an infinite journey to space and you&#8217;ll find that counting seconds leads to some inconsistencies with your local time when you try to synchronize with Earth. How can the number of seconds after January 1970 be different in any case? Well your MacBook Pro has not been adjusted for &#8230; relativity! Gravity bends light and thus the perception of time. There&#8217;s a lot more mass, and thus a lot more gravitatonal fields in neighborhoods away from Earth. The exact details of how this works is beyond the scope of this blog.</p>
-
-<p>If the past few paragraphs were incessant and seemingly irrelevant, they were there to drive home the point that Earth time simply will not do when we step out of the ghetto to see what&#8217;s happening. But Astronomy&#8217;s been around for way longer, and astro-physicists came forth with a time system adjusted for the relativity effects of the solar system, called Barycentric Dynamical Time, or <code>TDB</code>. Like our machines, it counts the seconds after a certain known reference time point, except that it adjusts for relativity and can become a standard for astronomical time.</p>
-
-<p>There are many similar time scales like this, but SPICE has chosen to use <code>TDB</code> as the standard for most of their design. Within the SPICE API, TDB is the same as <code>Ephemeris Time</code> which is the main system used to specify time points of astronomical bodies. Even though Spacecrafts have their clocks co-ordinated with UTC on Earth, you would require that time in <code>Ephemeris Time</code> to be able to calculate its position and velocity using SPICE. <code>SpiceRub::Time</code> is built for this very purpose, to revolve around a main attribute <code>@et</code> for <code>Ephemeris Time</code> and provide many methods to convert to and from.</p>
-
-<p>If you&#8217;d like to proceed with the examples, you&#8217;d need a <code>Leap Second Kernel</code> file to use <code>SpiceRub::Time</code> . This is a generic kernel so you can easily use <code>naif0011.tls</code> in <code>spec/data/kernels</code> of the repository folder.</p>
-
-<p>So Ephemeris Time is the number of seconds elapsed after <code>Noon January 1, 2000, TDB</code>. This point in time is also known as the <code>J2000</code> epoch. We find that out in an instant by using the <code>Time.parse</code> function which is a wrapper function for SPICE&#8217;s <code>str2et_c</code> that converts many formats of strings to <code>Ephemeris Time</code>. You can have a look at the various string formats supported in its documentation <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/str2et_c.html">here</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;12:00 Jan 1 2000 TDB&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Time:0x0000000325b1f8 @et=0.0&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So as a base case, using the reference epoch gives us 0 seconds as we would expect. Now would also be a good time to find out the discrepancy in <code>UTC</code> as well.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;12:00 Jan 1 2000 UTC&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Time:0x000000031c28e0 @et=64.18392728473108&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So right away we know that UTC was 64ish seconds off from TDB / ET at the time of the reference J2000 epoch. What would the difference be around right now?</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">now</span> <span class="o">=</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="c1">#&lt;SpiceRub::Time:0x000000030bf8f8 @et=525173312.1827749&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">(</span><span class="n">now</span> <span class="o">-</span> <span class="n">now</span><span class="o">.</span><span class="n">to_utc</span><span class="p">)</span><span class="o">.</span><span class="n">to_f</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="mi">68</span><span class="o">.</span><span class="mi">18277490139008</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Well, here&#8217;s a surprise, it&#8217;s 68.18 now. Before I explain why that is, a brief overview of what the above code does :-</p>
-
-<p><code>Time.now</code> is a convenient way to specify your current UTC timezone. It uses Ruby&#8217;s core <code>Time.now</code> method so this method is only good if you&#8217;re working in UTC or Earth like Timezones. For a similar purpose, the function <code>Time.from_time</code> let&#8217;s you create a SpiceRub Time object from a Ruby Time object.</p>
-
-<p>The <code>+/-</code> operators return a new Time object where the right operand is added/subtracted to the left operand&#8217;s <code>@et</code> when it is a float or integer. If a Time object is supplied , then it does the same with the right operand&#8217;s ephemeris time instead. (Note that there really isn&#8217;t a significant meaning to having a Time object whose @et is the difference/sum of two other epochs, however you can increase a certain epoch or decrease it by a constant offset of seconds)</p>
-
-<p>In our case we used <code>#to_utc</code> to convert from ephemeris time to UTC, and then the minus operator gave us a Time object that wasn&#8217;t really an epoch, but a difference of two epochs, so using <code>#to_f</code> got us exactly that.</p>
-
-<p>It appears that UTC has changed by 4 seconds since 2000 with respect to ephemeris time. This is actually the adjustment of &#8220;leap seconds&#8221; that gets added to UTC to prevent it from falling too far behind other time systems. (Humans really like to hack everything, don&#8217;t they?)</p>
-
-<p>To verify this yourself, open up the kernel <code>naif0011.tls</code> in your text editor and Ctrl-F for <code>DELTET/DELTA_AT</code> you&#8217;ll find a list like representation of the following sort :-</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">DELTET</span><span class="o">/</span><span class="no">DELTA_AT</span>        <span class="o">=</span> <span class="p">(</span> <span class="mi">10</span><span class="p">,</span>   <span class="err">@</span><span class="mi">1972</span><span class="o">-</span><span class="no">JAN</span><span class="o">-</span><span class="mi">1</span>
-</span><span class='line'>                           <span class="o">.</span><span class="n">.</span><span class="p">,</span>   <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>                           <span class="mi">32</span><span class="p">,</span>   <span class="err">@</span><span class="mi">1999</span><span class="o">-</span><span class="no">JAN</span><span class="o">-</span><span class="mi">1</span>
-</span><span class='line'>                           <span class="mi">33</span><span class="p">,</span>   <span class="err">@</span><span class="mi">2006</span><span class="o">-</span><span class="no">JAN</span><span class="o">-</span><span class="mi">1</span>
-</span><span class='line'>                           <span class="mi">34</span><span class="p">,</span>   <span class="err">@</span><span class="mi">2009</span><span class="o">-</span><span class="no">JAN</span><span class="o">-</span><span class="mi">1</span>
-</span><span class='line'>                           <span class="mi">35</span><span class="p">,</span>   <span class="err">@</span><span class="mi">2012</span><span class="o">-</span><span class="no">JUL</span><span class="o">-</span><span class="mi">1</span>
-</span><span class='line'>                           <span class="mi">36</span><span class="p">,</span>   <span class="err">@</span><span class="mi">2015</span><span class="o">-</span><span class="no">JUL</span><span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Here you can see that just before the year 2000, there were 32 leap seconds added to UTC , and in 2015 when the last leap second was added, there were 36. It&#8217;s an ongoing and indefinite process and so there really is no way to account for leap second errors far in the future for leap seconds that are yet to be added. As of now, the next scheduled addition is in December, 2016.</p>
-
-<p>Coming back to our Time object, let&#8217;s look at its basic construction. One tricky task in the API was the option to specify different epochs of reference in different time scales, like International Atomic Time. As of now, <code>Time.new</code> requires that you have kept your word of using the J2000 epoch and allows you to use a named parameter <code>seconds:</code> for specifying the time scale. The use of <code>scale:</code>was avoided as it sometimes is also used to refer to the reference epoch used.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">epochs</span> <span class="o">=</span> <span class="o">[</span><span class="ss">:utc</span><span class="p">,</span> <span class="ss">:tdb</span><span class="p">,</span> <span class="ss">:tai</span><span class="o">].</span><span class="n">map</span>
-</span><span class='line'>  <span class="p">{</span> <span class="o">|</span><span class="n">scale</span><span class="o">|</span> <span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">scale</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">=&gt;</span> <span class="o">[</span><span class="c1">#&lt;SpiceRub::Time:0x00000002756fc8 @et=64.18392728466942&gt;,</span>
-</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002756eb0 @et=0&gt;,</span>
-</span><span class='line'>    <span class="c1">#&lt;SpiceRub::Time:0x00000002756cf8 @et=32.18392727400827&gt;]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>:tai</code> here refers to International Atomic Time. For a list of more parameters and their keyword abbreviations, have a look at <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/unitim_c.html">this</a> SPICE documentation for the function that the conversion is wrapped on top of.</p>
-
-<p>But there is also a way to reference other epochs without doing the manual conversions yourself, you can call the class method <code>Time.at</code> to perform the same function as the constructor, with the option of a different reference epoch. The resultant Time object will however have its internal time referring to J2000.</p>
-
-<p>A more readable way would involve step by step calculations, but that would consume runtime resources everytime <code>Time.at</code> is called, so I&#8217;ve basically pre-calculated the ephemeris times of the reference epochs and subtracted them from the epoch.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">case</span> <span class="n">reference</span><span class="o">.</span><span class="n">downcase</span>
-</span><span class='line'>  <span class="k">when</span> <span class="ss">:j2100</span>
-</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">3155760000</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">when</span> <span class="ss">:j2000</span><span class="p">,</span> <span class="ss">:et</span>
-</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">when</span> <span class="ss">:j1950</span>
-</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1577880000</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">when</span> <span class="ss">:j1900</span>
-</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">3155760000</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">when</span> <span class="ss">:gps</span>
-</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">630763148</span><span class="o">.</span><span class="mi">8159368</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">when</span> <span class="ss">:unix</span>
-</span><span class='line'>    <span class="kp">new</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">946727958</span><span class="o">.</span><span class="mi">8160644</span><span class="p">,</span> <span class="n">seconds</span><span class="p">:</span> <span class="n">seconds</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To quickly verify the last one with the <code>#to_s</code> method</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">-</span><span class="mi">946727958</span><span class="o">.</span><span class="mi">8160644</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Thu Jan 01 00:00:00 UTC 1970&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It&#8217;s exactly the unix epoch! Let&#8217;s try out 1 day (86400 seconds) after this epoch</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">SpiceRub</span><span class="o">::</span><span class="no">Time</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="mi">86400</span><span class="p">,</span> <span class="ss">:unix</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Thu Jan 01 23:59:59 UTC 1970&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Just a second short of heading into the next day, because we&#8217;ve added 86400 TDB seconds and converted the time into a UTC string.</p>
-
-<p>There are some more functions provided to work in tandem with the <code>Body</code> class that I&#8217;ll explain more about in the next blog post, but this more or less covers the core of <code>SpiceRub:Time</code>. Till then, thanks for reading :)</p>
 ]]></content>
   </entry>
   
@@ -3511,67 +3888,6 @@ and two gradient minimization methods as well as simulated annealing.</p>
 <p>Currently, I am working on Nelder&ndash;Mead multidimensional minimization
 method which is a non-gradient method, including working on the relevant
 test cases.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Introduction to the Minimization and Integration project (Rajat)]]></title>
-    <link href="http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project/"/>
-    <updated>2014-06-04T14:23:00-04:00</updated>
-    <id>http://sciruby.com/blog/2014/06/04/introduction-to-the-minimization-and-integration-project</id>
-    <content type="html"><![CDATA[<p class="note"><strong>Editor&#8217;s Note:</strong> We have two students
-working on numerical minimization and integration this summer, Rajat and
-Lahiru. Lahiru will be writing a separate post about his work.</p>
-
-
-<h2>Introduction to the Minimization and Integration Project</h2>
-
-<p>Hi. My name is Rajat Kapoor and I have been selected to work with
-SciRuby for Google Summer of Code 2014.</p>
-
-<p><a href="https://github.com/SciRuby/minimization">Minimization</a> and
-<a href="https://github.com/SciRuby/integration">Integration</a> are two of the
-many available gems in the SciRuby suite. My project this year aims to
-improve these gems to replicate the functionality provided by GNU&#8217;s
-GSL. I will be trying to implement all the minimization and
-integration algorithms present in GSL in pure Ruby, with improvements
-as needed, so that these functions are easily accesible to all Ruby
-users, while the users which have GSL already installed will have an
-advantage in terms of speedy computations.</p>
-
-<h2>What Minimization and Integration actually mean</h2>
-
-<p>Minimization refers to the process of finding out the minimum of a
-mathematical function whose values might depend on multiple
-variables. Unidimensional minimization restricts these problems to
-functions of one single variable. Integration is the same as the very
-widely used concept in calculus which basically boils down to finding
-the summation of the value of a function at small intervals, when the
-width of the intervals in infinitesimally small. I can bet that you
-knowingly or unknowingly use both these things on a daily basis.</p>
-
-<h2>The plan</h2>
-
-<p>The project can be broken into two major parts: Minimization and
-Integration, as these are two seperate gems.</p>
-
-<p>The Minimization gem can be broken in two parts: unidimensional (or
-univariate) and multidimensional (multivariate). With respect to
-coding, these two can again be broken down into sub-parts: pure Ruby
-implementations and GSL support. The Integration gem will include
-the pure Ruby implementations as well as GSL support. Along with this,
-some support for symbolic integration will be added for JRuby
-users by way of the JScience library.</p>
-
-<h2>Progress</h2>
-
-<p>The pure Ruby implementations of the unidimensional minimization part
-are almost finished. I am also working on the GSL support for the same
-along with it. I plan to finish up any unidimensional minimization
-work by the end of this week and start the work with multidimensional
-minimization methods.</p>
-
-<p>Keep watching this blog for more updates regarding my project.</p>
 ]]></content>
   </entry>
   
