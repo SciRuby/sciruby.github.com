@@ -4,7 +4,7 @@
   <title><![CDATA[Category: GSOC 2016 | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/gsoc-2016/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2016-11-24T12:54:38-05:00</updated>
+  <updated>2017-10-23T20:55:53+09:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GSoC 2016: Adding Categorical Data Support]]></title>
-    <link href="http://sciruby.com/blog/2016/11/24/gsoc-2016-adding-categorical-data-support/"/>
-    <updated>2016-11-24T12:44:00-05:00</updated>
-    <id>http://sciruby.com/blog/2016/11/24/gsoc-2016-adding-categorical-data-support</id>
+    <link href="http://sciruby.com/blog/2016/11/25/gsoc-2016-adding-categorical-data-support/"/>
+    <updated>2016-11-25T02:54:00+09:00</updated>
+    <id>http://sciruby.com/blog/2016/11/25/gsoc-2016-adding-categorical-data-support</id>
     <content type="html"><![CDATA[<p>Support for categorical data is important for any data analysis
 tool. This summer I implemented categorical data capabilities for:</p>
 

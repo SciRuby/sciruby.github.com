@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Licenses | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/licenses/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2016-11-24T12:54:45-05:00</updated>
+  <updated>2017-10-23T20:55:53+09:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[The Challenges of Copyrights]]></title>
     <link href="http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights/"/>
-    <updated>2011-08-15T19:56:00-04:00</updated>
+    <updated>2011-08-15T19:56:00+09:00</updated>
     <id>http://sciruby.com/blog/2011/08/15/the-challenges-of-copyrights</id>
     <content type="html"><![CDATA[<p>Last week, I thought it would be fun to translate some of the <em><a href="http://nr.com/">Numerical Recipes</a></em> algorithms into Ruby,
  specifically those for the Gamma distribution and incomplete gamma function. I got them all working pretty well, and

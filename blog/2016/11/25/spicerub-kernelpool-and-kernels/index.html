@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>GSoC 2016 : SpiceRub::KernelPool and Kernels - SciRuby</title>
+  <title>GSoC 2016: SpiceRub::KernelPool and Kernels - SciRuby</title>
   <meta name="author" content="SciRuby">
 
   
@@ -19,7 +19,7 @@ Firstly, &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sciruby.com/blog/2016/06/10/week1_soc/">
+  <link rel="canonical" href="http://sciruby.com/blog/2016/11/25/spicerub-kernelpool-and-kernels/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -86,14 +86,14 @@ Firstly, &hellip;">
   
   <header>
     
-      <h1 class="entry-title">GSoC 2016 : SpiceRub::KernelPool and Kernels</h1>
+      <h1 class="entry-title">GSoC 2016: SpiceRub::KernelPool and Kernels</h1>
     
     
       <p class="meta">
         
   
 
-<span class="byline author vcard"><span class="fn">SciRuby</span></span>
+<span class="byline author vcard"><span class="fn">Gaurav Tamba</span></span>
  &bull; 
         
 
@@ -107,7 +107,7 @@ Firstly, &hellip;">
   
 
 
-<time datetime="2016-06-10T22:30:35-04:00" pubdate data-updated="true">Jun 10<span>th</span>, 2016</time>
+<time datetime="2016-11-25T02:32:35+09:00" pubdate data-updated="true">Nov 25<span>th</span>, 2016</time>
         
       </p>
     
@@ -115,12 +115,16 @@ Firstly, &hellip;">
 
 
 <div class="entry-content"><p>So this post comes rather late, but I&#8217;d still like to talk about what I did in the first week, and a little into the second week.
-Firstly, thanks to a pull request offered by my GSoC mentor John (@mohawkjohn), I now have rake tasks set up properly in the repository and rake seems to be working.</p>
+Firstly, thanks to a pull request offered by my GSoC mentor John (<a href="https://github.com/mohawkjohn">@mohawkjohn</a>), I now have rake tasks set up properly in the repository and rake seems to be working.</p>
 
-<p>There are installation instructions in the <a href="https://github.com/gau27/spice_rub/blob/master/README.rdoc">ReadMe</a> and there are already some sample Kernel files in
-the spec folder to try out various routines on. Apart from cloning the repository, one additional thing you will need to do is download the SPICE toolkit from <a href="https://naif.jpl.nasa.gov/naif/toolkit_C.html">here</a>. You may want to keep the entire compressed file for later, but you&#8217;ll only need the <code>cspice.a</code> file in the lib/ subdirectory. After this follow the instructions in the <a href="https://github.com/gau27/spice_rub/blob/master/README.rdoc">ReadMe</a> and you should be good to go. Be sure to run <code>bundle install</code> to install any dependencies that you don&#8217;t already have.</p>
+<p>There are installation instructions in the <a href="https://github.com/sciruby/spice_rub/blob/master/README.rdoc">readme</a> and there are already some sample Kernel files in
+the spec folder to try out various routines on. Apart from cloning the repository, one additional thing you will need to do is <a href="https://naif.jpl.nasa.gov/naif/toolkit_C.html">download the SPICE toolkit</a>. You may want to keep the entire compressed file for later, but you&#8217;ll only need the <code>cspice.a</code> file in the <code>lib/</code> subdirectory. After this follow the instructions in the <a href="https://github.com/sciruby/spice_rub/blob/master/README.rdoc">readme</a> and you should be good to go. (Be sure to run <code>bundle install</code> to install any dependencies that you don&#8217;t already have.)</p>
 
-<p>After you&#8217;re done compiling/installing, run <code>rake pry</code> in the gem root directory. If you remember, almost any useful task involving the SPICE Toolkit is preceded by loading data through kernel files. The relevant routine to do this is called <code>furnsh_c()</code> , and the most direct way to access it through Ruby is by calling the function <code>SpiceRub::Native.furnsh</code>. This is not recommended because SpiceRub has a specific Ruby class unifying all the kernel related methods and also because SPICE maintains its own internal variables for tracking loaded kernel files / unloading them. Below is a crude dependency sequence :-</p>
+<p>After you&#8217;re done compiling and installing, run <code>rake pry</code> in the gem root directory.</p>
+
+<p>If you remember, almost any useful task involving the SPICE Toolkit is preceded by loading data through kernel files. The relevant routine to do this is called <code>furnsh_c()</code> , and the most direct way to access it through Ruby is by calling the function <code>SpiceRub::Native.furnsh</code>. (However, this is not recommended because SpiceRub has a specific Ruby class unifying all the kernel related methods, and also because SPICE maintains its own internal variables for both tracking loaded kernel files and unloading them.)</p>
+
+<p>Below is a crude dependency sequence:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -137,7 +141,7 @@ the spec folder to try out various routines on. Apart from cloning the repositor
 
 <p></p>
 
-<p>That&#8217;s the basic design of the wrapper, so here&#8217;s a few simple examples on using the Kernel API. <code>=&gt;</code> denotes the interpreted output of pry.</p>
+<p>That&#8217;s the basic design of the wrapper, so here are a few simple examples on using the Kernel API. <code>=&gt;</code> denotes the interpreted output of pry.</p>
 
 <p>First of all, the main KernelPool class is a singleton class, that means it can only be instantiated with the <code>#instance</code> method and the usual <code>#new</code> is private.
 Any subsequent calls to <code>#instance</code> will produce the same object.</p>
@@ -171,8 +175,7 @@ Any subsequent calls to <code>#instance</code> will produce the same object.</p>
 
 <p></p>
 
-<p>This is to make sure there is only one KernelPool state being maintained at a time. Now we have a bunch of kernel files in the <code>spec/data/kernels</code>
-folder which we&#8217;ll use for this example. There is an accessor attribute called <code>@path</code> which can be used to point to a particular folder.</p>
+<p>This is to make sure there is only one KernelPool state being maintained at a time. Now we have a bunch of kernel files in the <code>spec/data/kernels</code> folder which we&#8217;ll use for this example. There is an accessor attribute called <code>@path</code> which can be used to point to a particular folder.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">kernel_pool</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;spec/data/kernels&#39;</span>
@@ -183,9 +186,7 @@ folder which we&#8217;ll use for this example. There is an accessor attribute ca
 
 <p>From here on it&#8217;s required that you&#8217;re running pry or irb from the gem root folder in order for the paths to match in these examples.</p>
 
-<p>Now let&#8217;s load a couple of kernel files, you can type <code>system("ls", kernel_pool.path)</code> into your console to get a list of all the test kernels available
-in that folder. The KernelPool object has a <code>#load</code> method to load kernel files. If the variable path is set, then you only need to enter the file name,
-otherwise the entire path needs to be provided. An integer denoting the index of the kernel in the pool is returned if the load is successful.</p>
+<p>Now let&#8217;s load a couple of kernel files, you can type <code>system("ls", kernel_pool.path)</code> into your console to get a list of all the test kernels available in that folder. The KernelPool object has a <code>#load</code> method to load kernel files. If the variable path is set, then you only need to enter the file name, otherwise the entire path needs to be provided. An integer denoting the index of the kernel in the pool is returned if the load is successful.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -227,11 +228,10 @@ otherwise the entire path needs to be provided. An integer denoting the index of
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>So now if you try to view the <code>@pool</code> member of kernel_pool, you&#8217;ll find 3 SpiceKernel objects with <code>@loaded=true</code> and their respective file paths.
-There isn&#8217;t much to do with a <code>SpiceKernel</code> object except unload it, or check its state. Note that you can only load kernel files into a <code>KernelPool</code> object and unload
-them via the <code>SpiceKernel</code> object.</p>
+<p>So now if you try to view the <code>@pool</code> member of <code>kernel_pool</code>, you&#8217;ll find three SpiceKernel objects with <code>@loaded=true</code> and their respective file paths.
+There isn&#8217;t much to do with a <code>SpiceKernel</code> object except unload it, or check its state. Note that you can only load kernel files into a <code>KernelPool</code> object and unload them via the <code>SpiceKernel</code> object.</p>
 
-<p>You can access the kernel pool by calling the <code>#[]</code> operator and using the index that was returned on load :-</p>
+<p>You can access the kernel pool by calling the <code>#[]</code> operator and using the index that was returned on load:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -258,8 +258,7 @@ them via the <code>SpiceKernel</code> object.</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>So here we unload the first kernel and note that the count drops to 2. If you look up <code>kernel_pool[0]</code>, you&#8217;ll find that the kernel
-is still present but it&#8217;s <code>@loaded</code> variable has been set to false which means that it has been removed from the CSPICE internal kernel pool.</p>
+<p>So here we unload the first kernel and note that the count drops to 2. If you look up <code>kernel_pool[0]</code>, you&#8217;ll find that the kernel is still present &mdash; but its <code>@loaded</code> variable has been set to false, which means that it has been removed from the CSPICE internal kernel pool.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -289,8 +288,7 @@ is still present but it&#8217;s <code>@loaded</code> variable has been set to fa
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>And that about wraps up this blog post on basic kernel handling. Since we know how to load data but not use it yet, I&#8217;ll cover that and the various kernel types
-in the next blog post. Thank you for reading :)</p>
+<p>And that about wraps up this blog post on basic kernel handling. Since we know how to load data but not use it yet, I&#8217;ll cover that and the various kernel types in the next blog post. Thank you for reading.</p>
 </div>
 
 
@@ -299,7 +297,7 @@ in the next blog post. Thank you for reading :)</p>
       
   
 
-<span class="byline author vcard">Posted by <span class="fn">SciRuby</span></span>
+<span class="byline author vcard">Posted by <span class="fn">Gaurav Tamba</span></span>
 
       
 
@@ -313,12 +311,12 @@ in the next blog post. Thank you for reading :)</p>
   
 
 
-<time datetime="2016-06-10T22:30:35-04:00" pubdate data-updated="true">Jun 10<span>th</span>, 2016</time>
+<time datetime="2016-11-25T02:32:35+09:00" pubdate data-updated="true">Nov 25<span>th</span>, 2016</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/gsoc/'>gsoc</a>
+    <a class='category' href='/blog/categories/gsoc-/'>GSOC,</a>, <a class='category' href='/blog/categories/gsoc2016-/'>GSOC2016,</a>, <a class='category' href='/blog/categories/spice/'>SPICE</a>, <a class='category' href='/blog/categories/spicerub-/'>SpiceRub,</a>, <a class='category' href='/blog/categories/students-/'>Students,</a>
   
 </span>
 
@@ -327,7 +325,7 @@ in the next blog post. Thank you for reading :)</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sciruby.com/blog/2016/06/10/week1_soc/" data-via="sciruby" data-counturl="http://sciruby.com/blog/2016/06/10/week1_soc/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sciruby.com/blog/2016/11/25/spicerub-kernelpool-and-kernels/" data-via="sciruby" data-counturl="http://sciruby.com/blog/2016/11/25/spicerub-kernelpool-and-kernels/" >Tweet</a>
   
   
   
@@ -338,14 +336,20 @@ in the next blog post. Thank you for reading :)</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/08/19/gsoc-2015-mixed-models/" title="Previous Post: Statistical linear mixed models in Ruby with mixed_models (GSoC2015)">&laquo; Statistical linear mixed models in Ruby with mixed_models (GSoC2015)</a>
+        <a class="basic-alignment left" href="/blog/2016/11/25/gsoc-2016-a-look-at-spicerub-body/" title="Previous Post: GSoC 2016 : A Look at SpiceRub::Body">&laquo; GSoC 2016 : A Look at SpiceRub::Body</a>
       
       
-        <a class="basic-alignment right" href="/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby/" title="Next Post: GSoC 2016: NMatrix and JRuby">GSoC 2016: NMatrix and JRuby &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2016/11/25/gsoc-2016-adding-categorical-data-support/" title="Next Post: GSoC 2016: Adding Categorical Data Support">GSoC 2016: Adding Categorical Data Support &raquo;</a>
       
     </p>
   </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -362,23 +366,23 @@ in the next blog post. Thank you for reading :)</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2016/11/24/gsoc-2016-adding-categorical-data-support/">GSoC 2016: Adding Categorical Data Support</a>
+        <a href="/blog/2017/09/01/gsoc-2017-data-visualization-using-daru-view/">GSoC 2017 : Data visualization using daru-view</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/11/24/spicerub-kernelpool-and-kernels/">GSoC 2016: SpiceRub::KernelPool and Kernels</a>
+        <a href="/blog/2017/08/29/gsoc-2017-support-to-import-export-of-more-formats/">GSoC 2017 : Support to Import & Export of more formats</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body/">GSoC 2016 : A Look at SpiceRub::Body</a>
+        <a href="/blog/2016/11/25/gsoc-2016-adding-categorical-data-support/">GSoC 2016: Adding Categorical Data Support</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-time/">GSoC 2016 : A Look at SpiceRub::Time</a>
+        <a href="/blog/2016/11/25/spicerub-kernelpool-and-kernels/">GSoC 2016: SpiceRub::KernelPool and Kernels</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby/">GSoC 2016: NMatrix and JRuby</a>
+        <a href="/blog/2016/11/25/gsoc-2016-a-look-at-spicerub-body/">GSoC 2016 : A Look at SpiceRub::Body</a>
       </li>
     
   </ul>
@@ -439,7 +443,7 @@ in the next blog post. Thank you for reading :)</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - SciRuby -
+  Copyright &copy; 2017 - SciRuby -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
@@ -450,7 +454,10 @@ in the next blog post. Thank you for reading :)</p>
       var disqus_shortname = 'sciruby';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sciruby.com/blog/2016/11/25/spicerub-kernelpool-and-kernels/';
+        var disqus_url = 'http://sciruby.com/blog/2016/11/25/spicerub-kernelpool-and-kernels/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

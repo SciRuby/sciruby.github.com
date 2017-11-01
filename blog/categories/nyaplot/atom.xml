@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Nyaplot | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/nyaplot/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2016-11-24T12:54:38-05:00</updated>
+  <updated>2017-10-23T20:55:53+09:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GSoC 2016: Adding Categorical Data Support]]></title>
-    <link href="http://sciruby.com/blog/2016/11/24/gsoc-2016-adding-categorical-data-support/"/>
-    <updated>2016-11-24T12:44:00-05:00</updated>
-    <id>http://sciruby.com/blog/2016/11/24/gsoc-2016-adding-categorical-data-support</id>
+    <link href="http://sciruby.com/blog/2016/11/25/gsoc-2016-adding-categorical-data-support/"/>
+    <updated>2016-11-25T02:54:00+09:00</updated>
+    <id>http://sciruby.com/blog/2016/11/25/gsoc-2016-adding-categorical-data-support</id>
     <content type="html"><![CDATA[<p>Support for categorical data is important for any data analysis
 tool. This summer I implemented categorical data capabilities for:</p>
 
@@ -195,7 +195,7 @@ predict.head 5
   <entry>
     <title type="html"><![CDATA[Nyaplot: interactive plots generator with Ruby]]></title>
     <link href="http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby/"/>
-    <updated>2014-08-23T10:07:00-04:00</updated>
+    <updated>2014-08-23T10:07:00+09:00</updated>
     <id>http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby</id>
     <content type="html"><![CDATA[<iframe width="853" height="480" src="http://sciruby.com//www.youtube.com/embed/ZxjqsIluM88" frameborder="0" allowfullscreen></iframe>
 
@@ -349,7 +349,7 @@ summer thanks to all people related to this project.</p>
   <entry>
     <title type="html"><![CDATA[The Nyaplot internal event handler]]></title>
     <link href="http://sciruby.com/blog/2014/07/09/nyaplot-internal-event-handler/"/>
-    <updated>2014-07-09T17:01:00-04:00</updated>
+    <updated>2014-07-09T17:01:00+09:00</updated>
     <id>http://sciruby.com/blog/2014/07/09/nyaplot-internal-event-handler</id>
     <content type="html"><![CDATA[<p><img src="https://dl.dropboxusercontent.com/u/47978121/gsoc/multiple_panes.png" alt="Nyaplot multi-pane example" /></p>
 
@@ -423,7 +423,7 @@ events in DataFrame is both natural and efficient for Nyaplot.</p>
   <entry>
     <title type="html"><![CDATA[The progress of the GSoC D3/Visualization Project]]></title>
     <link href="http://sciruby.com/blog/2014/07/02/progress-of-d3-project/"/>
-    <updated>2014-07-02T17:09:00-04:00</updated>
+    <updated>2014-07-02T17:09:00+09:00</updated>
     <id>http://sciruby.com/blog/2014/07/02/progress-of-d3-project</id>
     <content type="html"><![CDATA[<p>This week is the half-way point of this year's Google Summer of
 Code. Let me report the progress during the term.</p>

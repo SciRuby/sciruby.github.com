@@ -4,7 +4,7 @@
   <title><![CDATA[Category: GSOC2016 | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/gsoc2016/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2016-11-24T12:54:38-05:00</updated>
+  <updated>2017-10-23T20:55:53+09:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GSoC 2016: NMatrix and JRuby]]></title>
-    <link href="http://sciruby.com/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby/"/>
-    <updated>2016-10-24T13:13:00-04:00</updated>
-    <id>http://sciruby.com/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby</id>
+    <link href="http://sciruby.com/blog/2016/10/25/gsoc-2016-port-nmatrix-to-jruby/"/>
+    <updated>2016-10-25T02:13:00+09:00</updated>
+    <id>http://sciruby.com/blog/2016/10/25/gsoc-2016-port-nmatrix-to-jruby</id>
     <content type="html"><![CDATA[<h2>Introduction</h2>
 
 <p>I worked on "Port NMatrix to JRuby" in the context of the Google

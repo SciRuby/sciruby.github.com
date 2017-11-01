@@ -4,7 +4,7 @@
   <title><![CDATA[Category: SPICE | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/spice/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2016-11-24T12:54:38-05:00</updated>
+  <updated>2017-10-23T20:55:53+09:00</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GSoC 2016: SpiceRub::KernelPool and Kernels]]></title>
-    <link href="http://sciruby.com/blog/2016/11/24/spicerub-kernelpool-and-kernels/"/>
-    <updated>2016-11-24T12:32:35-05:00</updated>
-    <id>http://sciruby.com/blog/2016/11/24/spicerub-kernelpool-and-kernels</id>
+    <link href="http://sciruby.com/blog/2016/11/25/spicerub-kernelpool-and-kernels/"/>
+    <updated>2016-11-25T02:32:35+09:00</updated>
+    <id>http://sciruby.com/blog/2016/11/25/spicerub-kernelpool-and-kernels</id>
     <content type="html"><![CDATA[<p>So this post comes rather late, but I'd still like to talk about what I did in the first week, and a little into the second week.
 Firstly, thanks to a pull request offered by my GSoC mentor John (<a href="https://github.com/mohawkjohn">@mohawkjohn</a>), I now have rake tasks set up properly in the repository and rake seems to be working.</p>
 
