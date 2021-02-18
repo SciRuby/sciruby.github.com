@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Matplotlib | SciRuby]]></title>
+  <link href="http://sciruby.com/blog/categories/matplotlib/atom.xml" rel="self"/>
+  <link href="http://sciruby.com/"/>
+  <updated>2021-02-18T16:06:09+05:30</updated>
+  <id>http://sciruby.com/</id>
+  <author>
+    <name><![CDATA[SciRuby]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GSoC 2018: RubyPlot GR - A Scientific Plotting Library for Ruby Built on GR Framework]]></title>
+    <link href="http://sciruby.com/blog/2019/01/23/gsoc-2018-rubyplot+-gr-+a-scientific-plotting-library-for-ruby-built-on-gr/"/>
+    <updated>2019-01-23T18:00:00+05:30</updated>
+    <id>http://sciruby.com/blog/2019/01/23/gsoc-2018-rubyplot -gr- a-scientific-plotting-library-for-ruby-built-on-gr</id>
+    <content type="html"><![CDATA[<h3>1. About</h3>
+
+<p>For my summer of code Project I decided to create a plotting library.</p>
+
+<p>From scratch.</p>
+
+<p>In Ruby.</p>
+
+<h3>2. Application</h3>
+
+<p>The GSoC 2018 application can be found <a href="https://github.com/pgtgrly/Cairo_Graph/wiki/Google-Summer-of-Code-2018-Application">here</a>.</p>
+
+<h3>3. Code</h3>
+
+<p>The code for the project can be found <a href="https://github.com/pgtgrly/GRruby-extension">here</a>.</p>
+
+<p>RubyPlot is currently being developed <a href="https://github.com/SciRuby/rubyplot">here</a>.</p>
+
+<h3>3. The Plotting Architecture</h3>
+
+<p>The plotting architecture for the library was inspired by Late Dr John Hunter's Python Plotting Library "Matplotlib".</p>
+
+<p>The Matplotlib Architecture is be broadly divided into three layers  (as shown in the masterpiece of a figure which I made below). The  Backend, The Artist and the scripting layer.</p>
+
+<p>The Backend layer can further be divided into three parts : The Figure Canvas, The Renderer and the Event.</p>
+
+<p>Matplotlib architecture is mostly written in Python with some of its  backend (the renderer AGG and Figure canvas ) written in C++ ( The  original AGG backend and helper scripts, which is quite tightly bound to  python). But the recently the backends are also written in Python using  the renderers which have Python APIs. The finer details of the Architecture can be found <a href="https://aosabook.org/en/matplotlib.html">here</a>.</p>
+
+<p>In interest of the time I decided to go for a iterative process to develop the Library. I decided to use an existing Artist layer. After a lot of discussion we decided to use GR Framework for the same. The only issue was that GR did not have a Ruby API.</p>
+
+<h3>4. Creating C extensions for GR Framework:</h3>
+
+<p>To create the C extensions I initially decided to use Fiddle followed by FFi. But this lead to certain issues when it came to handling arrays. Hence I decided to go with the old fashioned Ruby C API to create extensions. The code for the same can be found <a href="https://github.com/pgtgrly/GRruby-extension/tree/master/ext/grruby">here</a>.</p>
+
+<h3>5. Creating Scripting Layer</h3>
+
+<p>The Scripting Layer Is meant for high level plotting. The scripting Library created on the GR Framework wrapper has the can plot the following:</p>
+
+<ul>
+<li><p>ScatterPlots</p></li>
+<li><p>Line graphs</p></li>
+<li><p>Bar Plots</p></li>
+<li><p>Stacked Bar plot</p></li>
+<li><p>Stacked Bar plot (Stacked along z axis)</p></li>
+<li><p>Candlestick plots</p>
+
+<p>All the above plots have a lot of customisation options, that can be looked into in the documentation.</p></li>
+</ul>
+
+
+<p>Each Figure can have multiple subplots, each subplot can have multiple plots</p>
+
+<h3>6. Working of the Library</h3>
+
+<p>Here is how the library works.</p>
+
+<p><img src="https://i.imgur.com/sdNg7av.png" alt="Imgur" /></p>
+
+<p>Figure is the class that a user instantiates this is where all the  plotting take place. An instance contains the state of the figure. GR  framework is used as the artist layer which does all the plotting on the  figure. GR is also the backend.</p>
+
+<p>GR artist layer functions are implemented in C language, we wrap the  functions to ruby classes which have the call method which executes the  GR function when the Object of the ruby class is called.
+ Each of these ruby classes are called tasks which represents that they  perform a task, for example ClearWorkspace performs the task of cleaning  the workspace.</p>
+
+<p>Now, the figure is divided into subplots. It is Subplot(1,1,1) by  default. So, figure has objects of subplot, each subplot is of type bar  plot or line plot etc. These plots are defined in the Plots module which  is submodule of Scripting module, the Plots module has a submodule  named BasePlots which defines the two bases of plots, LazyBase and  RobustBase.
+ Lazy base is for plots which are dependent on state of the figure, for  example a bar graph depends on the location of axes. Every lazy plot has  a unique call function rather than inheriting it from LazyBase. In  LazyPlots the instances of GR Function Classes are called as soon as  they are instantiated. This all is done in the call function.
+ Robust base is for plots which are which are independent of the state of  the Figure. For example: A scatter plot is independent of the location  of axes. Plots which are Sub classes of RobustBase append the instances  of GR function classes to tasks when initialized. These instances are  called via the call method defined in RobustBase.</p>
+
+<p>So, each subplot which is of type bar plot or scatter plots etc.  inherits a base. Now, each subplot is just a collection of some tasks,  so it has a task list which stores the tasks to be performed i.e. the  Task objects, for example Scatter plot has tasks SetMarkerColorIndex  which sets the color of the marker, SetMarkerSize which sets the size of  the marker, SetMarkerType which sets the type of the marker and  Polymarker which marks the marker of defined color, size and style.
+ Whenever a new Subplot object is initialized, for example  subplot(r,c,i), the figure is divided into a matrix with r rows and c  columns and the subplot initialized with index i is set as the active  subplot ans this active subplot is pushed into the subplot list. Each  subplot object has a unique identity (r,c,i) so if the user wants to  access a subplot which is already declared, this identity will be used.  When the subplot object is called (i.e. to view or save), it first  executes some necessary tasks and then pushes the tasks related to bar  plot, scatter plot, etc. to the task list.</p>
+
+<p>Figure is a collection of such subplots and so Figure has a subplot list which stores the subplot objects.</p>
+
+<p><img src="https://i.imgur.com/H2vEO1i.png" alt="Imgur" /></p>
+
+<p>These tasks are just stored in the lists and are not performed (i.e. called) until the user asks to view or save the figure i.e. when the user calls view or save (which are tasks themselves) the tasks are performed (i.e. called) and the figure is plotted. This is done by using the Module Plotspace.<br/>
+When the figure calls the task view or save, these tasks call the Plotspace Object and the state of figure is copied to the Plotspace Object and this Object starts executing( or performing) i.e. calling tasks from task list of each subplot in subplot list and the figure is plotted and viewed or saved.</p>
+
+<p>Here is the current view of Library:</p>
+
+<p><img src="https://i.imgur.com/0HwzAtG.png" alt="imgur" /></p>
+
+<h3>Future</h3>
+
+<p>The Library is currently being developed by SciRuby community <a href="https://github.com/SciRuby/rubyplot">here</a>. Currently, it is a static library, after further development, it's Architecture should look like the following:</p>
+
+<p><img src="https://i.imgur.com/AdfPQlT.png" alt="imgur" /></p>
+
+<h3>Acknowledgements</h3>
+
+<p>I would like to thank Sameer Deshmukh and Prasun Anand for guiding me through every step of software design and helping me out through every decision. I would also like to thank Dr John Woods and Dr Pjotr Prins for their valuable feedback. I am glad to be a part of SciRuby community and I hope to further contribute towards it's goal.</p>
+
+<p>I would also like to thank Arafat Khan, a fellow GSoCer who worked on the library using Rmagick as the backend renderer for our fruitful debates over the architecture of the library</p>
+
+<p>Finally, I would like to thank Google for giving me this opportunity.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GSoC 2018 : Ruby Matplotlib]]></title>
+    <link href="http://sciruby.com/blog/2019/01/17/gsoc-2018-Ruby-Matplotlib/"/>
+    <updated>2019-01-17T05:30:00+05:30</updated>
+    <id>http://sciruby.com/blog/2019/01/17/gsoc-2018-Ruby-Matplotlib</id>
+    <content type="html"><![CDATA[<p>This is a wrap of my Gsoc project at Sciruby where I worked on builing Matplotlib for Ruby.</p>
+
+<p>At Sciruby, we came across the ambitious task of designing the next Matplotlib for Ruby and so we examined quite a few different plotting libraries and figured that if we could put together ideas from all of these libraries then we can make something really amazing.Primarily our main source of inspiration was Matplotlib. The Matplotlib Architecture is be broadly divided into three layers. The Backend, The Artist and the scripting layer.</p>
+
+<p>Matplotlib architecture is mostly written in Python with some of its backend (the renderer AGG and Figure canvas ) written in C++ ( The original AGG backend and helper scripts, which is quite tightly bound to python). But recently the backends are also written in Python using the renderers which have Python APIs. The finer details of the Architecture can be found <a href="https://www.aosabook.org/en/matplotlib.html">here</a>.</p>
+
+<p>Based on Matplotlib our initial plans for the library can be described in this visual.</p>
+
+<p><img src="https://raw.githubusercontent.com/Arafatk/hagura/gh-pages/images/Screen%20Shot%202019-01-28%20at%201.27.11%20PM.png" alt="Image" /></p>
+
+<p>We decided to build two different ruby libraries independently but with many parallels in their code. Eventually when the project gets completed we will combine them into a single repository and give users the option to use either of the libraries as a backend for construction of the plots.</p>
+
+<p>For the first one, <a href="https://github.com/pgtgrly/GRruby-extension/">Gr plot</a> is plotting library for ruby that uses the <a href="https://gr-framework.org/">GR framework</a> as a backend.
+And for the second one, <a href="https://github.com/Arafatk/magick-rubyplot/">Magick plot</a> is a plotting library that produces quality figures in a variety of hardcopy formats using <a href="https://rmagick.github.io/">RMagick</a> as a backend.</p>
+
+<p> Magickplot is an interesting library with many features similar to GRPlot but the internal implementations of both the libraries are radically different. We believe that depending on the use cases the users can find either of them more useful than the other one. 
+So our next goal is to merge them together and give users a simple API to switch back ends easily from GR Plot to Magick Plot….</p>
+
+<p>My work in particular dealt with building Magickplot. The library works in similar thought process to painting where you can give it an empty paper called figure canvas and then you draw upon the figure canvas using plotting features. For all drawing and plotting purposes in this library we use RMagick.</p>
+
+<p>So where are our paint brushes and paints for drawing on the plot?</p>
+
+<ul>
+<li> draw->rectangle</li>
+<li> draw->circle</li>
+<li> draw->line</li>
+<li> draw->annotate</li>
+</ul>
+
+
+<p>These base features will let you make Bar, Scatter, Dot, Line and Bubble plots with Magickplot with very accurate geometry. A better walk through of the construction of a single plot with this library can be found in this <a href="https://arafatk.github.io/hagura/2018/07/19/bubble-base.html">blog</a>.</p>
+
+<h2>Application</h2>
+
+<p>My GSoC 2018 application for the project can be found <a href="https://docs.google.com/document/d/1t7jJKMaPjFI7pbjfMSG7eh6YmqqIE0qEoXXqsxROlYs/edit?usp=sharing">here</a>.</p>
+
+<h2>Blog Posts</h2>
+
+<p>The entire work for Rubyplot can be summarized in these series of blogposts:</p>
+
+<ul>
+<li><a href="https://arafatk.github.io/hagura/2018/06/20/introductions.html">Introductory Blog</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/06/21/ArtistBase-1.html">Artist Base - Part 1</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/06/22/ArtistBase-2.html">Artist Base - Part 3</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/07/11/Plot-Constructions.html">Divisionism</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/07/12/scatter-base.html">Scatter Plots</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/07/19/bubble-base.html">Bubble Plots</a></li>
+</ul>
+
+
+<h2>Future Work</h2>
+
+<p>Our ultimate goal is to make this project similar to a matplotlib equivalent for Ruby with tons of really amazing customization features. I hope you find this interesting and useful.The library is currently being developed by the Sciruby community, feel free to try it out from <a href="https://github.com/SciRuby/rubyplot/">github</a>. Any suggestions and recommendations are welcome.</p>
+
+<h2>FOSS</h2>
+
+<p>I have been an active contributor to a few open source projects and I have started a few
+nice ones of my own and I feel really glad to have been introduced to the open
+source community. I really appreciate the effort by Google Open Source Committee for conducting GSoC every year. It is the best platform for aspiring programmers to improve their skill and give back to society by developing free and open source software.</p>
+
+<h2>Acknowledgements</h2>
+
+<p>Thanks to all my Mentors from Sciruby namely, Sameer Deshmukh, Pjotr Prins, Prasun Anand and  John Woods. 
+Special thanks to Pranav Garg a fellow GSoCer who is the lead developer of GR-Ruby and a student in Gsoc for Sciruby</p>
+]]></content>
+  </entry>
+  
+</feed>

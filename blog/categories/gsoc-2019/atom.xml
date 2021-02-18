@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: GSoC 2019 | SciRuby]]></title>
+  <link href="http://sciruby.com/blog/categories/gsoc-2019/atom.xml" rel="self"/>
+  <link href="http://sciruby.com/"/>
+  <updated>2021-02-18T16:06:09+05:30</updated>
+  <id>http://sciruby.com/</id>
+  <author>
+    <name><![CDATA[SciRuby]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GSoC 2019: Adding features to NMatrix core]]></title>
+    <link href="http://sciruby.com/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core/"/>
+    <updated>2019-08-26T23:49:00+05:30</updated>
+    <id>http://sciruby.com/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core</id>
+    <content type="html"><![CDATA[<p>The GSoC coding period has come to an end. It's been quite a learning experience for me and has given me an opportunity to come out of my comfort zone and explore new things. I feel quite delighted knowing that I have contributed a significant amount to the project. This post summarizes my work on <a href="https://github.com/sciruby/numruby">NumRuby</a> during the GSoC period.</p>
+
+<p>GSoC 2019 proposal - <a href="https://docs.google.com/document/d/1MR01QZeX_8h7a16nmkOYlyrVt--osB1Yg9Vo0xXYtSw/edit?usp=sharing">https://docs.google.com/document/d/1MR01QZeX_8h7a16nmkOYlyrVt--osB1Yg9Vo0xXYtSw/edit?usp=sharing</a></p>
+
+<h2>Pull requests</h2>
+
+<ul>
+<li>Indexing, iterating, slicing - <a href="https://github.com/SciRuby/numruby/pull/19">https://github.com/SciRuby/numruby/pull/19</a></li>
+<li>Fix compiler warnings - <a href="https://github.com/SciRuby/numruby/pull/21">https://github.com/SciRuby/numruby/pull/21</a></li>
+<li>Dimensional iterators - <a href="https://github.com/SciRuby/numruby/pull/22">https://github.com/SciRuby/numruby/pull/22</a></li>
+<li>Broadcasting - <a href="https://github.com/SciRuby/numruby/pull/23">https://github.com/SciRuby/numruby/pull/23</a></li>
+<li>Lapack wrappers - <a href="https://github.com/SciRuby/numruby/pull/26">https://github.com/SciRuby/numruby/pull/26</a></li>
+<li>NumRuby::Linalg - <a href="https://github.com/SciRuby/numruby/pull/30">https://github.com/SciRuby/numruby/pull/30</a></li>
+</ul>
+
+
+<h2>Blog Posts</h2>
+
+<ul>
+<li>GSoC project introduction - <a href="https://uditgulati.github.io/blog/open-source/2019/05/21/gsoc-project-introduction-nmatrix.html">https://uditgulati.github.io/blog/open-source/2019/05/21/gsoc-project-introduction-nmatrix.html</a></li>
+<li>GSoC weeks 1, 2 - <a href="https://uditgulati.github.io/blog/open-source/2019/06/10/gsoc-week-1-2.html">https://uditgulati.github.io/blog/open-source/2019/06/10/gsoc-week-1-2.html</a></li>
+<li>GSoC weeks 3, 4 - <a href="https://uditgulati.github.io/blog/open-source/2019/06/26/gsoc-week-3-4.html">https://uditgulati.github.io/blog/open-source/2019/06/26/gsoc-week-3-4.html</a></li>
+<li>GSoC weeks 5, 6 - <a href="https://uditgulati.github.io/blog/open-source/2019/07/10/gsoc-week-5-6.html">https://uditgulati.github.io/blog/open-source/2019/07/10/gsoc-week-5-6.html</a></li>
+<li>GSoC weeks 7, 8 - <a href="https://uditgulati.github.io/blog/open-source/2019/07/25/gsoc-week-7-8.html">https://uditgulati.github.io/blog/open-source/2019/07/25/gsoc-week-7-8.html</a></li>
+<li>GSoC weeks 9, 10 - <a href="https://uditgulati.github.io/blog/open-source/2019/08/16/gsoc-week-9-10.html">https://uditgulati.github.io/blog/open-source/2019/08/16/gsoc-week-9-10.html</a></li>
+</ul>
+
+
+<h2>Future work</h2>
+
+<ul>
+<li>As these features are core to NMatrix, they need to be tested more tightly and benchmarked. Also, since this is the first implementation of the features, some modifications can make these features more reliable and faster.</li>
+<li>More iterators are to be implemented in order to have a richer NMatrix API.</li>
+<li>The issue with slicing needs to be fixed soon. Also, need to standardize the formatting used for slice range specification.</li>
+<li>Broadcasting needs to be tested and benchmarked. This will let us improve it's reliability and performance. A few APIs could be exposed which would let a user manually broadcast a matrix to a given shape.</li>
+<li>NumRuby::Lapack needs to have proper exception handling for LAPACK routines. This will be done by reading the info value returned by routine and raising exception accordingly.</li>
+<li>NumRuby::Linalg can be extended to have even more methods.</li>
+</ul>
+
+
+<h2>Acknowledgements</h2>
+
+<p>I wanna thank Ruby Science Foundation, all mentors and org admins for providing me this wonderful opportunity to enhance my knowledge and work on a project. I would also like to thank Google for organizing such a wonderful program due to which I got introduced to Open-source and Ruby Science Foundation. I especially want to thank my mentor Prasun Anand for guiding me through this period, keeping me motivated and for tolerating my procrastination.</p>
+]]></content>
+  </entry>
+  
+</feed>

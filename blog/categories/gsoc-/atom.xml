@@ -4,7 +4,7 @@
   <title><![CDATA[Category: GSOC, | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/gsoc-/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2018-01-19T15:57:55+09:00</updated>
+  <updated>2021-02-18T16:06:09+05:30</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GSoC 2016: SpiceRub::KernelPool and Kernels]]></title>
-    <link href="http://sciruby.com/blog/2016/11/25/spicerub-kernelpool-and-kernels/"/>
-    <updated>2016-11-25T02:32:35+09:00</updated>
-    <id>http://sciruby.com/blog/2016/11/25/spicerub-kernelpool-and-kernels</id>
+    <link href="http://sciruby.com/blog/2016/11/24/spicerub-kernelpool-and-kernels/"/>
+    <updated>2016-11-24T23:02:35+05:30</updated>
+    <id>http://sciruby.com/blog/2016/11/24/spicerub-kernelpool-and-kernels</id>
     <content type="html"><![CDATA[<p>So this post comes rather late, but I'd still like to talk about what I did in the first week, and a little into the second week.
 Firstly, thanks to a pull request offered by my GSoC mentor John (<a href="https://github.com/mohawkjohn">@mohawkjohn</a>), I now have rake tasks set up properly in the repository and rake seems to be working.</p>
 
@@ -141,9 +141,9 @@ kernel_pool[0]
   
   <entry>
     <title type="html"><![CDATA[GSoC 2016 : A Look at SpiceRub::Body]]></title>
-    <link href="http://sciruby.com/blog/2016/11/25/gsoc-2016-a-look-at-spicerub-body/"/>
-    <updated>2016-11-25T02:23:00+09:00</updated>
-    <id>http://sciruby.com/blog/2016/11/25/gsoc-2016-a-look-at-spicerub-body</id>
+    <link href="http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body/"/>
+    <updated>2016-11-24T22:53:00+05:30</updated>
+    <id>http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body</id>
     <content type="html"><![CDATA[<p>One of the main goals of this project was to make the ephemerides
 functions easily available to an end user. Ephemerides basically
 refers to an object in space whose motion is being tracked and
@@ -431,9 +431,9 @@ but this is just potential expansions in the future.)</p>
   
   <entry>
     <title type="html"><![CDATA[GSoC 2016 : A Look at SpiceRub::Time]]></title>
-    <link href="http://sciruby.com/blog/2016/11/25/gsoc-2016-a-look-at-spicerub-time/"/>
-    <updated>2016-11-25T02:22:00+09:00</updated>
-    <id>http://sciruby.com/blog/2016/11/25/gsoc-2016-a-look-at-spicerub-time</id>
+    <link href="http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-time/"/>
+    <updated>2016-11-24T22:52:00+05:30</updated>
+    <id>http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-time</id>
     <content type="html"><![CDATA[<p>Many popular programming languages these days ship with powerful Time
 classes/interfaces to make the inevitable task of dealing with
 time-related computations a more DRY experience. Humans like their

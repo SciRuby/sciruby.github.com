@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Modeling | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/modeling/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2018-01-19T15:57:48+09:00</updated>
+  <updated>2021-02-18T16:06:09+05:30</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Statistical linear mixed models in Ruby with mixed_models (GSoC2015)]]></title>
     <link href="http://sciruby.com/blog/2015/08/19/gsoc-2015-mixed-models/"/>
-    <updated>2015-08-19T12:00:00+09:00</updated>
+    <updated>2015-08-19T12:00:00+05:30</updated>
     <id>http://sciruby.com/blog/2015/08/19/gsoc-2015-mixed-models</id>
     <content type="html"><![CDATA[<p>Google Summer of Code 2015 is coming to an end. During this summer, I have learned too many things to list here about statistical modeling, Ruby and software development in general, and I had a lot of fun in the process!</p>
 

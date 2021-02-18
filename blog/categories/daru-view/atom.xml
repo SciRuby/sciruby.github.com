@@ -4,7 +4,7 @@
   <title><![CDATA[Category: daru-view | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/daru-view/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2018-01-19T15:57:48+09:00</updated>
+  <updated>2021-02-18T16:06:09+05:30</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -14,9 +14,73 @@
 
   
   <entry>
+    <title type="html"><![CDATA[GSoC 2018 : Implementing advance features in daru-view]]></title>
+    <link href="http://sciruby.com/blog/2019/01/16/gsoc-2018-advance-features-in-daru-view/"/>
+    <updated>2019-01-16T17:30:00+05:30</updated>
+    <id>http://sciruby.com/blog/2019/01/16/gsoc-2018-advance-features-in-daru-view</id>
+    <content type="html"><![CDATA[<p>This is a wrap of my magnificent adventurous journey of GSoC with SciRuby and I feel proud that I managed to contribute a significant amount to the development and progress of the project <a href="https://github.com/SciRuby/daru-view">daru-view</a>. This post summarizes my work in this period.</p>
+
+<p>Daru-view now presents data in some more visualizations like HighMap and HighStock along with the already implemented HighCharts, GoogleCharts, DataTables and Nyaplot. It provides some more new cool features like formatting Daru::View::Table (GoogleCharts table) with different colors, pattern, etc., exporting charts to different formats, comparing different visualizations in a row and many more. Follow up with these <a href="https://github.com/SciRuby/daru-view/tree/master/spec/dummy_iruby">IRuby examples</a> to know the current features equipped in daru-view.</p>
+
+<p><img src="https://camo.githubusercontent.com/a0a98819e3421378873a96893502e044ceb09e84/68747470733a2f2f33327465657468676c69747465722e66696c65732e776f726470726573732e636f6d2f323031382f30352f68732e706e67" title="Fig. 1: HighStock" alt="HighStock" />
+<img src="https://camo.githubusercontent.com/7e99eb68f3901995887d93160f2ef26756b531b5/68747470733a2f2f33327465657468676c69747465722e66696c65732e776f726470726573732e636f6d2f323031382f30352f686d5f696e6469612e706e67" title="Fig. 2: HighMap" alt="HighMap" />
+<img src="https://camo.githubusercontent.com/f2d3a7dc5889ec63028cc4d4faeb63c47ba5b270/68747470733a2f2f33327465657468676c69747465722e66696c65732e776f726470726573732e636f6d2f323031382f30352f6373732e706e67" title="Fig. 3: CSS styling in HighCharts" alt="CSS styling" />
+<img src="https://camo.githubusercontent.com/c6145397f1bf1756bb2f2921ce35ea0d88b51099/68747470733a2f2f33327465657468676c69747465722e66696c65732e776f726470726573732e636f6d2f323031382f30362f696d706f72745f73707265616473686565742e706e67" title="Fig. 4: Importing Data from Google spreadsheet" alt="Data from spreadsheet" />
+<img src="https://camo.githubusercontent.com/5c9e5453dcf25cadceca7f558152bb0f75cdc737/68747470733a2f2f33327465657468676c69747465722e66696c65732e776f726470726573732e636f6d2f323031382f30372f6d756c7469706c655f67635f68632e706e67" title="Fig. 5: Comparing data using different visualizations side by side" alt="Multiple visualizations" /></p>
+
+<p>These figures describes the usage of some of the features implemented in daru-view during GSoC.</p>
+
+<h1>Application</h1>
+
+<p>The GSoC 2018 application can be found <a href="https://docs.google.com/document/d/1id7ZJ4_rAEdXjg2yuBfcwSzV2QIiwpsfgc-gZdOioZ4/edit?usp=sharing">here</a>.</p>
+
+<h1>Code</h1>
+
+<ul>
+<li>GSoC 2018 work done summary – <a href="https://github.com/SciRuby/daru-view/wiki/GSoC-2018---Progress-Report">Progress Report</a></li>
+<li>GSoC 2018 work presentation – <a href="https://docs.google.com/presentation/d/1lhf3QA5SmqA9YbMAjd6JnSJuZBuAfRKFBYs7JPKPRis/edit?usp=sharing">Advance Features in daru-view</a></li>
+<li>Discourse Discussion – <a href="https://discourse.ruby-data.org/t/gsoc-2108-project-advance-features-in-daru-view-discussion/43/50">daru-view discussion</a></li>
+</ul>
+
+
+<p>The work done during this GSoC has been explained in the following eight blog posts:</p>
+
+<ol>
+<li><a href="https://32teethglitter.wordpress.com/2018/05/01/gsoc-2018-introduction-advance-features-in-daru-view/">GSoC 2018 Introduction – Goals defined</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/05/20/gsoc-2018-coding-week-1/">HighCharts and HighMaps</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/05/27/gsoc-2018-coding-week-2/">Custom Styling CSS in HighCharts</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/06/08/gsoc-2018-coding-week-3-4/">Exporing HighCharts | ChartWrapper | Importing data from google spreadsheet in Google Charts</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/06/24/gsoc-2018-coding-week-5-6/">Exporting Google Charts | Charteditor</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/07/08/gsoc-2018-coding-week-7-8/">Handling events in Google Charts | Multiple Charts in a row</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/07/24/gsoc-2018-coding-week-9-10/">Formatters in Google Charts | Loading large set of data in DataTables</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/08/06/gsoc-2018-coding-week-11-12/">Reduce a bunch of lines due to JS files in source HTML in rails | Rake task to add new adapter</a></li>
+</ol>
+
+
+<h1>Future Work</h1>
+
+<p>The future work involves removing the dependency of daru-view on gems <code>google_visualr</code> and <code>lazy_high_charts</code> by creating our own gems. Check out these <a href="https://github.com/SciRuby/daru-view/wiki/Ideas#new-ideas-to-be-reviewed">new ideas</a> that can be implemented in daru-view.</p>
+
+<h1>FOSS</h1>
+
+<p>This has been my first attempt to explore the open source community. The summer was filled with the development of open source software and definitely was a great learning experience.</p>
+
+<p>I really appreciate the effort by Google Open Source Committee for conducting GSoC every year. It is the
+best platform for the aspiring programmers to improve their skill and give back to society by developing free
+and open source software.</p>
+
+<h1>Acknowledgements</h1>
+
+<p>I would like to express my sincere gratitude to Ruby Science Foundation, all the mentors and org admins for providing me this wonderful opportunity to enhance my knowledge and work independently on a project. I especially want to thank Shekhar for guiding me through the journey, helping and motivating me in every possible way.</p>
+
+<p>I am very thankful to Google for organizing such an awesome program.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[GSoC 2017 : Data visualization using daru-view]]></title>
     <link href="http://sciruby.com/blog/2017/09/01/gsoc-2017-data-visualization-using-daru-view/"/>
-    <updated>2017-09-01T22:46:00+09:00</updated>
+    <updated>2017-09-01T22:46:00+05:30</updated>
     <id>http://sciruby.com/blog/2017/09/01/gsoc-2017-data-visualization-using-daru-view</id>
     <content type="html"><![CDATA[<p>Hello, Rubyist! Are looking for good ruby gem for interactive data
 visualization? Then you must try <a href="https://github.com/Shekharrajak/daru-view"><code>daru-view</code></a>, a plugin gem for <a href="https://github.com/SciRuby/daru"><code>daru</code></a>.</p>
@@ -128,7 +192,7 @@ line_basic_chart.chart
 <p>This will return the chart object we created using GoogleCharts.
 In IRuby notebook, you will see this:</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlecharts_line1.png?raw=true" title="Basic line chart using GoogleCharts" alt="Basic line chart using GoogleCharts"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlecharts_line1.png?raw=true 'Basic line chart using GoogleCharts' 'Basic line chart using GoogleCharts' %}</p>
 
 <p>You can find the IRuby notebook example in <a href="http://nbviewer.jupyter.org/github/shekharrajak/daru-view/blob/master/spec/dummy_iruby/Google%20Chart%20%7C%20%20Line%20Chart.ipynb">this link</a>.</p>
 
@@ -166,7 +230,7 @@ df_cp.vectors = Daru::Index.new(['Country', 'Population'])</p>
 
 <p>Note: If you have already loaded the dependent JS files for the library then you can use <code>adapter: :googlecharts</code> in your Plot initialization.</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlechart_geo1.png?raw=true" title="Basic Geo chart using GoogleCharts" alt="Basic Geo chart using GoogleCharts"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlechart_geo1.png?raw=true 'Basic Geo chart using GoogleCharts' 'Basic Geo chart using GoogleCharts' %}</p>
 
 <h3>HighCharts:</h3>
 
@@ -203,7 +267,7 @@ plt_pie = Daru::View::Plot.new data, type: :pie
 <p>This will return the <code>Plot</code> object we created.
 In IRuby notebook, you will see this:</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/highcharts_pie.png?raw=true" title="Basic pie chart using HighCharts" alt="Basic pie chart using HighCharts"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/highcharts_pie.png?raw=true 'Basic pie chart using HighCharts' 'Basic pie chart using HighCharts' %}</p>
 
 <p>You can find the IRuby notebook example in <a href="http://nbviewer.jupyter.org/github/shekharrajak/daru-view/blob/master/spec/dummy_iruby/HighCharts-%20Pie%20charts.ipynb">this link</a>.</p>
 
@@ -237,7 +301,7 @@ df.to_category :c</p>
 
 <p>In IRuby notebook:</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/nyaplot_scatter.png?raw=true" title="Basic scatter chart using Nyaplot" alt="Basic scatter chart using Nyaplot"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/nyaplot_scatter.png?raw=true 'Basic scatter chart using Nyaplot' 'Basic scatter chart using Nyaplot' %}</p>
 
 <h3>GoogleChart data table</h3>
 
@@ -272,7 +336,7 @@ galaxy_table.table
 <p>This will return the table object we created using GoogleCharts tool.
 In IRuby notebook, you will see this:</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlechart_table1.png?raw=true" title="Basic table using GoogleCharts" alt="Basic table using GoogleCharts"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlechart_table1.png?raw=true 'Basic table using GoogleCharts' 'Basic table using GoogleCharts' %}</p>
 
 <p>We can create table using Vectors as well.</p>
 
@@ -291,7 +355,7 @@ dv = Daru::Vector.new [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175
 <p>```
 In Ruby Notebook:</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlechart_vec_table1.png?raw=true" title="Basic vector table using GoogleCharts" alt="Basic vector table using GoogleCharts"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlechart_vec_table1.png?raw=true 'Basic vector table using GoogleCharts' 'Basic vector table using GoogleCharts' %}</p>
 
 <h3>DataTable</h3>
 
@@ -324,7 +388,7 @@ df_datatable = Daru::View::Table.new(df, pageLength: 3)
 Currently there is some problem to diplay it in IRuby notebook, but in web application
 you can see something like this using</code>df_datatable.div` :</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/datatables_basic1.png?raw=true" title="Basic table using Datatables" alt="Basic table using Datatables"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/datatables_basic1.png?raw=true 'Basic table using Datatables' 'Basic table using Datatables' %}</p>
 
 <h2>How to use it in Ruby web application</h2>
 

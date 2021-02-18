@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ruby-Sparse | SciRuby]]></title>
+  <link href="http://sciruby.com/blog/categories/ruby-sparse/atom.xml" rel="self"/>
+  <link href="http://sciruby.com/"/>
+  <updated>2021-02-18T16:06:09+05:30</updated>
+  <id>http://sciruby.com/</id>
+  <author>
+    <name><![CDATA[SciRuby]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Tensors using NumRuby]]></title>
+    <link href="http://sciruby.com/blog/2021/02/16/tensors/"/>
+    <updated>2021-02-16T21:49:00+05:30</updated>
+    <id>http://sciruby.com/blog/2021/02/16/tensors</id>
+    <content type="html"><![CDATA[<p>Tensor word can have slightly different meaning depending upon the nature of study, like it's defined differently in Physics, slightly different in computer science. In computer terms, it is basically a n-dimensional array. A scalar (one value) is a tensor with 0 dimensions, a vector is a tensor with 1 dimension, a matrix is a tensor with 2 dimensions.</p>
+
+<p>It's possible to define a tensor in Ruby using the <code>Array</code> class of Ruby but it gets tedious when defining multi-dimensional tensors. Also, the <code>Array</code> object is designed to be heterogeneous which means that the elements of the array can be of different type or different classes which would seem as a plus point overall but it has a huge downside. Due to <code>Array</code> being heterogeneous, the memory allocation has to be in such a way that any element of any size can be added or removed from the array, which causes a lot of re-allocations. Also, the indexing and other array functions gets slower due to the heterogeneous nature.</p>
+
+<p>What if there's a scenario where there is only one type of tensor elements, which means that a homogeneous array would also do, and there are memory and speed constraints? <code>NumRuby</code> is the solution for such requirements.</p>
+
+<h2>Tensors in NumRuby</h2>
+
+<p>A tensor can be defined using the <code>NMatrix</code> object of <code>NumRuby</code>.</p>
+
+<p><code>ruby
+N = NMatrix.new [shape], [elements], :type
+</code></p>
+
+<p><code>shape</code> is the number of dimensions and size of each dimension of the tensor. For example, <code>[2, 2, 2]</code> shape tensor is a tensor with 3 dimensions and each dimension of size 2, hence number of elements is 8. A sample value of elements array for this could be <code>[1, 2, 3, 4, 5, 6, 7, 8]</code>. <code>type</code> is the data type of each of the tensor element, it could be any of <code>:nm_bool</code>, <code>:nm_int</code>, <code>:nm_float32</code>, <code>:nm_float64</code>, <code>:nm_complex32</code> or <code>:nm_complex64</code> depending on the requirements.</p>
+
+<p>An example usage is shown below:</p>
+
+<p><code>ruby
+[1] pry(main)&gt; N = NMatrix.new [2, 2], [1, 2, 3, 4], :nm_int
+=&gt;
+[
+ [1, 2],
+ [3, 4]
+]
+[2] pry(main)&gt; N.elements
+=&gt; [1, 2, 3, 4]
+[3] pry(main)&gt; N.shape
+=&gt; [2, 2]
+[4] pry(main)&gt; N[0, 0]
+=&gt; 1
+[5] pry(main)&gt; N[1, 0]
+=&gt; 3
+[6] pry(main)&gt; N.dtype
+=&gt; :nm_int
+</code></p>
+
+<h2>Elementwise Operations</h2>
+
+<p>One can also perform elementwise operations using <code>NumRuby</code>. Elementwise operations are broadly of 2 types, Uni-operand and bi-operand.</p>
+
+<h3>Uni-Operand Operations</h3>
+
+<p>Uni-operand operators are those that apply to just one tensor. For example, sine, cos or tan of each of element of the tensor.</p>
+
+<p><code>ruby
+[1] pry(main)&gt; N = NMatrix.new [2, 2], [1, 2, 3, 4], :nm_float64
+=&gt;
+[
+ [1.0, 2.0],
+ [3.0, 4.0]
+]
+[2] pry(main)&gt; N.sin
+=&gt;
+[
+ [0.8414709848078965,  0.9092974268256817],
+ [0.1411200080598672, -0.7568024953079282]
+]
+[3] pry(main)&gt; N.cos
+=&gt;
+[
+ [ 0.5403023058681398, -0.4161468365471424],
+ [-0.9899924966004454, -0.6536436208636119]
+]
+</code></p>
+
+<h3>Bi-Operand Operations</h3>
+
+<p>Bi-operand operators are those that apply to two tensor. For example, addition, subtraction or multiplication of each of the corresponding elements of the the 2 tensor.</p>
+
+<p><code>ruby
+[1] pry(main)&gt; N = NMatrix.new [2, 2], [1, 2, 3, 4], :nm_float64
+=&gt;
+[
+ [1.0, 2.0],
+ [3.0, 4.0]
+]
+[2] pry(main)&gt; M = NMatrix.new [2, 2], [2, 2, 3, 3], :nm_float64
+=&gt;
+[
+ [2.0, 2.0],
+ [3.0, 3.0]
+]
+[3] pry(main)&gt; N+M
+=&gt;
+[
+ [3.0, 4.0],
+ [6.0, 7.0]
+]
+[4] pry(main)&gt; N*M
+=&gt;
+[
+ [2.0,  4.0],
+ [9.0, 12.0]
+]
+</code></p>
+
+<h2>Linear Algebra</h2>
+
+<p><code>NumRuby</code> also supports linear algebra capabilities for 2-dimensional tensors. One can easily do operations such as matrix inverse, dot product, matrix decompositions.</p>
+
+<p><code>ruby
+[1] pry(main)&gt; N = NMatrix.new [2, 2], [1, 2, 3, 4], :nm_float64
+=&gt;
+[
+ [1.0, 2.0],
+ [3.0, 4.0]
+]
+[2] pry(main)&gt; M = NMatrix.new [2, 2], [2, 2, 3, 3], :nm_float64
+=&gt;
+[
+ [2.0, 2.0],
+ [3.0, 3.0]
+]
+[3] pry(main)&gt; N.dot(M)
+=&gt;
+[
+ [ 8.0,  8.0],
+ [18.0, 18.0]
+]
+[4] pry(main)&gt; N.invert
+=&gt;
+[
+ [-1.9999999999999996,  0.9999999999999998],
+ [ 1.4999999999999998, -0.4999999999999999]
+]
+[5] pry(main)&gt; N.det
+=&gt; -2.0
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

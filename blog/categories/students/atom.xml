@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Students | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/students/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2018-01-19T15:57:55+09:00</updated>
+  <updated>2021-02-18T16:06:09+05:30</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[GSoC 2017 : Data visualization using daru-view]]></title>
     <link href="http://sciruby.com/blog/2017/09/01/gsoc-2017-data-visualization-using-daru-view/"/>
-    <updated>2017-09-01T22:46:00+09:00</updated>
+    <updated>2017-09-01T22:46:00+05:30</updated>
     <id>http://sciruby.com/blog/2017/09/01/gsoc-2017-data-visualization-using-daru-view</id>
     <content type="html"><![CDATA[<p>Hello, Rubyist! Are looking for good ruby gem for interactive data
 visualization? Then you must try <a href="https://github.com/Shekharrajak/daru-view"><code>daru-view</code></a>, a plugin gem for <a href="https://github.com/SciRuby/daru"><code>daru</code></a>.</p>
@@ -498,9 +498,9 @@ language for visualization.</p>
   
   <entry>
     <title type="html"><![CDATA[GSoC 2016 : A Look at SpiceRub::Body]]></title>
-    <link href="http://sciruby.com/blog/2016/11/25/gsoc-2016-a-look-at-spicerub-body/"/>
-    <updated>2016-11-25T02:23:00+09:00</updated>
-    <id>http://sciruby.com/blog/2016/11/25/gsoc-2016-a-look-at-spicerub-body</id>
+    <link href="http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body/"/>
+    <updated>2016-11-24T22:53:00+05:30</updated>
+    <id>http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-body</id>
     <content type="html"><![CDATA[<p>One of the main goals of this project was to make the ephemerides
 functions easily available to an end user. Ephemerides basically
 refers to an object in space whose motion is being tracked and
@@ -788,9 +788,9 @@ but this is just potential expansions in the future.)</p>
   
   <entry>
     <title type="html"><![CDATA[GSoC 2016 : A Look at SpiceRub::Time]]></title>
-    <link href="http://sciruby.com/blog/2016/11/25/gsoc-2016-a-look-at-spicerub-time/"/>
-    <updated>2016-11-25T02:22:00+09:00</updated>
-    <id>http://sciruby.com/blog/2016/11/25/gsoc-2016-a-look-at-spicerub-time</id>
+    <link href="http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-time/"/>
+    <updated>2016-11-24T22:52:00+05:30</updated>
+    <id>http://sciruby.com/blog/2016/11/24/gsoc-2016-a-look-at-spicerub-time</id>
     <content type="html"><![CDATA[<p>Many popular programming languages these days ship with powerful Time
 classes/interfaces to make the inevitable task of dealing with
 time-related computations a more DRY experience. Humans like their
@@ -1041,7 +1041,7 @@ thanks for reading.</p>
   <entry>
     <title type="html"><![CDATA[GSoC 2015: New NMatrix gems for advanced linear algebra features]]></title>
     <link href="http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix/"/>
-    <updated>2015-08-19T09:57:00+09:00</updated>
+    <updated>2015-08-19T09:57:00+05:30</updated>
     <id>http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix</id>
     <content type="html"><![CDATA[<p>My Google Summer of Code project was working on the <a href="https://github.com/SciRuby/nmatrix">NMatrix project</a>, moving
 functionality that depends on external libraries from the core <code>nmatrix</code>
@@ -1193,7 +1193,7 @@ and feedback throughout the summer.</p>
   <entry>
     <title type="html"><![CDATA[GnuplotRB and GSoC 2015]]></title>
     <link href="http://sciruby.com/blog/2015/08/18/gnuplotrb-project/"/>
-    <updated>2015-08-18T23:26:00+09:00</updated>
+    <updated>2015-08-18T23:26:00+05:30</updated>
     <id>http://sciruby.com/blog/2015/08/18/gnuplotrb-project</id>
     <content type="html"><![CDATA[<h2>Introduction</h2>
 

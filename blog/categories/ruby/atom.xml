@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2018-01-19T15:57:55+09:00</updated>
+  <updated>2021-02-18T16:06:09+05:30</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -14,94 +14,428 @@
 
   
   <entry>
-    <title type="html"><![CDATA[GSoC 2017 : Creating the fastest Math libraries for Ruby by using the GPU through OpenCL, CUDA and ArrayFire.]]></title>
-    <link href="http://sciruby.com/blog/2017/09/15/gsoc-2017-fastest-ruby-math-libraries/"/>
-    <updated>2017-09-15T22:46:00+09:00</updated>
-    <id>http://sciruby.com/blog/2017/09/15/gsoc-2017-fastest-ruby-math-libraries</id>
-    <content type="html"><![CDATA[<p>GSoC 2017 is about to end. This post summarises my work during the course of summer.</p>
+    <title type="html"><![CDATA[Tensors using NumRuby]]></title>
+    <link href="http://sciruby.com/blog/2021/02/16/tensors/"/>
+    <updated>2021-02-16T21:49:00+05:30</updated>
+    <id>http://sciruby.com/blog/2021/02/16/tensors</id>
+    <content type="html"><![CDATA[<p>Tensor word can have slightly different meaning depending upon the nature of study, like it's defined differently in Physics, slightly different in computer science. In computer terms, it is basically a n-dimensional array. A scalar (one value) is a tensor with 0 dimensions, a vector is a tensor with 1 dimension, a matrix is a tensor with 2 dimensions.</p>
 
-<p>ArrayFire-rb now supports linear algebra on GPU and CPU. Currently only double dtype has been implemented.
-It supports dense and sparse matrices. It has multiple backends namely, CUDA, OpenCL and CPU.</p>
+<p>It's possible to define a tensor in Ruby using the <code>Array</code> class of Ruby but it gets tedious when defining multi-dimensional tensors. Also, the <code>Array</code> object is designed to be heterogeneous which means that the elements of the array can be of different type or different classes which would seem as a plus point overall but it has a huge downside. Due to <code>Array</code> being heterogeneous, the memory allocation has to be in such a way that any element of any size can be added or removed from the array, which causes a lot of re-allocations. Also, the indexing and other array functions gets slower due to the heterogeneous nature.</p>
 
-<p><img src="https://github.com/prasunanand/gsoc_blog/blob/master/img/sciruby_blog/arrayfire/add.png?raw=true" title="Fig. 1: Matrix Addition" alt="Matrix Addition" />
-<img src="https://github.com/prasunanand/gsoc_blog/blob/master/img/sciruby_blog/arrayfire/sub.png?raw=true" title="Fig. 2: Matrix Subtraction" alt="Matrix Subtraction" />
-<img src="https://github.com/prasunanand/gsoc_blog/blob/master/img/sciruby_blog/arrayfire/mult.png?raw=true" title="Fig. 3: Matrix Multiplication" alt="Matrix Multiplication" />
-<img src="https://github.com/prasunanand/gsoc_blog/blob/master/img/sciruby_blog/arrayfire/det.png?raw=true" title="Fig. 4: Matrix Determinant" alt="Matrix Determinant" />
-<img src="https://github.com/prasunanand/gsoc_blog/blob/master/img/sciruby_blog/arrayfire/lu.png?raw=true" title="Fig. 5: LU Decomposition" alt="LU Decomposition" /></p>
+<p>What if there's a scenario where there is only one type of tensor elements, which means that a homogeneous array would also do, and there are memory and speed constraints? <code>NumRuby</code> is the solution for such requirements.</p>
 
-<p>(Note: The above benchmarks have been done on an AMD FX 8350 octacore processor and Nvidia GTX 750Ti GPU. CUDA backend of ArrayFire was used with double floating points.)</p>
+<h2>Tensors in NumRuby</h2>
 
-<p>The figure shows that ArrayFire takes the least computation time of all. For elementwise arithmetic operations, ArrayFire is 2 e 4 times faster than NMatrix for Ruby whereas 2 e 3 times faster than NMatrix for JRuby.</p>
+<p>A tensor can be defined using the <code>NMatrix</code> object of <code>NumRuby</code>.</p>
 
-<p>The figure shows that ArrayFire takes the least computation time of all. ArrayFire is 3 e +6 times faster than NMatrix for JRuby and NMatrix for Ruby(not BLAS) whereas 7 e +5 times faster than NMatrix for Ruby(using BLAS).</p>
+<p><code>ruby
+N = NMatrix.new [shape], [elements], :type
+</code></p>
 
-<p>For LAPACK routines, like calculating determinant and lower-upper factorization, ArrayFire is 100 times faster than NMatrix for JRuby whereas 6 times faster than NMatrix for Ruby(using LAPACKE).</p>
+<p><code>shape</code> is the number of dimensions and size of each dimension of the tensor. For example, <code>[2, 2, 2]</code> shape tensor is a tensor with 3 dimensions and each dimension of size 2, hence number of elements is 8. A sample value of elements array for this could be <code>[1, 2, 3, 4, 5, 6, 7, 8]</code>. <code>type</code> is the data type of each of the tensor element, it could be any of <code>:nm_bool</code>, <code>:nm_int</code>, <code>:nm_float32</code>, <code>:nm_float64</code>, <code>:nm_complex32</code> or <code>:nm_complex64</code> depending on the requirements.</p>
+
+<p>An example usage is shown below:</p>
+
+<p><code>ruby
+[1] pry(main)&gt; N = NMatrix.new [2, 2], [1, 2, 3, 4], :nm_int
+=&gt;
+[
+ [1, 2],
+ [3, 4]
+]
+[2] pry(main)&gt; N.elements
+=&gt; [1, 2, 3, 4]
+[3] pry(main)&gt; N.shape
+=&gt; [2, 2]
+[4] pry(main)&gt; N[0, 0]
+=&gt; 1
+[5] pry(main)&gt; N[1, 0]
+=&gt; 3
+[6] pry(main)&gt; N.dtype
+=&gt; :nm_int
+</code></p>
+
+<h2>Elementwise Operations</h2>
+
+<p>One can also perform elementwise operations using <code>NumRuby</code>. Elementwise operations are broadly of 2 types, Uni-operand and bi-operand.</p>
+
+<h3>Uni-Operand Operations</h3>
+
+<p>Uni-operand operators are those that apply to just one tensor. For example, sine, cos or tan of each of element of the tensor.</p>
+
+<p><code>ruby
+[1] pry(main)&gt; N = NMatrix.new [2, 2], [1, 2, 3, 4], :nm_float64
+=&gt;
+[
+ [1.0, 2.0],
+ [3.0, 4.0]
+]
+[2] pry(main)&gt; N.sin
+=&gt;
+[
+ [0.8414709848078965,  0.9092974268256817],
+ [0.1411200080598672, -0.7568024953079282]
+]
+[3] pry(main)&gt; N.cos
+=&gt;
+[
+ [ 0.5403023058681398, -0.4161468365471424],
+ [-0.9899924966004454, -0.6536436208636119]
+]
+</code></p>
+
+<h3>Bi-Operand Operations</h3>
+
+<p>Bi-operand operators are those that apply to two tensor. For example, addition, subtraction or multiplication of each of the corresponding elements of the the 2 tensor.</p>
+
+<p><code>ruby
+[1] pry(main)&gt; N = NMatrix.new [2, 2], [1, 2, 3, 4], :nm_float64
+=&gt;
+[
+ [1.0, 2.0],
+ [3.0, 4.0]
+]
+[2] pry(main)&gt; M = NMatrix.new [2, 2], [2, 2, 3, 3], :nm_float64
+=&gt;
+[
+ [2.0, 2.0],
+ [3.0, 3.0]
+]
+[3] pry(main)&gt; N+M
+=&gt;
+[
+ [3.0, 4.0],
+ [6.0, 7.0]
+]
+[4] pry(main)&gt; N*M
+=&gt;
+[
+ [2.0,  4.0],
+ [9.0, 12.0]
+]
+</code></p>
+
+<h2>Linear Algebra</h2>
+
+<p><code>NumRuby</code> also supports linear algebra capabilities for 2-dimensional tensors. One can easily do operations such as matrix inverse, dot product, matrix decompositions.</p>
+
+<p><code>ruby
+[1] pry(main)&gt; N = NMatrix.new [2, 2], [1, 2, 3, 4], :nm_float64
+=&gt;
+[
+ [1.0, 2.0],
+ [3.0, 4.0]
+]
+[2] pry(main)&gt; M = NMatrix.new [2, 2], [2, 2, 3, 3], :nm_float64
+=&gt;
+[
+ [2.0, 2.0],
+ [3.0, 3.0]
+]
+[3] pry(main)&gt; N.dot(M)
+=&gt;
+[
+ [ 8.0,  8.0],
+ [18.0, 18.0]
+]
+[4] pry(main)&gt; N.invert
+=&gt;
+[
+ [-1.9999999999999996,  0.9999999999999998],
+ [ 1.4999999999999998, -0.4999999999999999]
+]
+[5] pry(main)&gt; N.det
+=&gt; -2.0
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GSoC 2019: Adding features to NMatrix core]]></title>
+    <link href="http://sciruby.com/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core/"/>
+    <updated>2019-08-26T23:49:00+05:30</updated>
+    <id>http://sciruby.com/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core</id>
+    <content type="html"><![CDATA[<p>The GSoC coding period has come to an end. It's been quite a learning experience for me and has given me an opportunity to come out of my comfort zone and explore new things. I feel quite delighted knowing that I have contributed a significant amount to the project. This post summarizes my work on <a href="https://github.com/sciruby/numruby">NumRuby</a> during the GSoC period.</p>
+
+<p>GSoC 2019 proposal - <a href="https://docs.google.com/document/d/1MR01QZeX_8h7a16nmkOYlyrVt--osB1Yg9Vo0xXYtSw/edit?usp=sharing">https://docs.google.com/document/d/1MR01QZeX_8h7a16nmkOYlyrVt--osB1Yg9Vo0xXYtSw/edit?usp=sharing</a></p>
+
+<h2>Pull requests</h2>
+
+<ul>
+<li>Indexing, iterating, slicing - <a href="https://github.com/SciRuby/numruby/pull/19">https://github.com/SciRuby/numruby/pull/19</a></li>
+<li>Fix compiler warnings - <a href="https://github.com/SciRuby/numruby/pull/21">https://github.com/SciRuby/numruby/pull/21</a></li>
+<li>Dimensional iterators - <a href="https://github.com/SciRuby/numruby/pull/22">https://github.com/SciRuby/numruby/pull/22</a></li>
+<li>Broadcasting - <a href="https://github.com/SciRuby/numruby/pull/23">https://github.com/SciRuby/numruby/pull/23</a></li>
+<li>Lapack wrappers - <a href="https://github.com/SciRuby/numruby/pull/26">https://github.com/SciRuby/numruby/pull/26</a></li>
+<li>NumRuby::Linalg - <a href="https://github.com/SciRuby/numruby/pull/30">https://github.com/SciRuby/numruby/pull/30</a></li>
+</ul>
+
+
+<h2>Blog Posts</h2>
+
+<ul>
+<li>GSoC project introduction - <a href="https://uditgulati.github.io/blog/open-source/2019/05/21/gsoc-project-introduction-nmatrix.html">https://uditgulati.github.io/blog/open-source/2019/05/21/gsoc-project-introduction-nmatrix.html</a></li>
+<li>GSoC weeks 1, 2 - <a href="https://uditgulati.github.io/blog/open-source/2019/06/10/gsoc-week-1-2.html">https://uditgulati.github.io/blog/open-source/2019/06/10/gsoc-week-1-2.html</a></li>
+<li>GSoC weeks 3, 4 - <a href="https://uditgulati.github.io/blog/open-source/2019/06/26/gsoc-week-3-4.html">https://uditgulati.github.io/blog/open-source/2019/06/26/gsoc-week-3-4.html</a></li>
+<li>GSoC weeks 5, 6 - <a href="https://uditgulati.github.io/blog/open-source/2019/07/10/gsoc-week-5-6.html">https://uditgulati.github.io/blog/open-source/2019/07/10/gsoc-week-5-6.html</a></li>
+<li>GSoC weeks 7, 8 - <a href="https://uditgulati.github.io/blog/open-source/2019/07/25/gsoc-week-7-8.html">https://uditgulati.github.io/blog/open-source/2019/07/25/gsoc-week-7-8.html</a></li>
+<li>GSoC weeks 9, 10 - <a href="https://uditgulati.github.io/blog/open-source/2019/08/16/gsoc-week-9-10.html">https://uditgulati.github.io/blog/open-source/2019/08/16/gsoc-week-9-10.html</a></li>
+</ul>
+
+
+<h2>Future work</h2>
+
+<ul>
+<li>As these features are core to NMatrix, they need to be tested more tightly and benchmarked. Also, since this is the first implementation of the features, some modifications can make these features more reliable and faster.</li>
+<li>More iterators are to be implemented in order to have a richer NMatrix API.</li>
+<li>The issue with slicing needs to be fixed soon. Also, need to standardize the formatting used for slice range specification.</li>
+<li>Broadcasting needs to be tested and benchmarked. This will let us improve it's reliability and performance. A few APIs could be exposed which would let a user manually broadcast a matrix to a given shape.</li>
+<li>NumRuby::Lapack needs to have proper exception handling for LAPACK routines. This will be done by reading the info value returned by routine and raising exception accordingly.</li>
+<li>NumRuby::Linalg can be extended to have even more methods.</li>
+</ul>
+
+
+<h2>Acknowledgements</h2>
+
+<p>I wanna thank Ruby Science Foundation, all mentors and org admins for providing me this wonderful opportunity to enhance my knowledge and work on a project. I would also like to thank Google for organizing such a wonderful program due to which I got introduced to Open-source and Ruby Science Foundation. I especially want to thank my mentor Prasun Anand for guiding me through this period, keeping me motivated and for tolerating my procrastination.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GSoC 2018: RubyPlot GR - A Scientific Plotting Library for Ruby Built on GR Framework]]></title>
+    <link href="http://sciruby.com/blog/2019/01/23/gsoc-2018-rubyplot+-gr-+a-scientific-plotting-library-for-ruby-built-on-gr/"/>
+    <updated>2019-01-23T18:00:00+05:30</updated>
+    <id>http://sciruby.com/blog/2019/01/23/gsoc-2018-rubyplot -gr- a-scientific-plotting-library-for-ruby-built-on-gr</id>
+    <content type="html"><![CDATA[<h3>1. About</h3>
+
+<p>For my summer of code Project I decided to create a plotting library.</p>
+
+<p>From scratch.</p>
+
+<p>In Ruby.</p>
+
+<h3>2. Application</h3>
+
+<p>The GSoC 2018 application can be found <a href="https://github.com/pgtgrly/Cairo_Graph/wiki/Google-Summer-of-Code-2018-Application">here</a>.</p>
+
+<h3>3. Code</h3>
+
+<p>The code for the project can be found <a href="https://github.com/pgtgrly/GRruby-extension">here</a>.</p>
+
+<p>RubyPlot is currently being developed <a href="https://github.com/SciRuby/rubyplot">here</a>.</p>
+
+<h3>3. The Plotting Architecture</h3>
+
+<p>The plotting architecture for the library was inspired by Late Dr John Hunter's Python Plotting Library "Matplotlib".</p>
+
+<p>The Matplotlib Architecture is be broadly divided into three layers  (as shown in the masterpiece of a figure which I made below). The  Backend, The Artist and the scripting layer.</p>
+
+<p>The Backend layer can further be divided into three parts : The Figure Canvas, The Renderer and the Event.</p>
+
+<p>Matplotlib architecture is mostly written in Python with some of its  backend (the renderer AGG and Figure canvas ) written in C++ ( The  original AGG backend and helper scripts, which is quite tightly bound to  python). But the recently the backends are also written in Python using  the renderers which have Python APIs. The finer details of the Architecture can be found <a href="https://aosabook.org/en/matplotlib.html">here</a>.</p>
+
+<p>In interest of the time I decided to go for a iterative process to develop the Library. I decided to use an existing Artist layer. After a lot of discussion we decided to use GR Framework for the same. The only issue was that GR did not have a Ruby API.</p>
+
+<h3>4. Creating C extensions for GR Framework:</h3>
+
+<p>To create the C extensions I initially decided to use Fiddle followed by FFi. But this lead to certain issues when it came to handling arrays. Hence I decided to go with the old fashioned Ruby C API to create extensions. The code for the same can be found <a href="https://github.com/pgtgrly/GRruby-extension/tree/master/ext/grruby">here</a>.</p>
+
+<h3>5. Creating Scripting Layer</h3>
+
+<p>The Scripting Layer Is meant for high level plotting. The scripting Library created on the GR Framework wrapper has the can plot the following:</p>
+
+<ul>
+<li><p>ScatterPlots</p></li>
+<li><p>Line graphs</p></li>
+<li><p>Bar Plots</p></li>
+<li><p>Stacked Bar plot</p></li>
+<li><p>Stacked Bar plot (Stacked along z axis)</p></li>
+<li><p>Candlestick plots</p>
+
+<p>All the above plots have a lot of customisation options, that can be looked into in the documentation.</p></li>
+</ul>
+
+
+<p>Each Figure can have multiple subplots, each subplot can have multiple plots</p>
+
+<h3>6. Working of the Library</h3>
+
+<p>Here is how the library works.</p>
+
+<p><img src="https://i.imgur.com/sdNg7av.png" alt="Imgur" /></p>
+
+<p>Figure is the class that a user instantiates this is where all the  plotting take place. An instance contains the state of the figure. GR  framework is used as the artist layer which does all the plotting on the  figure. GR is also the backend.</p>
+
+<p>GR artist layer functions are implemented in C language, we wrap the  functions to ruby classes which have the call method which executes the  GR function when the Object of the ruby class is called.
+ Each of these ruby classes are called tasks which represents that they  perform a task, for example ClearWorkspace performs the task of cleaning  the workspace.</p>
+
+<p>Now, the figure is divided into subplots. It is Subplot(1,1,1) by  default. So, figure has objects of subplot, each subplot is of type bar  plot or line plot etc. These plots are defined in the Plots module which  is submodule of Scripting module, the Plots module has a submodule  named BasePlots which defines the two bases of plots, LazyBase and  RobustBase.
+ Lazy base is for plots which are dependent on state of the figure, for  example a bar graph depends on the location of axes. Every lazy plot has  a unique call function rather than inheriting it from LazyBase. In  LazyPlots the instances of GR Function Classes are called as soon as  they are instantiated. This all is done in the call function.
+ Robust base is for plots which are which are independent of the state of  the Figure. For example: A scatter plot is independent of the location  of axes. Plots which are Sub classes of RobustBase append the instances  of GR function classes to tasks when initialized. These instances are  called via the call method defined in RobustBase.</p>
+
+<p>So, each subplot which is of type bar plot or scatter plots etc.  inherits a base. Now, each subplot is just a collection of some tasks,  so it has a task list which stores the tasks to be performed i.e. the  Task objects, for example Scatter plot has tasks SetMarkerColorIndex  which sets the color of the marker, SetMarkerSize which sets the size of  the marker, SetMarkerType which sets the type of the marker and  Polymarker which marks the marker of defined color, size and style.
+ Whenever a new Subplot object is initialized, for example  subplot(r,c,i), the figure is divided into a matrix with r rows and c  columns and the subplot initialized with index i is set as the active  subplot ans this active subplot is pushed into the subplot list. Each  subplot object has a unique identity (r,c,i) so if the user wants to  access a subplot which is already declared, this identity will be used.  When the subplot object is called (i.e. to view or save), it first  executes some necessary tasks and then pushes the tasks related to bar  plot, scatter plot, etc. to the task list.</p>
+
+<p>Figure is a collection of such subplots and so Figure has a subplot list which stores the subplot objects.</p>
+
+<p><img src="https://i.imgur.com/H2vEO1i.png" alt="Imgur" /></p>
+
+<p>These tasks are just stored in the lists and are not performed (i.e. called) until the user asks to view or save the figure i.e. when the user calls view or save (which are tasks themselves) the tasks are performed (i.e. called) and the figure is plotted. This is done by using the Module Plotspace.<br/>
+When the figure calls the task view or save, these tasks call the Plotspace Object and the state of figure is copied to the Plotspace Object and this Object starts executing( or performing) i.e. calling tasks from task list of each subplot in subplot list and the figure is plotted and viewed or saved.</p>
+
+<p>Here is the current view of Library:</p>
+
+<p><img src="https://i.imgur.com/0HwzAtG.png" alt="imgur" /></p>
+
+<h3>Future</h3>
+
+<p>The Library is currently being developed by SciRuby community <a href="https://github.com/SciRuby/rubyplot">here</a>. Currently, it is a static library, after further development, it's Architecture should look like the following:</p>
+
+<p><img src="https://i.imgur.com/AdfPQlT.png" alt="imgur" /></p>
+
+<h3>Acknowledgements</h3>
+
+<p>I would like to thank Sameer Deshmukh and Prasun Anand for guiding me through every step of software design and helping me out through every decision. I would also like to thank Dr John Woods and Dr Pjotr Prins for their valuable feedback. I am glad to be a part of SciRuby community and I hope to further contribute towards it's goal.</p>
+
+<p>I would also like to thank Arafat Khan, a fellow GSoCer who worked on the library using Rmagick as the backend renderer for our fruitful debates over the architecture of the library</p>
+
+<p>Finally, I would like to thank Google for giving me this opportunity.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GSoC 2018 : Ruby Matplotlib]]></title>
+    <link href="http://sciruby.com/blog/2019/01/17/gsoc-2018-Ruby-Matplotlib/"/>
+    <updated>2019-01-17T05:30:00+05:30</updated>
+    <id>http://sciruby.com/blog/2019/01/17/gsoc-2018-Ruby-Matplotlib</id>
+    <content type="html"><![CDATA[<p>This is a wrap of my Gsoc project at Sciruby where I worked on builing Matplotlib for Ruby.</p>
+
+<p>At Sciruby, we came across the ambitious task of designing the next Matplotlib for Ruby and so we examined quite a few different plotting libraries and figured that if we could put together ideas from all of these libraries then we can make something really amazing.Primarily our main source of inspiration was Matplotlib. The Matplotlib Architecture is be broadly divided into three layers. The Backend, The Artist and the scripting layer.</p>
+
+<p>Matplotlib architecture is mostly written in Python with some of its backend (the renderer AGG and Figure canvas ) written in C++ ( The original AGG backend and helper scripts, which is quite tightly bound to python). But recently the backends are also written in Python using the renderers which have Python APIs. The finer details of the Architecture can be found <a href="https://www.aosabook.org/en/matplotlib.html">here</a>.</p>
+
+<p>Based on Matplotlib our initial plans for the library can be described in this visual.</p>
+
+<p><img src="https://raw.githubusercontent.com/Arafatk/hagura/gh-pages/images/Screen%20Shot%202019-01-28%20at%201.27.11%20PM.png" alt="Image" /></p>
+
+<p>We decided to build two different ruby libraries independently but with many parallels in their code. Eventually when the project gets completed we will combine them into a single repository and give users the option to use either of the libraries as a backend for construction of the plots.</p>
+
+<p>For the first one, <a href="https://github.com/pgtgrly/GRruby-extension/">Gr plot</a> is plotting library for ruby that uses the <a href="https://gr-framework.org/">GR framework</a> as a backend.
+And for the second one, <a href="https://github.com/Arafatk/magick-rubyplot/">Magick plot</a> is a plotting library that produces quality figures in a variety of hardcopy formats using <a href="https://rmagick.github.io/">RMagick</a> as a backend.</p>
+
+<p> Magickplot is an interesting library with many features similar to GRPlot but the internal implementations of both the libraries are radically different. We believe that depending on the use cases the users can find either of them more useful than the other one. 
+So our next goal is to merge them together and give users a simple API to switch back ends easily from GR Plot to Magick Plot….</p>
+
+<p>My work in particular dealt with building Magickplot. The library works in similar thought process to painting where you can give it an empty paper called figure canvas and then you draw upon the figure canvas using plotting features. For all drawing and plotting purposes in this library we use RMagick.</p>
+
+<p>So where are our paint brushes and paints for drawing on the plot?</p>
+
+<ul>
+<li> draw->rectangle</li>
+<li> draw->circle</li>
+<li> draw->line</li>
+<li> draw->annotate</li>
+</ul>
+
+
+<p>These base features will let you make Bar, Scatter, Dot, Line and Bubble plots with Magickplot with very accurate geometry. A better walk through of the construction of a single plot with this library can be found in this <a href="https://arafatk.github.io/hagura/2018/07/19/bubble-base.html">blog</a>.</p>
+
+<h2>Application</h2>
+
+<p>My GSoC 2018 application for the project can be found <a href="https://docs.google.com/document/d/1t7jJKMaPjFI7pbjfMSG7eh6YmqqIE0qEoXXqsxROlYs/edit?usp=sharing">here</a>.</p>
+
+<h2>Blog Posts</h2>
+
+<p>The entire work for Rubyplot can be summarized in these series of blogposts:</p>
+
+<ul>
+<li><a href="https://arafatk.github.io/hagura/2018/06/20/introductions.html">Introductory Blog</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/06/21/ArtistBase-1.html">Artist Base - Part 1</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/06/22/ArtistBase-2.html">Artist Base - Part 3</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/07/11/Plot-Constructions.html">Divisionism</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/07/12/scatter-base.html">Scatter Plots</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/07/19/bubble-base.html">Bubble Plots</a></li>
+</ul>
+
+
+<h2>Future Work</h2>
+
+<p>Our ultimate goal is to make this project similar to a matplotlib equivalent for Ruby with tons of really amazing customization features. I hope you find this interesting and useful.The library is currently being developed by the Sciruby community, feel free to try it out from <a href="https://github.com/SciRuby/rubyplot/">github</a>. Any suggestions and recommendations are welcome.</p>
+
+<h2>FOSS</h2>
+
+<p>I have been an active contributor to a few open source projects and I have started a few
+nice ones of my own and I feel really glad to have been introduced to the open
+source community. I really appreciate the effort by Google Open Source Committee for conducting GSoC every year. It is the best platform for aspiring programmers to improve their skill and give back to society by developing free and open source software.</p>
+
+<h2>Acknowledgements</h2>
+
+<p>Thanks to all my Mentors from Sciruby namely, Sameer Deshmukh, Pjotr Prins, Prasun Anand and  John Woods. 
+Special thanks to Pranav Garg a fellow GSoCer who is the lead developer of GR-Ruby and a student in Gsoc for Sciruby</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GSoC 2018 : Implementing advance features in daru-view]]></title>
+    <link href="http://sciruby.com/blog/2019/01/16/gsoc-2018-advance-features-in-daru-view/"/>
+    <updated>2019-01-16T17:30:00+05:30</updated>
+    <id>http://sciruby.com/blog/2019/01/16/gsoc-2018-advance-features-in-daru-view</id>
+    <content type="html"><![CDATA[<p>This is a wrap of my magnificent adventurous journey of GSoC with SciRuby and I feel proud that I managed to contribute a significant amount to the development and progress of the project <a href="https://github.com/SciRuby/daru-view">daru-view</a>. This post summarizes my work in this period.</p>
+
+<p>Daru-view now presents data in some more visualizations like HighMap and HighStock along with the already implemented HighCharts, GoogleCharts, DataTables and Nyaplot. It provides some more new cool features like formatting Daru::View::Table (GoogleCharts table) with different colors, pattern, etc., exporting charts to different formats, comparing different visualizations in a row and many more. Follow up with these <a href="https://github.com/SciRuby/daru-view/tree/master/spec/dummy_iruby">IRuby examples</a> to know the current features equipped in daru-view.</p>
+
+<p><img src="https://camo.githubusercontent.com/a0a98819e3421378873a96893502e044ceb09e84/68747470733a2f2f33327465657468676c69747465722e66696c65732e776f726470726573732e636f6d2f323031382f30352f68732e706e67" title="Fig. 1: HighStock" alt="HighStock" />
+<img src="https://camo.githubusercontent.com/7e99eb68f3901995887d93160f2ef26756b531b5/68747470733a2f2f33327465657468676c69747465722e66696c65732e776f726470726573732e636f6d2f323031382f30352f686d5f696e6469612e706e67" title="Fig. 2: HighMap" alt="HighMap" />
+<img src="https://camo.githubusercontent.com/f2d3a7dc5889ec63028cc4d4faeb63c47ba5b270/68747470733a2f2f33327465657468676c69747465722e66696c65732e776f726470726573732e636f6d2f323031382f30352f6373732e706e67" title="Fig. 3: CSS styling in HighCharts" alt="CSS styling" />
+<img src="https://camo.githubusercontent.com/c6145397f1bf1756bb2f2921ce35ea0d88b51099/68747470733a2f2f33327465657468676c69747465722e66696c65732e776f726470726573732e636f6d2f323031382f30362f696d706f72745f73707265616473686565742e706e67" title="Fig. 4: Importing Data from Google spreadsheet" alt="Data from spreadsheet" />
+<img src="https://camo.githubusercontent.com/5c9e5453dcf25cadceca7f558152bb0f75cdc737/68747470733a2f2f33327465657468676c69747465722e66696c65732e776f726470726573732e636f6d2f323031382f30372f6d756c7469706c655f67635f68632e706e67" title="Fig. 5: Comparing data using different visualizations side by side" alt="Multiple visualizations" /></p>
+
+<p>These figures describes the usage of some of the features implemented in daru-view during GSoC.</p>
 
 <h1>Application</h1>
 
-<p>The GSoC 2017 application can be found <a href="https://github.com/prasunanand/resume/wiki/GSoC-2017-proposal">here</a>.</p>
+<p>The GSoC 2018 application can be found <a href="https://docs.google.com/document/d/1id7ZJ4_rAEdXjg2yuBfcwSzV2QIiwpsfgc-gZdOioZ4/edit?usp=sharing">here</a>.</p>
 
 <h1>Code</h1>
 
-<p><a href="https://github.com/prasunanand/arrayfire-rb">ArrayFire-rb</a>: The <a href="https://github.com/arrayfire/arrayfire-rb/pull/3">pull request</a> is undergoing a review.</p>
+<ul>
+<li>GSoC 2018 work done summary – <a href="https://github.com/SciRuby/daru-view/wiki/GSoC-2018---Progress-Report">Progress Report</a></li>
+<li>GSoC 2018 work presentation – <a href="https://docs.google.com/presentation/d/1lhf3QA5SmqA9YbMAjd6JnSJuZBuAfRKFBYs7JPKPRis/edit?usp=sharing">Advance Features in daru-view</a></li>
+<li>Discourse Discussion – <a href="https://discourse.ruby-data.org/t/gsoc-2108-project-advance-features-in-daru-view-discussion/43/50">daru-view discussion</a></li>
+</ul>
 
-<p>ArrayFire-rb Benchmarks: Codebase can be found <a href="https://github.com/prasunanand/arrayfire-rb-benchmark-suite">here</a>.</p>
 
-<p>Bio::FasterLmmD : Codebase can be found <a href="https://github.com/prasunanand/bio-faster_lmm_d">here</a></p>
-
-<p>The work on creating the bindings have been explained in the following nine blog posts:</p>
+<p>The work done during this GSoC has been explained in the following eight blog posts:</p>
 
 <ol>
-<li><a href="http://www.prasunanand.com/ruby-c-extensions/2017/06/23/gsoc17-ruby-c-extensions-for-complex-projects.html">Ruby C extensions for complex projects</a></li>
-<li><a href="http://www.prasunanand.com/arrayfire/2017/06/23/gsoc17-arrayfire-ruby-bindings-part-1-installation.html">Installation</a></li>
-<li><a href="http://www.prasunanand.com/arrayfire/2017/07/04/gsoc17-arrayfire-ruby-bindings-part-2-af_array.html">Af_Array</a>(see performance)</li>
-<li><a href="http://www.prasunanand.com/arrayfire/2017/07/22/gsoc17-arrayfire-ruby-bindings-part-3-minitest-algorithm.html">Test-suite and Algorithm class</a></li>
-<li><a href="http://www.prasunanand.com/arrayfire/2017/08/16/gsoc17-arrayfire-ruby-bindings-part-4-blas-lapack.html">BLAS and LAPACK routines</a>(see performance)</li>
-<li><a href="http://www.prasunanand.com/arrayfire/2017/08/17/gsoc17-arrayfire-ruby-bindings-part-4-statistics-and-random-engine.html">Statistics and Random Engine routines</a></li>
-<li><a href="http://www.prasunanand.com/arrayfire/2017/08/22/gsoc17-arrayfire-ruby-bindings-part-6-device.html">Device and Util</a></li>
-<li><a href="http://www.prasunanand.com/arrayfire/2017/08/24/gsoc17-arrayfire-ruby-bindings-part-7-backend-cuda-and-opencl.html">Multiple Backends: CUDA, OpenCL and CPU</a></li>
-<li><a href="http://www.prasunanand.com/arrayfire/2017/08/24/gsoc17-arrayfire-ruby-bindings-part-8-nmatrix-interface.html">ArrayFire-NMatrix Interface</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/05/01/gsoc-2018-introduction-advance-features-in-daru-view/">GSoC 2018 Introduction – Goals defined</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/05/20/gsoc-2018-coding-week-1/">HighCharts and HighMaps</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/05/27/gsoc-2018-coding-week-2/">Custom Styling CSS in HighCharts</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/06/08/gsoc-2018-coding-week-3-4/">Exporing HighCharts | ChartWrapper | Importing data from google spreadsheet in Google Charts</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/06/24/gsoc-2018-coding-week-5-6/">Exporting Google Charts | Charteditor</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/07/08/gsoc-2018-coding-week-7-8/">Handling events in Google Charts | Multiple Charts in a row</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/07/24/gsoc-2018-coding-week-9-10/">Formatters in Google Charts | Loading large set of data in DataTables</a></li>
+<li><a href="https://32teethglitter.wordpress.com/2018/08/06/gsoc-2018-coding-week-11-12/">Reduce a bunch of lines due to JS files in source HTML in rails | Rake task to add new adapter</a></li>
 </ol>
 
 
-<p>I took a side-track working on <code>Bio::FasterLmmD</code> . This work is not complete and still in progress.
-It is an effort to <code>call D from Ruby</code>. The work has been explained in a previous <a href="/gpu-computing/2017/07/25/gsoc17-calling-d-from-ruby-for-gpu-computing.html">blog post</a>.</p>
-
-<p>The work on ArrayFire-rb - JRuby has been postponed for now as I wanted to concentrate on MRI for
-the best results.</p>
-
 <h1>Future Work</h1>
 
-<p>The future work involves improving the ArrayFire-rb code and writing tutorials. ArrayFire is not limited to
-linear algebra so I will create bindings for Signal Processing, Computer Vision, etc. I will also add support
-for data types other than <code>double</code>.</p>
-
-<p>The work on ArrayFire-rb - JRuby will begin as soon as ArrayFire gem is published.</p>
+<p>The future work involves removing the dependency of daru-view on gems <code>google_visualr</code> and <code>lazy_high_charts</code> by creating our own gems. Check out these <a href="https://github.com/SciRuby/daru-view/wiki/Ideas#new-ideas-to-be-reviewed">new ideas</a> that can be implemented in daru-view.</p>
 
 <h1>FOSS</h1>
 
-<p>This has been my second GSoC with SciRuby. It has been more than an year contibuting extensively to FOSS.</p>
+<p>This has been my first attempt to explore the open source community. The summer was filled with the development of open source software and definitely was a great learning experience.</p>
 
 <p>I really appreciate the effort by Google Open Source Committee for conducting GSoC every year. It is the
-best platform for the aspiring programmers improve their skill and give back to society by developing free
+best platform for the aspiring programmers to improve their skill and give back to society by developing free
 and open source software.</p>
-
-<p>Last year's GSoC work helped me to present a talk at FOSDEM 2017 and Ruby Conf India 2017.  I got active
-in the Indian Ruby Community. Recently, I have been invited as a speaker to Ruby World Conference 2017, Matsue, Japan
-and RubyConf 2017, New Orleans, to talk on "GPU computing with Ruby".</p>
-
-<p>I plan to continue contributing to open source, strive for improving my skills, and help new programmers
-contribute to FOSS. I would be glad if I could mentor students for upcoming GSoCs.</p>
 
 <h1>Acknowledgements</h1>
 
-<p>I would like to express my sincere gratitude to my mentor Pjotr Prins, for his guidance, patience and support.
-I have learn a lot from him since my last GSoC and still learning. I couldn't have hoped for a better mentor.</p>
+<p>I would like to express my sincere gratitude to Ruby Science Foundation, all the mentors and org admins for providing me this wonderful opportunity to enhance my knowledge and work independently on a project. I especially want to thank Shekhar for guiding me through the journey, helping and motivating me in every possible way.</p>
 
-<p>I am grateful to Google and the Ruby Science Foundation for this golden opportunity.</p>
-
-<p>I am very thankful to John Woods, Sameer Deshmukh, Alexej Gossmann, Gaurav Tamba and Pradeep Garigipati
-who mentored me through the project.</p>
+<p>I am very thankful to Google for organizing such an awesome program.</p>
 ]]></content>
   </entry>
   

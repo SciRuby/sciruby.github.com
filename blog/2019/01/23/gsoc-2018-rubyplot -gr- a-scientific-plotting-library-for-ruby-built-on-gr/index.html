@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>GSoC 2018: RubyPlot GR - A Scientific Plotting Library for Ruby Built on GR Framework - SciRuby</title>
+  <meta name="author" content="SciRuby">
+
+  
+  <meta name="description" content="1. About For my summer of code Project I decided to create a plotting library. From scratch. In Ruby. 2. Application The GSoC 2018 application can be &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sciruby.com/blog/2019/01/23/gsoc-2018-rubyplot+-gr-+a-scientific-plotting-library-for-ruby-built-on-gr/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="SciRuby" type="application/atom+xml">
+  <!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12735432-6']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">SciRuby</a></h1>
+  
+    <h2>Tools for Scientific Computing in Ruby</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:sciruby.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul role=main-navigation xmlns="http://www.w3.org/1999/html">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog">Blog</a></li>
+  <li><a href="/docs">Installation</a></li>
+  <li><a href="http://gems.sciruby.com/">Gems</a></li>
+  <li><a href="https://github.com/sciruby/sciruby">SciRuby</a></li>
+  <li><a href="/nmatrix">NMatrix</a></li>
+  <li><a href="/publications/">Citing SciRuby</a></li>
+  <li><a href="https://github.com/SciRuby/sciruby/wiki/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">GSoC 2018: RubyPlot GR - a Scientific Plotting Library for Ruby Built on GR Framework</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+<span class="byline author vcard"><span class="fn">Pranav Garg</span></span>
+ &bull; 
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2019-01-23T18:00:00+05:30" pubdate data-updated="true">Jan 23<span>rd</span>, 2019</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>1. About</h3>
+
+<p>For my summer of code Project I decided to create a plotting library.</p>
+
+<p>From scratch.</p>
+
+<p>In Ruby.</p>
+
+<h3>2. Application</h3>
+
+<p>The GSoC 2018 application can be found <a href="https://github.com/pgtgrly/Cairo_Graph/wiki/Google-Summer-of-Code-2018-Application">here</a>.</p>
+
+<h3>3. Code</h3>
+
+<p>The code for the project can be found <a href="https://github.com/pgtgrly/GRruby-extension">here</a>.</p>
+
+<p>RubyPlot is currently being developed <a href="https://github.com/SciRuby/rubyplot">here</a>.</p>
+
+<h3>3. The Plotting Architecture</h3>
+
+<p>The plotting architecture for the library was inspired by Late Dr John Hunter&#8217;s Python Plotting Library &#8220;Matplotlib&#8221;.</p>
+
+<p>The Matplotlib Architecture is be broadly divided into three layers  (as shown in the masterpiece of a figure which I made below). The  Backend, The Artist and the scripting layer.</p>
+
+<p>The Backend layer can further be divided into three parts : The Figure Canvas, The Renderer and the Event.</p>
+
+<p>Matplotlib architecture is mostly written in Python with some of its  backend (the renderer AGG and Figure canvas ) written in C++ ( The  original AGG backend and helper scripts, which is quite tightly bound to  python). But the recently the backends are also written in Python using  the renderers which have Python APIs. The finer details of the Architecture can be found <a href="https://aosabook.org/en/matplotlib.html">here</a>.</p>
+
+<p>In interest of the time I decided to go for a iterative process to develop the Library. I decided to use an existing Artist layer. After a lot of discussion we decided to use GR Framework for the same. The only issue was that GR did not have a Ruby API.</p>
+
+<h3>4. Creating C extensions for GR Framework:</h3>
+
+<p>To create the C extensions I initially decided to use Fiddle followed by FFi. But this lead to certain issues when it came to handling arrays. Hence I decided to go with the old fashioned Ruby C API to create extensions. The code for the same can be found <a href="https://github.com/pgtgrly/GRruby-extension/tree/master/ext/grruby">here</a>.</p>
+
+<h3>5. Creating Scripting Layer</h3>
+
+<p>The Scripting Layer Is meant for high level plotting. The scripting Library created on the GR Framework wrapper has the can plot the following:</p>
+
+<ul>
+<li><p>ScatterPlots</p></li>
+<li><p>Line graphs</p></li>
+<li><p>Bar Plots</p></li>
+<li><p>Stacked Bar plot</p></li>
+<li><p>Stacked Bar plot (Stacked along z axis)</p></li>
+<li><p>Candlestick plots</p>
+
+<p>All the above plots have a lot of customisation options, that can be looked into in the documentation.</p></li>
+</ul>
+
+
+<p>Each Figure can have multiple subplots, each subplot can have multiple plots</p>
+
+<h3>6. Working of the Library</h3>
+
+<p>Here is how the library works.</p>
+
+<p><img src="https://i.imgur.com/sdNg7av.png" alt="Imgur" /></p>
+
+<p>Figure is the class that a user instantiates this is where all the  plotting take place. An instance contains the state of the figure. GR  framework is used as the artist layer which does all the plotting on the  figure. GR is also the backend.</p>
+
+<p>GR artist layer functions are implemented in C language, we wrap the  functions to ruby classes which have the call method which executes the  GR function when the Object of the ruby class is called.
+ Each of these ruby classes are called tasks which represents that they  perform a task, for example ClearWorkspace performs the task of cleaning  the workspace.</p>
+
+<p>Now, the figure is divided into subplots. It is Subplot(1,1,1) by  default. So, figure has objects of subplot, each subplot is of type bar  plot or line plot etc. These plots are defined in the Plots module which  is submodule of Scripting module, the Plots module has a submodule  named BasePlots which defines the two bases of plots, LazyBase and  RobustBase.
+ Lazy base is for plots which are dependent on state of the figure, for  example a bar graph depends on the location of axes. Every lazy plot has  a unique call function rather than inheriting it from LazyBase. In  LazyPlots the instances of GR Function Classes are called as soon as  they are instantiated. This all is done in the call function.
+ Robust base is for plots which are which are independent of the state of  the Figure. For example: A scatter plot is independent of the location  of axes. Plots which are Sub classes of RobustBase append the instances  of GR function classes to tasks when initialized. These instances are  called via the call method defined in RobustBase.</p>
+
+<p>So, each subplot which is of type bar plot or scatter plots etc.  inherits a base. Now, each subplot is just a collection of some tasks,  so it has a task list which stores the tasks to be performed i.e. the  Task objects, for example Scatter plot has tasks SetMarkerColorIndex  which sets the color of the marker, SetMarkerSize which sets the size of  the marker, SetMarkerType which sets the type of the marker and  Polymarker which marks the marker of defined color, size and style.
+ Whenever a new Subplot object is initialized, for example  subplot(r,c,i), the figure is divided into a matrix with r rows and c  columns and the subplot initialized with index i is set as the active  subplot ans this active subplot is pushed into the subplot list. Each  subplot object has a unique identity (r,c,i) so if the user wants to  access a subplot which is already declared, this identity will be used.  When the subplot object is called (i.e. to view or save), it first  executes some necessary tasks and then pushes the tasks related to bar  plot, scatter plot, etc. to the task list.</p>
+
+<p>Figure is a collection of such subplots and so Figure has a subplot list which stores the subplot objects.</p>
+
+<p><img src="https://i.imgur.com/H2vEO1i.png" alt="Imgur" /></p>
+
+<p>These tasks are just stored in the lists and are not performed (i.e. called) until the user asks to view or save the figure i.e. when the user calls view or save (which are tasks themselves) the tasks are performed (i.e. called) and the figure is plotted. This is done by using the Module Plotspace.<br/>
+When the figure calls the task view or save, these tasks call the Plotspace Object and the state of figure is copied to the Plotspace Object and this Object starts executing( or performing) i.e. calling tasks from task list of each subplot in subplot list and the figure is plotted and viewed or saved.</p>
+
+<p>Here is the current view of Library:</p>
+
+<p><img src="https://i.imgur.com/0HwzAtG.png" alt="imgur" /></p>
+
+<h3>Future</h3>
+
+<p>The Library is currently being developed by SciRuby community <a href="https://github.com/SciRuby/rubyplot">here</a>. Currently, it is a static library, after further development, it&#8217;s Architecture should look like the following:</p>
+
+<p><img src="https://i.imgur.com/AdfPQlT.png" alt="imgur" /></p>
+
+<h3>Acknowledgements</h3>
+
+<p>I would like to thank Sameer Deshmukh and Prasun Anand for guiding me through every step of software design and helping me out through every decision. I would also like to thank Dr John Woods and Dr Pjotr Prins for their valuable feedback. I am glad to be a part of SciRuby community and I hope to further contribute towards it&#8217;s goal.</p>
+
+<p>I would also like to thank Arafat Khan, a fellow GSoCer who worked on the library using Rmagick as the backend renderer for our fruitful debates over the architecture of the library</p>
+
+<p>Finally, I would like to thank Google for giving me this opportunity.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Pranav Garg</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2019-01-23T18:00:00+05:30" pubdate data-updated="true">Jan 23<span>rd</span>, 2019</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/data-visualization/'>Data Visualization</a>, <a class='category' href='/blog/categories/gr-framework/'>GR Framework</a>, <a class='category' href='/blog/categories/gsoc/'>GSoC</a>, <a class='category' href='/blog/categories/gsoc-2018/'>GSoC 2018</a>, <a class='category' href='/blog/categories/matplotlib/'>Matplotlib</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>, <a class='category' href='/blog/categories/rubyplot/'>RubyPlot</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sciruby.com/blog/2019/01/23/gsoc-2018-rubyplot+-gr-+a-scientific-plotting-library-for-ruby-built-on-gr/" data-via="sciruby" data-counturl="http://sciruby.com/blog/2019/01/23/gsoc-2018-rubyplot+-gr-+a-scientific-plotting-library-for-ruby-built-on-gr/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2019/01/17/gsoc-2018-Ruby-Matplotlib/" title="Previous Post: GSoC 2018 : Ruby Matplotlib">&laquo; GSoC 2018 : Ruby Matplotlib</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core/" title="Next Post: GSoC 2019: Adding features to NMatrix core">GSoC 2019: Adding features to NMatrix core &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+
+
+<section>
+<div class="fb-like-box" data-href="http://www.facebook.com/SciRuby" data-width="" data-show-faces="false" data-stream="" data-header=""   ></div>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2021/02/16/tensors/">Tensors using NumRuby</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2019/08/29/gsoc-2019-rubyplot/">GSoC 2019 : Adding ImageMagick backend, IRuby support and additional functionalities to Rubyplot</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core/">GSoC 2019: Adding features to NMatrix core</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2019/01/23/gsoc-2018-rubyplot+-gr-+a-scientific-plotting-library-for-ruby-built-on-gr/">GSoC 2018: RubyPlot GR - A Scientific Plotting Library for Ruby Built on GR Framework</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2019/01/17/gsoc-2018-Ruby-Matplotlib/">GSoC 2018 : Ruby Matplotlib</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/SciRuby">@SciRuby</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'SciRuby',
+            count: 6,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("sciruby", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/sciruby" class="twitter-follow-button" data-show-count="false">Follow @sciruby</a>
+  
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2021 - SciRuby -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sciruby';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sciruby.com/blog/2019/01/23/gsoc-2018-rubyplot+-gr-+a-scientific-plotting-library-for-ruby-built-on-gr/';
+        var disqus_url = 'http://sciruby.com/blog/2019/01/23/gsoc-2018-rubyplot+-gr-+a-scientific-plotting-library-for-ruby-built-on-gr/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

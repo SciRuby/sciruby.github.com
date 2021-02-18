@@ -4,7 +4,7 @@
   <title><![CDATA[Category: GPGPU | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/gpgpu/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2018-01-19T15:57:55+09:00</updated>
+  <updated>2021-02-18T16:06:09+05:30</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[GSoC 2017 : Creating the fastest Math libraries for Ruby by using the GPU through OpenCL, CUDA and ArrayFire.]]></title>
     <link href="http://sciruby.com/blog/2017/09/15/gsoc-2017-fastest-ruby-math-libraries/"/>
-    <updated>2017-09-15T22:46:00+09:00</updated>
+    <updated>2017-09-15T22:46:00+05:30</updated>
     <id>http://sciruby.com/blog/2017/09/15/gsoc-2017-fastest-ruby-math-libraries</id>
     <content type="html"><![CDATA[<p>GSoC 2017 is about to end. This post summarises my work during the course of summer.</p>
 

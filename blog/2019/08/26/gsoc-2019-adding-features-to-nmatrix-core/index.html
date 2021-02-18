@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>GSoC 2019: Adding features to NMatrix core - SciRuby</title>
+  <meta name="author" content="SciRuby">
+
+  
+  <meta name="description" content="The GSoC coding period has come to an end. It&#8217;s been quite a learning experience for me and has given me an opportunity to come out of my &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sciruby.com/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="SciRuby" type="application/atom+xml">
+  <!--Fonts from Google's Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12735432-6']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">SciRuby</a></h1>
+  
+    <h2>Tools for Scientific Computing in Ruby</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:sciruby.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul role=main-navigation xmlns="http://www.w3.org/1999/html">
+  <li><a href="/">Home</a></li>
+  <li><a href="/blog">Blog</a></li>
+  <li><a href="/docs">Installation</a></li>
+  <li><a href="http://gems.sciruby.com/">Gems</a></li>
+  <li><a href="https://github.com/sciruby/sciruby">SciRuby</a></li>
+  <li><a href="/nmatrix">NMatrix</a></li>
+  <li><a href="/publications/">Citing SciRuby</a></li>
+  <li><a href="https://github.com/SciRuby/sciruby/wiki/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">GSoC 2019: Adding Features to NMatrix Core</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+<span class="byline author vcard"><span class="fn">Udit Gulati</span></span>
+ &bull; 
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2019-08-26T23:49:00+05:30" pubdate data-updated="true">Aug 26<span>th</span>, 2019</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The GSoC coding period has come to an end. It&#8217;s been quite a learning experience for me and has given me an opportunity to come out of my comfort zone and explore new things. I feel quite delighted knowing that I have contributed a significant amount to the project. This post summarizes my work on <a href="https://github.com/sciruby/numruby">NumRuby</a> during the GSoC period.</p>
+
+<p>GSoC 2019 proposal - <a href="https://docs.google.com/document/d/1MR01QZeX_8h7a16nmkOYlyrVt--osB1Yg9Vo0xXYtSw/edit?usp=sharing">https://docs.google.com/document/d/1MR01QZeX_8h7a16nmkOYlyrVt&#8211;osB1Yg9Vo0xXYtSw/edit?usp=sharing</a></p>
+
+<h2>Pull requests</h2>
+
+<ul>
+<li>Indexing, iterating, slicing - <a href="https://github.com/SciRuby/numruby/pull/19">https://github.com/SciRuby/numruby/pull/19</a></li>
+<li>Fix compiler warnings - <a href="https://github.com/SciRuby/numruby/pull/21">https://github.com/SciRuby/numruby/pull/21</a></li>
+<li>Dimensional iterators - <a href="https://github.com/SciRuby/numruby/pull/22">https://github.com/SciRuby/numruby/pull/22</a></li>
+<li>Broadcasting - <a href="https://github.com/SciRuby/numruby/pull/23">https://github.com/SciRuby/numruby/pull/23</a></li>
+<li>Lapack wrappers - <a href="https://github.com/SciRuby/numruby/pull/26">https://github.com/SciRuby/numruby/pull/26</a></li>
+<li>NumRuby::Linalg - <a href="https://github.com/SciRuby/numruby/pull/30">https://github.com/SciRuby/numruby/pull/30</a></li>
+</ul>
+
+
+<h2>Blog Posts</h2>
+
+<ul>
+<li>GSoC project introduction - <a href="https://uditgulati.github.io/blog/open-source/2019/05/21/gsoc-project-introduction-nmatrix.html">https://uditgulati.github.io/blog/open-source/2019/05/21/gsoc-project-introduction-nmatrix.html</a></li>
+<li>GSoC weeks 1, 2 - <a href="https://uditgulati.github.io/blog/open-source/2019/06/10/gsoc-week-1-2.html">https://uditgulati.github.io/blog/open-source/2019/06/10/gsoc-week-1-2.html</a></li>
+<li>GSoC weeks 3, 4 - <a href="https://uditgulati.github.io/blog/open-source/2019/06/26/gsoc-week-3-4.html">https://uditgulati.github.io/blog/open-source/2019/06/26/gsoc-week-3-4.html</a></li>
+<li>GSoC weeks 5, 6 - <a href="https://uditgulati.github.io/blog/open-source/2019/07/10/gsoc-week-5-6.html">https://uditgulati.github.io/blog/open-source/2019/07/10/gsoc-week-5-6.html</a></li>
+<li>GSoC weeks 7, 8 - <a href="https://uditgulati.github.io/blog/open-source/2019/07/25/gsoc-week-7-8.html">https://uditgulati.github.io/blog/open-source/2019/07/25/gsoc-week-7-8.html</a></li>
+<li>GSoC weeks 9, 10 - <a href="https://uditgulati.github.io/blog/open-source/2019/08/16/gsoc-week-9-10.html">https://uditgulati.github.io/blog/open-source/2019/08/16/gsoc-week-9-10.html</a></li>
+</ul>
+
+
+<h2>Future work</h2>
+
+<ul>
+<li>As these features are core to NMatrix, they need to be tested more tightly and benchmarked. Also, since this is the first implementation of the features, some modifications can make these features more reliable and faster.</li>
+<li>More iterators are to be implemented in order to have a richer NMatrix API.</li>
+<li>The issue with slicing needs to be fixed soon. Also, need to standardize the formatting used for slice range specification.</li>
+<li>Broadcasting needs to be tested and benchmarked. This will let us improve it&#8217;s reliability and performance. A few APIs could be exposed which would let a user manually broadcast a matrix to a given shape.</li>
+<li>NumRuby::Lapack needs to have proper exception handling for LAPACK routines. This will be done by reading the info value returned by routine and raising exception accordingly.</li>
+<li>NumRuby::Linalg can be extended to have even more methods.</li>
+</ul>
+
+
+<h2>Acknowledgements</h2>
+
+<p>I wanna thank Ruby Science Foundation, all mentors and org admins for providing me this wonderful opportunity to enhance my knowledge and work on a project. I would also like to thank Google for organizing such a wonderful program due to which I got introduced to Open-source and Ruby Science Foundation. I especially want to thank my mentor Prasun Anand for guiding me through this period, keeping me motivated and for tolerating my procrastination.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Udit Gulati</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2019-08-26T23:49:00+05:30" pubdate data-updated="true">Aug 26<span>th</span>, 2019</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/gsoc/'>GSoC</a>, <a class='category' href='/blog/categories/gsoc-2019/'>GSoC 2019</a>, <a class='category' href='/blog/categories/nmatrix/'>NMatrix</a>, <a class='category' href='/blog/categories/numruby/'>NumRuby</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sciruby.com/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core/" data-via="sciruby" data-counturl="http://sciruby.com/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2019/01/23/gsoc-2018-rubyplot+-gr-+a-scientific-plotting-library-for-ruby-built-on-gr/" title="Previous Post: GSoC 2018: RubyPlot GR - A Scientific Plotting Library for Ruby Built on GR Framework">&laquo; GSoC 2018: RubyPlot GR - A Scientific Plotting Library for Ruby Built on GR Framework</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2019/08/29/gsoc-2019-rubyplot/" title="Next Post: GSoC 2019 : Adding ImageMagick backend, IRuby support and additional functionalities to Rubyplot">GSoC 2019 : Adding ImageMagick backend, IRuby support and additional functionalities to Rubyplot &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    
+
+
+<section>
+<div class="fb-like-box" data-href="http://www.facebook.com/SciRuby" data-width="" data-show-faces="false" data-stream="" data-header=""   ></div>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2021/02/16/tensors/">Tensors using NumRuby</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2019/08/29/gsoc-2019-rubyplot/">GSoC 2019 : Adding ImageMagick backend, IRuby support and additional functionalities to Rubyplot</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core/">GSoC 2019: Adding features to NMatrix core</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2019/01/23/gsoc-2018-rubyplot+-gr-+a-scientific-plotting-library-for-ruby-built-on-gr/">GSoC 2018: RubyPlot GR - A Scientific Plotting Library for Ruby Built on GR Framework</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2019/01/17/gsoc-2018-Ruby-Matplotlib/">GSoC 2018 : Ruby Matplotlib</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/SciRuby">@SciRuby</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'SciRuby',
+            count: 6,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("sciruby", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/sciruby" class="twitter-follow-button" data-show-count="false">Follow @sciruby</a>
+  
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2021 - SciRuby -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sciruby';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sciruby.com/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core/';
+        var disqus_url = 'http://sciruby.com/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

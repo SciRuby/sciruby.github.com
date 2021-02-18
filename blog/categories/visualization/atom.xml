@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Visualization | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/visualization/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2018-01-19T15:57:55+09:00</updated>
+  <updated>2021-02-18T16:06:09+05:30</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -14,9 +14,81 @@
 
   
   <entry>
+    <title type="html"><![CDATA[GSoC 2018 : Ruby Matplotlib]]></title>
+    <link href="http://sciruby.com/blog/2019/01/17/gsoc-2018-Ruby-Matplotlib/"/>
+    <updated>2019-01-17T05:30:00+05:30</updated>
+    <id>http://sciruby.com/blog/2019/01/17/gsoc-2018-Ruby-Matplotlib</id>
+    <content type="html"><![CDATA[<p>This is a wrap of my Gsoc project at Sciruby where I worked on builing Matplotlib for Ruby.</p>
+
+<p>At Sciruby, we came across the ambitious task of designing the next Matplotlib for Ruby and so we examined quite a few different plotting libraries and figured that if we could put together ideas from all of these libraries then we can make something really amazing.Primarily our main source of inspiration was Matplotlib. The Matplotlib Architecture is be broadly divided into three layers. The Backend, The Artist and the scripting layer.</p>
+
+<p>Matplotlib architecture is mostly written in Python with some of its backend (the renderer AGG and Figure canvas ) written in C++ ( The original AGG backend and helper scripts, which is quite tightly bound to python). But recently the backends are also written in Python using the renderers which have Python APIs. The finer details of the Architecture can be found <a href="https://www.aosabook.org/en/matplotlib.html">here</a>.</p>
+
+<p>Based on Matplotlib our initial plans for the library can be described in this visual.</p>
+
+<p><img src="https://raw.githubusercontent.com/Arafatk/hagura/gh-pages/images/Screen%20Shot%202019-01-28%20at%201.27.11%20PM.png" alt="Image" /></p>
+
+<p>We decided to build two different ruby libraries independently but with many parallels in their code. Eventually when the project gets completed we will combine them into a single repository and give users the option to use either of the libraries as a backend for construction of the plots.</p>
+
+<p>For the first one, <a href="https://github.com/pgtgrly/GRruby-extension/">Gr plot</a> is plotting library for ruby that uses the <a href="https://gr-framework.org/">GR framework</a> as a backend.
+And for the second one, <a href="https://github.com/Arafatk/magick-rubyplot/">Magick plot</a> is a plotting library that produces quality figures in a variety of hardcopy formats using <a href="https://rmagick.github.io/">RMagick</a> as a backend.</p>
+
+<p> Magickplot is an interesting library with many features similar to GRPlot but the internal implementations of both the libraries are radically different. We believe that depending on the use cases the users can find either of them more useful than the other one. 
+So our next goal is to merge them together and give users a simple API to switch back ends easily from GR Plot to Magick Plot….</p>
+
+<p>My work in particular dealt with building Magickplot. The library works in similar thought process to painting where you can give it an empty paper called figure canvas and then you draw upon the figure canvas using plotting features. For all drawing and plotting purposes in this library we use RMagick.</p>
+
+<p>So where are our paint brushes and paints for drawing on the plot?</p>
+
+<ul>
+<li> draw->rectangle</li>
+<li> draw->circle</li>
+<li> draw->line</li>
+<li> draw->annotate</li>
+</ul>
+
+
+<p>These base features will let you make Bar, Scatter, Dot, Line and Bubble plots with Magickplot with very accurate geometry. A better walk through of the construction of a single plot with this library can be found in this <a href="https://arafatk.github.io/hagura/2018/07/19/bubble-base.html">blog</a>.</p>
+
+<h2>Application</h2>
+
+<p>My GSoC 2018 application for the project can be found <a href="https://docs.google.com/document/d/1t7jJKMaPjFI7pbjfMSG7eh6YmqqIE0qEoXXqsxROlYs/edit?usp=sharing">here</a>.</p>
+
+<h2>Blog Posts</h2>
+
+<p>The entire work for Rubyplot can be summarized in these series of blogposts:</p>
+
+<ul>
+<li><a href="https://arafatk.github.io/hagura/2018/06/20/introductions.html">Introductory Blog</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/06/21/ArtistBase-1.html">Artist Base - Part 1</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/06/22/ArtistBase-2.html">Artist Base - Part 3</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/07/11/Plot-Constructions.html">Divisionism</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/07/12/scatter-base.html">Scatter Plots</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/07/19/bubble-base.html">Bubble Plots</a></li>
+</ul>
+
+
+<h2>Future Work</h2>
+
+<p>Our ultimate goal is to make this project similar to a matplotlib equivalent for Ruby with tons of really amazing customization features. I hope you find this interesting and useful.The library is currently being developed by the Sciruby community, feel free to try it out from <a href="https://github.com/SciRuby/rubyplot/">github</a>. Any suggestions and recommendations are welcome.</p>
+
+<h2>FOSS</h2>
+
+<p>I have been an active contributor to a few open source projects and I have started a few
+nice ones of my own and I feel really glad to have been introduced to the open
+source community. I really appreciate the effort by Google Open Source Committee for conducting GSoC every year. It is the best platform for aspiring programmers to improve their skill and give back to society by developing free and open source software.</p>
+
+<h2>Acknowledgements</h2>
+
+<p>Thanks to all my Mentors from Sciruby namely, Sameer Deshmukh, Pjotr Prins, Prasun Anand and  John Woods. 
+Special thanks to Pranav Garg a fellow GSoCer who is the lead developer of GR-Ruby and a student in Gsoc for Sciruby</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[GnuplotRB and GSoC 2015]]></title>
     <link href="http://sciruby.com/blog/2015/08/18/gnuplotrb-project/"/>
-    <updated>2015-08-18T23:26:00+09:00</updated>
+    <updated>2015-08-18T23:26:00+05:30</updated>
     <id>http://sciruby.com/blog/2015/08/18/gnuplotrb-project</id>
     <content type="html"><![CDATA[<h2>Introduction</h2>
 
@@ -150,7 +222,7 @@
   <entry>
     <title type="html"><![CDATA[Summary of work on daru this summer for GSOC 2015]]></title>
     <link href="http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015/"/>
-    <updated>2015-08-16T23:53:00+09:00</updated>
+    <updated>2015-08-16T23:53:00+05:30</updated>
     <id>http://sciruby.com/blog/2015/08/16/summary-of-work-on-daru-this-summer-for-gsoc-2015</id>
     <content type="html"><![CDATA[<p>Over this summer as a part of <a href="www.google-melange.com">Google Summer of Code 2015</a>, <a href="www.github.com/v0dro/daru/">daru</a> received a lot of upgrades and new features which have it made a pretty robust tool for data analysis in pure Ruby. Of course, a lot of work still remains for bringing daru at par with the other data analysis solutions on offer today, but I feel the work done this summer has put daru on that path.</p>
 
@@ -201,7 +273,7 @@
   <entry>
     <title type="html"><![CDATA[Nyaplot: interactive plots generator with Ruby]]></title>
     <link href="http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby/"/>
-    <updated>2014-08-23T10:07:00+09:00</updated>
+    <updated>2014-08-23T10:07:00+05:30</updated>
     <id>http://sciruby.com/blog/2014/08/23/nyaplot-interactive-plots-generateor-with-ruby</id>
     <content type="html"><![CDATA[<iframe width="853" height="480" src="http://sciruby.com//www.youtube.com/embed/ZxjqsIluM88" frameborder="0" allowfullscreen></iframe>
 
@@ -355,7 +427,7 @@ summer thanks to all people related to this project.</p>
   <entry>
     <title type="html"><![CDATA[The Nyaplot internal event handler]]></title>
     <link href="http://sciruby.com/blog/2014/07/09/nyaplot-internal-event-handler/"/>
-    <updated>2014-07-09T17:01:00+09:00</updated>
+    <updated>2014-07-09T17:01:00+05:30</updated>
     <id>http://sciruby.com/blog/2014/07/09/nyaplot-internal-event-handler</id>
     <content type="html"><![CDATA[<p><img src="https://dl.dropboxusercontent.com/u/47978121/gsoc/multiple_panes.png" alt="Nyaplot multi-pane example" /></p>
 
@@ -423,103 +495,6 @@ events in DataFrame is both natural and efficient for Nyaplot.</p>
 
 
 <p>If you are interesed, feel free to try it and raise issues or send pull-requests.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[The progress of the GSoC D3/Visualization Project]]></title>
-    <link href="http://sciruby.com/blog/2014/07/02/progress-of-d3-project/"/>
-    <updated>2014-07-02T17:09:00+09:00</updated>
-    <id>http://sciruby.com/blog/2014/07/02/progress-of-d3-project</id>
-    <content type="html"><![CDATA[<p>This week is the half-way point of this year's Google Summer of
-Code. Let me report the progress during the term.</p>
-
-<p><img src="https://dl.dropboxusercontent.com/u/47978121/gsoc/nyaoplot_top.png" alt="Example Nyaplot chart of a spiral" /></p>
-
-<h2>Progress on the front-end library</h2>
-
-<p>I am developing <a href="https://github.com/domitry/Nyaplot">Nyaplot</a> as the front-end library
-for my work.</p>
-
-<p>One topic on Nyaplot is API design. That is a difficult problem since
-each plotting library has very different methods for creating
-plots. For example, matplotlib and Bokeh are both written in Python,
-but their demo code is written in very different styles. After
-discussing with my mentor, I decided to implement the function-based
-API.</p>
-
-<p>As an exmaple of that API, here is a minimal working example for
-generating bar charts with Nyaplot:</p>
-
-<p><code>ruby
-require 'nyaplot'
-plot = Nyaplot::Plot.new
-plot.add(:bar, ['nya1', 'nya2', 'nya3'],[10,20,30])
-plot.show
-</code></p>
-
-<p>If you want to change options (<em>e.g.</em>, color or title), put the return
-value of <code>Nyaplot::Plot.add</code> into a variable and call its methods.</p>
-
-<p><code>ruby
-bar = plot.add(:bar, ['nya1', 'nya2', 'nya3'],[10,20,30])
-bar.title("the number of cats") # name the bar chart
-</code></p>
-
-<h2>IRuby integration</h2>
-
-<p>Interaction with <a href="https://github.com/minad/iruby">IRuby</a> is a priority
-for Nyaplot. IRuby is a web-based Ruby lab notebook-like environment,
-based on IPython, which is also useful for fast prototyping.</p>
-
-<p>The image at the top of this blog post is a hyperbolic spiral which I
-generated with Nyaplot in IRuby. <a href="http://nbviewer.ipython.org/github/domitry/Nyaplot/blob/master/examples/notebook/Introduction.ipynb">Have a look at the
-notebook</a>
-on nbviewer, an IRuby and IPython notebook hosting services.</p>
-
-<h2>Progress on the back-end library</h2>
-
-<p>Nyaplot uses <a href="https://github.com/domitry/Nyaplotjs">Nyaplotjs</a> as its
-back-end library. I spent a lot of time working to implement
-interactivity among multiple panes to Nyaplotjs. <a href="http://www.domitry.com/gsoc/multi_pane2.html">See an
-example here.</a></p>
-
-<p><img src="https://dl.dropboxusercontent.com/u/47978121/gsoc/top.png" alt="Three-pane interactivity screenshot" /></p>
-
-<p>The input data source is a TSV file of 2,044 lines. Multiple-pane
-interactivity is especially important when visualizing such a large
-dataset.</p>
-
-<p>Have a look at the radio buttons beside the Venn diagram. The left
-three panels decide which set to put into each of three circles
-(VENN1, VENN2, VENN3). The right panel decides which data in each area
-(overlapping area, non-overlapping area, and all) to use in the other
-two panes.</p>
-
-<p>The gray box on the histogram decides the range of PNR values. If you
-select the range 0.3 to 0.7 with it, the right bar chart will reflect
-that and show how many of the selected data are in that range.</p>
-
-<p>Nyaplotjs provides this interactivity using an event handler connected
-to a dataframe object. That allows us to handle unidirectional update
-method (<em>e.g.</em>, histogram updates bar chart, but bar chart does not
-update histogram).</p>
-
-<h2>Conclusion</h2>
-
-<p>I finished the first half term of Google Summer of Code 2014, but I
-still have a lot of things to do. I would like to continue to add
-interactivity to both the front-end and back-end libraries.</p>
-
-<p>I am developing those two libraries in separate repositories on
-GitHub. If you are interested, feel free to raise issues or send
-pull-requests, even during the GSoC term.</p>
-
-<ul>
-<li><a href="https://github.com/domitry/Nyaplot">Nyaplot - GitHub</a></li>
-<li><a href="https://github.com/domitry/Nyaplotjs">Nyaplotjs - GitHub</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

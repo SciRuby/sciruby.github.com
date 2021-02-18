@@ -4,7 +4,7 @@
   <title><![CDATA[Category: NMatrix | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/nmatrix/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2018-01-19T15:57:55+09:00</updated>
+  <updated>2021-02-18T16:06:09+05:30</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -14,10 +14,198 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Tensors using NumRuby]]></title>
+    <link href="http://sciruby.com/blog/2021/02/16/tensors/"/>
+    <updated>2021-02-16T21:49:00+05:30</updated>
+    <id>http://sciruby.com/blog/2021/02/16/tensors</id>
+    <content type="html"><![CDATA[<p>Tensor word can have slightly different meaning depending upon the nature of study, like it's defined differently in Physics, slightly different in computer science. In computer terms, it is basically a n-dimensional array. A scalar (one value) is a tensor with 0 dimensions, a vector is a tensor with 1 dimension, a matrix is a tensor with 2 dimensions.</p>
+
+<p>It's possible to define a tensor in Ruby using the <code>Array</code> class of Ruby but it gets tedious when defining multi-dimensional tensors. Also, the <code>Array</code> object is designed to be heterogeneous which means that the elements of the array can be of different type or different classes which would seem as a plus point overall but it has a huge downside. Due to <code>Array</code> being heterogeneous, the memory allocation has to be in such a way that any element of any size can be added or removed from the array, which causes a lot of re-allocations. Also, the indexing and other array functions gets slower due to the heterogeneous nature.</p>
+
+<p>What if there's a scenario where there is only one type of tensor elements, which means that a homogeneous array would also do, and there are memory and speed constraints? <code>NumRuby</code> is the solution for such requirements.</p>
+
+<h2>Tensors in NumRuby</h2>
+
+<p>A tensor can be defined using the <code>NMatrix</code> object of <code>NumRuby</code>.</p>
+
+<p><code>ruby
+N = NMatrix.new [shape], [elements], :type
+</code></p>
+
+<p><code>shape</code> is the number of dimensions and size of each dimension of the tensor. For example, <code>[2, 2, 2]</code> shape tensor is a tensor with 3 dimensions and each dimension of size 2, hence number of elements is 8. A sample value of elements array for this could be <code>[1, 2, 3, 4, 5, 6, 7, 8]</code>. <code>type</code> is the data type of each of the tensor element, it could be any of <code>:nm_bool</code>, <code>:nm_int</code>, <code>:nm_float32</code>, <code>:nm_float64</code>, <code>:nm_complex32</code> or <code>:nm_complex64</code> depending on the requirements.</p>
+
+<p>An example usage is shown below:</p>
+
+<p><code>ruby
+[1] pry(main)&gt; N = NMatrix.new [2, 2], [1, 2, 3, 4], :nm_int
+=&gt;
+[
+ [1, 2],
+ [3, 4]
+]
+[2] pry(main)&gt; N.elements
+=&gt; [1, 2, 3, 4]
+[3] pry(main)&gt; N.shape
+=&gt; [2, 2]
+[4] pry(main)&gt; N[0, 0]
+=&gt; 1
+[5] pry(main)&gt; N[1, 0]
+=&gt; 3
+[6] pry(main)&gt; N.dtype
+=&gt; :nm_int
+</code></p>
+
+<h2>Elementwise Operations</h2>
+
+<p>One can also perform elementwise operations using <code>NumRuby</code>. Elementwise operations are broadly of 2 types, Uni-operand and bi-operand.</p>
+
+<h3>Uni-Operand Operations</h3>
+
+<p>Uni-operand operators are those that apply to just one tensor. For example, sine, cos or tan of each of element of the tensor.</p>
+
+<p><code>ruby
+[1] pry(main)&gt; N = NMatrix.new [2, 2], [1, 2, 3, 4], :nm_float64
+=&gt;
+[
+ [1.0, 2.0],
+ [3.0, 4.0]
+]
+[2] pry(main)&gt; N.sin
+=&gt;
+[
+ [0.8414709848078965,  0.9092974268256817],
+ [0.1411200080598672, -0.7568024953079282]
+]
+[3] pry(main)&gt; N.cos
+=&gt;
+[
+ [ 0.5403023058681398, -0.4161468365471424],
+ [-0.9899924966004454, -0.6536436208636119]
+]
+</code></p>
+
+<h3>Bi-Operand Operations</h3>
+
+<p>Bi-operand operators are those that apply to two tensor. For example, addition, subtraction or multiplication of each of the corresponding elements of the the 2 tensor.</p>
+
+<p><code>ruby
+[1] pry(main)&gt; N = NMatrix.new [2, 2], [1, 2, 3, 4], :nm_float64
+=&gt;
+[
+ [1.0, 2.0],
+ [3.0, 4.0]
+]
+[2] pry(main)&gt; M = NMatrix.new [2, 2], [2, 2, 3, 3], :nm_float64
+=&gt;
+[
+ [2.0, 2.0],
+ [3.0, 3.0]
+]
+[3] pry(main)&gt; N+M
+=&gt;
+[
+ [3.0, 4.0],
+ [6.0, 7.0]
+]
+[4] pry(main)&gt; N*M
+=&gt;
+[
+ [2.0,  4.0],
+ [9.0, 12.0]
+]
+</code></p>
+
+<h2>Linear Algebra</h2>
+
+<p><code>NumRuby</code> also supports linear algebra capabilities for 2-dimensional tensors. One can easily do operations such as matrix inverse, dot product, matrix decompositions.</p>
+
+<p><code>ruby
+[1] pry(main)&gt; N = NMatrix.new [2, 2], [1, 2, 3, 4], :nm_float64
+=&gt;
+[
+ [1.0, 2.0],
+ [3.0, 4.0]
+]
+[2] pry(main)&gt; M = NMatrix.new [2, 2], [2, 2, 3, 3], :nm_float64
+=&gt;
+[
+ [2.0, 2.0],
+ [3.0, 3.0]
+]
+[3] pry(main)&gt; N.dot(M)
+=&gt;
+[
+ [ 8.0,  8.0],
+ [18.0, 18.0]
+]
+[4] pry(main)&gt; N.invert
+=&gt;
+[
+ [-1.9999999999999996,  0.9999999999999998],
+ [ 1.4999999999999998, -0.4999999999999999]
+]
+[5] pry(main)&gt; N.det
+=&gt; -2.0
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GSoC 2019: Adding features to NMatrix core]]></title>
+    <link href="http://sciruby.com/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core/"/>
+    <updated>2019-08-26T23:49:00+05:30</updated>
+    <id>http://sciruby.com/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core</id>
+    <content type="html"><![CDATA[<p>The GSoC coding period has come to an end. It's been quite a learning experience for me and has given me an opportunity to come out of my comfort zone and explore new things. I feel quite delighted knowing that I have contributed a significant amount to the project. This post summarizes my work on <a href="https://github.com/sciruby/numruby">NumRuby</a> during the GSoC period.</p>
+
+<p>GSoC 2019 proposal - <a href="https://docs.google.com/document/d/1MR01QZeX_8h7a16nmkOYlyrVt--osB1Yg9Vo0xXYtSw/edit?usp=sharing">https://docs.google.com/document/d/1MR01QZeX_8h7a16nmkOYlyrVt--osB1Yg9Vo0xXYtSw/edit?usp=sharing</a></p>
+
+<h2>Pull requests</h2>
+
+<ul>
+<li>Indexing, iterating, slicing - <a href="https://github.com/SciRuby/numruby/pull/19">https://github.com/SciRuby/numruby/pull/19</a></li>
+<li>Fix compiler warnings - <a href="https://github.com/SciRuby/numruby/pull/21">https://github.com/SciRuby/numruby/pull/21</a></li>
+<li>Dimensional iterators - <a href="https://github.com/SciRuby/numruby/pull/22">https://github.com/SciRuby/numruby/pull/22</a></li>
+<li>Broadcasting - <a href="https://github.com/SciRuby/numruby/pull/23">https://github.com/SciRuby/numruby/pull/23</a></li>
+<li>Lapack wrappers - <a href="https://github.com/SciRuby/numruby/pull/26">https://github.com/SciRuby/numruby/pull/26</a></li>
+<li>NumRuby::Linalg - <a href="https://github.com/SciRuby/numruby/pull/30">https://github.com/SciRuby/numruby/pull/30</a></li>
+</ul>
+
+
+<h2>Blog Posts</h2>
+
+<ul>
+<li>GSoC project introduction - <a href="https://uditgulati.github.io/blog/open-source/2019/05/21/gsoc-project-introduction-nmatrix.html">https://uditgulati.github.io/blog/open-source/2019/05/21/gsoc-project-introduction-nmatrix.html</a></li>
+<li>GSoC weeks 1, 2 - <a href="https://uditgulati.github.io/blog/open-source/2019/06/10/gsoc-week-1-2.html">https://uditgulati.github.io/blog/open-source/2019/06/10/gsoc-week-1-2.html</a></li>
+<li>GSoC weeks 3, 4 - <a href="https://uditgulati.github.io/blog/open-source/2019/06/26/gsoc-week-3-4.html">https://uditgulati.github.io/blog/open-source/2019/06/26/gsoc-week-3-4.html</a></li>
+<li>GSoC weeks 5, 6 - <a href="https://uditgulati.github.io/blog/open-source/2019/07/10/gsoc-week-5-6.html">https://uditgulati.github.io/blog/open-source/2019/07/10/gsoc-week-5-6.html</a></li>
+<li>GSoC weeks 7, 8 - <a href="https://uditgulati.github.io/blog/open-source/2019/07/25/gsoc-week-7-8.html">https://uditgulati.github.io/blog/open-source/2019/07/25/gsoc-week-7-8.html</a></li>
+<li>GSoC weeks 9, 10 - <a href="https://uditgulati.github.io/blog/open-source/2019/08/16/gsoc-week-9-10.html">https://uditgulati.github.io/blog/open-source/2019/08/16/gsoc-week-9-10.html</a></li>
+</ul>
+
+
+<h2>Future work</h2>
+
+<ul>
+<li>As these features are core to NMatrix, they need to be tested more tightly and benchmarked. Also, since this is the first implementation of the features, some modifications can make these features more reliable and faster.</li>
+<li>More iterators are to be implemented in order to have a richer NMatrix API.</li>
+<li>The issue with slicing needs to be fixed soon. Also, need to standardize the formatting used for slice range specification.</li>
+<li>Broadcasting needs to be tested and benchmarked. This will let us improve it's reliability and performance. A few APIs could be exposed which would let a user manually broadcast a matrix to a given shape.</li>
+<li>NumRuby::Lapack needs to have proper exception handling for LAPACK routines. This will be done by reading the info value returned by routine and raising exception accordingly.</li>
+<li>NumRuby::Linalg can be extended to have even more methods.</li>
+</ul>
+
+
+<h2>Acknowledgements</h2>
+
+<p>I wanna thank Ruby Science Foundation, all mentors and org admins for providing me this wonderful opportunity to enhance my knowledge and work on a project. I would also like to thank Google for organizing such a wonderful program due to which I got introduced to Open-source and Ruby Science Foundation. I especially want to thank my mentor Prasun Anand for guiding me through this period, keeping me motivated and for tolerating my procrastination.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[GSoC 2016: NMatrix and JRuby]]></title>
-    <link href="http://sciruby.com/blog/2016/10/25/gsoc-2016-port-nmatrix-to-jruby/"/>
-    <updated>2016-10-25T02:13:00+09:00</updated>
-    <id>http://sciruby.com/blog/2016/10/25/gsoc-2016-port-nmatrix-to-jruby</id>
+    <link href="http://sciruby.com/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby/"/>
+    <updated>2016-10-24T22:43:00+05:30</updated>
+    <id>http://sciruby.com/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby</id>
     <content type="html"><![CDATA[<h2>Introduction</h2>
 
 <p>I worked on "Port NMatrix to JRuby" in the context of the Google
@@ -753,7 +941,7 @@ helped me with certain aspects of my project.</p>
   <entry>
     <title type="html"><![CDATA[GSoC 2015: New NMatrix gems for advanced linear algebra features]]></title>
     <link href="http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix/"/>
-    <updated>2015-08-19T09:57:00+09:00</updated>
+    <updated>2015-08-19T09:57:00+05:30</updated>
     <id>http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix</id>
     <content type="html"><![CDATA[<p>My Google Summer of Code project was working on the <a href="https://github.com/SciRuby/nmatrix">NMatrix project</a>, moving
 functionality that depends on external libraries from the core <code>nmatrix</code>
@@ -905,7 +1093,7 @@ and feedback throughout the summer.</p>
   <entry>
     <title type="html"><![CDATA[NMatrix's first beta release (belated announcement)]]></title>
     <link href="http://sciruby.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement/"/>
-    <updated>2015-02-14T14:56:00+09:00</updated>
+    <updated>2015-02-14T14:56:00+05:30</updated>
     <id>http://sciruby.com/blog/2015/02/14/nmatrix-beta-released-belated-announcement</id>
     <content type="html"><![CDATA[<p>Almost two months ago, in December, we <a href="https://rubygems.org/gems/nmatrix">release our first beta of NMatrix</a>, our
 linear algebra library for the Ruby language.</p>
@@ -960,192 +1148,6 @@ our <a href="https://groups.google.com/forum/#!forum/sciruby-dev">mailing list</
 <a href="https://github.com/SciRuby/sciruby/wiki/Google-Summer-of-Code-2015-Ideas">ideas page</a>.</p>
 
 <p>Thanks so much for your support!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Introducing the FFTW SciRuby GSoC project]]></title>
-    <link href="http://sciruby.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project/"/>
-    <updated>2014-06-04T12:30:00+09:00</updated>
-    <id>http://sciruby.com/blog/2014/06/04/introducing-the-fftw-sciruby-gsoc-project</id>
-    <content type="html"><![CDATA[<p>My name is Magdalen Berns and I am a physics student with a technical
-background in live audio. I am particularly interested in using science
-and technology to improve access for all.</p>
-
-<p>This summer, I will be working on implementing the external library
-appropriately named "Fastest Fourier Transform in the West" version 3
-(FFTW3) C and Fortran API in Ruby for this year's Google Summer of Code
-(GSoC).</p>
-
-<p>The primary aim of the project is to give SciRuby the capability to
-handle signal analysis, processing and synthesis by performing discrete
-fast Fourier transform operations on NMatrix objects.</p>
-
-<p>After some investigation during the preparation stages of GSoC, it was
-determined that implementing FFTW3 is more desirable than starting from
-scratch in pure Ruby because the FFTW3 API is already extensively used,
-developed, and optimised far beyond what would be achievable in just
-three months. So, putting FFTW3 in the driving seat allows the SciRuby
-project to take advantage of the good work of the FFTW3 developers by
-bringing it to Ruby.</p>
-
-<p>Putting NMatrix to the test with FFTW3 should give users the
-opportunity to test drive NMatrix &mdash; and SciRuby's NMatrix developers a
-chance to root out bugs.</p>
-
-<p>Since a gem called ruby-fftw3 already existed to perform FFTW3 operations
-on NArray objects, I forked that repository as a starting point. <a href="https://github.com/thisMagpie/fftw">Things are progressing on my Github fork</a> right now.</p>
-
-<p>My mentor for this project is Colin Fuller who is an exceptionally
-talented programmer &mdash; and he really knows his git too. He has been a
-great help as I adapt to the learning curve of working in C and
-Ruby (languages which I am less familiar with than say, Java or
-JavaScript).</p>
-
-<p>As I work, I intend to share useful gems of information I gather. Those, in addition to my weekly project updates, will appear right here in this blog so others can hopefully benefit.</p>
-
-<p>I have already posted a few useful bits and bobs on
-<a href="http://thismagpie.com">thismagpie.com</a> which relate to my work so far.
-I hope to add those to the SciRuby blog, too, provided
-the readers are interested in that and time permits. Of course, readers here can feel free to have a browse
-of the keywords <a href="http://thismagpie.com/keyword/sciruby">sciruby</a>,
-<a href="http://thismagpie.com/keyword/ruby">ruby</a> and
-<a href="http://thismagpie.com/keyword/git">git</a> on there for the time being.
-I sometimes add posts, manuals and tutorials from external sites where I
-find useful ones on the web too, so watch out for these too.</p>
-
-<p>Please, feel free to watch or follow along as the project comes together
-and those inclined are welcome to share constructive comments and advice
-or raise bugs on the fftw3 issue tracker. Input about my work is very
-welcome as the project progresses. This gem is being written for the
-community, after all!</p>
-
-<p>You can find me on Twitter (Facebook) or GitHub under the username @thisMagpie.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[NMatrix nearing beta release]]></title>
-    <link href="http://sciruby.com/blog/2013/09/18/nmatrix-nearing-beta-release/"/>
-    <updated>2013-09-18T15:18:00+09:00</updated>
-    <id>http://sciruby.com/blog/2013/09/18/nmatrix-nearing-beta-release</id>
-    <content type="html"><![CDATA[<p>As of this writing, NMatrix v0.0.9 is available on RubyGems. It is likely that the next version will be a beta release
-candidate, as there's only one critical feature still missing (<code>==</code> between matrices of different storage types).</p>
-
-<p>An enormous amount has changed since my last entry.</p>
-
-<h2>New, friendlier constructor</h2>
-
-<p>First and foremost, NMatrix sports a new constructor, based
-on <a href="https://groups.google.com/d/msg/sciruby-dev/tPwnmPbRR_U/PL0Nc92gdzEJ">helpful comments from folks on the listserv</a>. Here
-are some examples of construction:</p>
-
-<pre><code>NMatrix.new([4,4], 0) # 4x4 dense matrix of :int32, all 0
-NMatrix.new([4,4], 0.0) # 4x4 dense matrix of :float64, all 0.0
-NMatrix.new([4,4], 0.0, dtype: :complex64) # 4x4 dense matrix of :complex64
-NMatrix.new([1,4], stype: :yale) # size 4 sparse (Yale) row vector of 0s
-NMatrix.new([4,3], [0,1,2]) # 4 rows, 3 columns: gradient across each row from 0 to 2 (int32)
-NMatrix.new([4,3], [0,1,2], stype: :yale, default: 0) # same as above, but Yale storage (int32)
-NMatrix.new([4,1], stype: :list, dtype: :rational128) # size 4 sparse (list) column vector of rational 0s
-NMatrix.new([4,4]) # 4x4 dense matrix containing nils
-NMatrix.new([4,4], dtype: :int64) # 4x4 uninitialized dense matrix containing 64-bit integers
-NMatrix.new(4)     # same as above
-</code></pre>
-
-<p>The different storage types (stypes) have slightly different behaviors when no initialization value is provided. This
-may change in the future, but addresses the somewhat different use-cases of these storage types.</p>
-
-<p>I show a variety of examples above, several of which are not particularly wise uses --- for example, the <code>[0,1,2]</code> Yale
-gradient, which uses 32-bit integers and must store 11 column indices and pointers (which are most likely unsigned
-long integers) in addition to the 11 entries (4 for the always-stored diagonal, 1 for the default, and 6 for the
-non-diagonal non-zeros).</p>
-
-<p>The key to understanding the differing construction is the default value. All sparse matrices need a default. Usually we
-think of sparse matrices as being zero-based (only non-zero values are stored), but NMatrix now allows other defaults.
-However, dense matrices don't need defaults, and in fact sometimes it's more efficient to allocate them without
-initializing them --- such as if they're about to store the results of some LAPACK function call. But if they contain
-Ruby objects, they <strong>have</strong> to be initialized, which is why they become nil.</p>
-
-<p>We're still working out a few bugs in construction. If you find any, please report them in our <a href="http://github.com/SciRuby/nmatrix/issues">issue tracker</a>.</p>
-
-<h2>Elimination of NVectors</h2>
-
-<p>We removed the NVector class. Frankly, it didn't make sense. A vector can't have an orientation unless it has multiple
-dimensions --- even if some of those dimensions have length 1. Now, vectors and matrices are treated the same in the code.</p>
-
-<p>The good news is that element access (<code>[]</code>) has been rewritten so that the programmer only needs provide the coordinates
-whose dimensions are not 1. For example:</p>
-
-<pre><code>n = NMatrix.new([4,1,3], 0) # 3-dimensional matrix of 0s
-n[2,1] == n[2,0,1]
-=&gt; true
-</code></pre>
-
-<p>The same rule applies to slicing.</p>
-
-<h2>Slicing improvements</h2>
-
-<p>Aleksey Timin contributed the framework for matrix slicing. Matrices can be sliced by copying or by reference. Modifying
-a copy-slice does not modify the original matrix; but modifying a reference slice does.</p>
-
-<p>A copy of some portion of the matrix may be made using <code>NMatrix#slice</code>:</p>
-
-<pre><code>new_matrix = n.slice(0..1,0..2)
-</code></pre>
-
-<p>And what appears to be a copy, but is actually a reference, may be made using brackets:</p>
-
-<pre><code>ref = n[0..1,0..2]
-</code></pre>
-
-<p>Reference slices may also be modified in a variety of ways:</p>
-
-<pre><code>n[0..4,2..8] = 0   # change all entries to 0
-n[0..4,2..8] = [0,1,2]  # change the selected entries to [0,1,2,0,1,2,0,1,2...]
-n[0..4,2..8] = NMatrix.new([3,3], [0,1,2]) # same as above
-</code></pre>
-
-<p>For the sake of speed, each of these <code>[]=</code> returns the right-hand value, whether that value is an array, matrix, or
-single value. So, you can do this:</p>
-
-<pre><code>x = m[0..4,2..8] = n[0..1,0..2] = [1,2,3]
-</code></pre>
-
-<p>and <code>x</code> will be equal to <code>[1,2,3]</code> after the evaluation.</p>
-
-<h2>Iteration</h2>
-
-<p>Matrices are now enumerable. There are a variety of enumerators --- namely <code>each_with_indices</code> (and <code>each</code>), <code>each_stored_with_indices</code>,
-and <code>each_ordered_stored_with_indices</code>. The first, <code>each</code>, is guaranteed to produce the same iteration regardless of the
-storage type. The other two iterate only across the stored entries.</p>
-
-<h2>Elementwise comparisons</h2>
-
-<p>A regular matrix comparison, returning a single boolean, can be accomplished using <code>==</code> or <code>!=</code>. In earlier versions of
-NMatrix, the results of the element-wise versions, <code>=~</code>, <code>!~</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, and <code>&lt;=</code>, were matrices of 0s and 1s,
-stored using the <code>:byte</code> dtype.</p>
-
-<p>Now, these comparisons return matrices of Ruby objects:</p>
-
-<pre><code>n &lt; m
-=&gt; [ true,  false, false, true,
-     false, false, false, true,
-     true,  true,  true,  true  ]
-</code></pre>
-
-<p>Try experimenting with sparse matrices to see how the default value (<code>#default_value</code>) is initialized on the result during an
-elementwise comparison.</p>
-
-<h2>Chunky bacon</h2>
-
-<p>I'm really excited about all of the chunky bacon in our latest release. I feel like things are really coming together
-for our library. I'm also glad to see that people are using it.</p>
-
-<p>If you're thinking of using NMatrix yourself, I strongly encourage it. Although I'm writing my dissertation, I plan to
-prioritize troubleshooting ahead of just about everything else. I want using NMatrix to be an easy choice for every
-Rubyist.</p>
-
-<p>Thanks for reading!</p>
 ]]></content>
   </entry>
   

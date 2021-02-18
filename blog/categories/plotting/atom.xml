@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Plotting | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/plotting/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2018-01-19T15:57:48+09:00</updated>
+  <updated>2021-02-18T16:06:09+05:30</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -14,9 +14,81 @@
 
   
   <entry>
+    <title type="html"><![CDATA[GSoC 2018 : Ruby Matplotlib]]></title>
+    <link href="http://sciruby.com/blog/2019/01/17/gsoc-2018-Ruby-Matplotlib/"/>
+    <updated>2019-01-17T05:30:00+05:30</updated>
+    <id>http://sciruby.com/blog/2019/01/17/gsoc-2018-Ruby-Matplotlib</id>
+    <content type="html"><![CDATA[<p>This is a wrap of my Gsoc project at Sciruby where I worked on builing Matplotlib for Ruby.</p>
+
+<p>At Sciruby, we came across the ambitious task of designing the next Matplotlib for Ruby and so we examined quite a few different plotting libraries and figured that if we could put together ideas from all of these libraries then we can make something really amazing.Primarily our main source of inspiration was Matplotlib. The Matplotlib Architecture is be broadly divided into three layers. The Backend, The Artist and the scripting layer.</p>
+
+<p>Matplotlib architecture is mostly written in Python with some of its backend (the renderer AGG and Figure canvas ) written in C++ ( The original AGG backend and helper scripts, which is quite tightly bound to python). But recently the backends are also written in Python using the renderers which have Python APIs. The finer details of the Architecture can be found <a href="https://www.aosabook.org/en/matplotlib.html">here</a>.</p>
+
+<p>Based on Matplotlib our initial plans for the library can be described in this visual.</p>
+
+<p><img src="https://raw.githubusercontent.com/Arafatk/hagura/gh-pages/images/Screen%20Shot%202019-01-28%20at%201.27.11%20PM.png" alt="Image" /></p>
+
+<p>We decided to build two different ruby libraries independently but with many parallels in their code. Eventually when the project gets completed we will combine them into a single repository and give users the option to use either of the libraries as a backend for construction of the plots.</p>
+
+<p>For the first one, <a href="https://github.com/pgtgrly/GRruby-extension/">Gr plot</a> is plotting library for ruby that uses the <a href="https://gr-framework.org/">GR framework</a> as a backend.
+And for the second one, <a href="https://github.com/Arafatk/magick-rubyplot/">Magick plot</a> is a plotting library that produces quality figures in a variety of hardcopy formats using <a href="https://rmagick.github.io/">RMagick</a> as a backend.</p>
+
+<p> Magickplot is an interesting library with many features similar to GRPlot but the internal implementations of both the libraries are radically different. We believe that depending on the use cases the users can find either of them more useful than the other one. 
+So our next goal is to merge them together and give users a simple API to switch back ends easily from GR Plot to Magick Plot….</p>
+
+<p>My work in particular dealt with building Magickplot. The library works in similar thought process to painting where you can give it an empty paper called figure canvas and then you draw upon the figure canvas using plotting features. For all drawing and plotting purposes in this library we use RMagick.</p>
+
+<p>So where are our paint brushes and paints for drawing on the plot?</p>
+
+<ul>
+<li> draw->rectangle</li>
+<li> draw->circle</li>
+<li> draw->line</li>
+<li> draw->annotate</li>
+</ul>
+
+
+<p>These base features will let you make Bar, Scatter, Dot, Line and Bubble plots with Magickplot with very accurate geometry. A better walk through of the construction of a single plot with this library can be found in this <a href="https://arafatk.github.io/hagura/2018/07/19/bubble-base.html">blog</a>.</p>
+
+<h2>Application</h2>
+
+<p>My GSoC 2018 application for the project can be found <a href="https://docs.google.com/document/d/1t7jJKMaPjFI7pbjfMSG7eh6YmqqIE0qEoXXqsxROlYs/edit?usp=sharing">here</a>.</p>
+
+<h2>Blog Posts</h2>
+
+<p>The entire work for Rubyplot can be summarized in these series of blogposts:</p>
+
+<ul>
+<li><a href="https://arafatk.github.io/hagura/2018/06/20/introductions.html">Introductory Blog</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/06/21/ArtistBase-1.html">Artist Base - Part 1</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/06/22/ArtistBase-2.html">Artist Base - Part 3</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/07/11/Plot-Constructions.html">Divisionism</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/07/12/scatter-base.html">Scatter Plots</a></li>
+<li><a href="https://arafatk.github.io/hagura/2018/07/19/bubble-base.html">Bubble Plots</a></li>
+</ul>
+
+
+<h2>Future Work</h2>
+
+<p>Our ultimate goal is to make this project similar to a matplotlib equivalent for Ruby with tons of really amazing customization features. I hope you find this interesting and useful.The library is currently being developed by the Sciruby community, feel free to try it out from <a href="https://github.com/SciRuby/rubyplot/">github</a>. Any suggestions and recommendations are welcome.</p>
+
+<h2>FOSS</h2>
+
+<p>I have been an active contributor to a few open source projects and I have started a few
+nice ones of my own and I feel really glad to have been introduced to the open
+source community. I really appreciate the effort by Google Open Source Committee for conducting GSoC every year. It is the best platform for aspiring programmers to improve their skill and give back to society by developing free and open source software.</p>
+
+<h2>Acknowledgements</h2>
+
+<p>Thanks to all my Mentors from Sciruby namely, Sameer Deshmukh, Pjotr Prins, Prasun Anand and  John Woods. 
+Special thanks to Pranav Garg a fellow GSoCer who is the lead developer of GR-Ruby and a student in Gsoc for Sciruby</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[GSoC 2017 : Data visualization using daru-view]]></title>
     <link href="http://sciruby.com/blog/2017/09/01/gsoc-2017-data-visualization-using-daru-view/"/>
-    <updated>2017-09-01T22:46:00+09:00</updated>
+    <updated>2017-09-01T22:46:00+05:30</updated>
     <id>http://sciruby.com/blog/2017/09/01/gsoc-2017-data-visualization-using-daru-view</id>
     <content type="html"><![CDATA[<p>Hello, Rubyist! Are looking for good ruby gem for interactive data
 visualization? Then you must try <a href="https://github.com/Shekharrajak/daru-view"><code>daru-view</code></a>, a plugin gem for <a href="https://github.com/SciRuby/daru"><code>daru</code></a>.</p>
@@ -128,7 +200,7 @@ line_basic_chart.chart
 <p>This will return the chart object we created using GoogleCharts.
 In IRuby notebook, you will see this:</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlecharts_line1.png?raw=true" title="Basic line chart using GoogleCharts" alt="Basic line chart using GoogleCharts"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlecharts_line1.png?raw=true 'Basic line chart using GoogleCharts' 'Basic line chart using GoogleCharts' %}</p>
 
 <p>You can find the IRuby notebook example in <a href="http://nbviewer.jupyter.org/github/shekharrajak/daru-view/blob/master/spec/dummy_iruby/Google%20Chart%20%7C%20%20Line%20Chart.ipynb">this link</a>.</p>
 
@@ -166,7 +238,7 @@ df_cp.vectors = Daru::Index.new(['Country', 'Population'])</p>
 
 <p>Note: If you have already loaded the dependent JS files for the library then you can use <code>adapter: :googlecharts</code> in your Plot initialization.</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlechart_geo1.png?raw=true" title="Basic Geo chart using GoogleCharts" alt="Basic Geo chart using GoogleCharts"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlechart_geo1.png?raw=true 'Basic Geo chart using GoogleCharts' 'Basic Geo chart using GoogleCharts' %}</p>
 
 <h3>HighCharts:</h3>
 
@@ -203,7 +275,7 @@ plt_pie = Daru::View::Plot.new data, type: :pie
 <p>This will return the <code>Plot</code> object we created.
 In IRuby notebook, you will see this:</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/highcharts_pie.png?raw=true" title="Basic pie chart using HighCharts" alt="Basic pie chart using HighCharts"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/highcharts_pie.png?raw=true 'Basic pie chart using HighCharts' 'Basic pie chart using HighCharts' %}</p>
 
 <p>You can find the IRuby notebook example in <a href="http://nbviewer.jupyter.org/github/shekharrajak/daru-view/blob/master/spec/dummy_iruby/HighCharts-%20Pie%20charts.ipynb">this link</a>.</p>
 
@@ -237,7 +309,7 @@ df.to_category :c</p>
 
 <p>In IRuby notebook:</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/nyaplot_scatter.png?raw=true" title="Basic scatter chart using Nyaplot" alt="Basic scatter chart using Nyaplot"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/nyaplot_scatter.png?raw=true 'Basic scatter chart using Nyaplot' 'Basic scatter chart using Nyaplot' %}</p>
 
 <h3>GoogleChart data table</h3>
 
@@ -272,7 +344,7 @@ galaxy_table.table
 <p>This will return the table object we created using GoogleCharts tool.
 In IRuby notebook, you will see this:</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlechart_table1.png?raw=true" title="Basic table using GoogleCharts" alt="Basic table using GoogleCharts"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlechart_table1.png?raw=true 'Basic table using GoogleCharts' 'Basic table using GoogleCharts' %}</p>
 
 <p>We can create table using Vectors as well.</p>
 
@@ -291,7 +363,7 @@ dv = Daru::Vector.new [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175
 <p>```
 In Ruby Notebook:</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlechart_vec_table1.png?raw=true" title="Basic vector table using GoogleCharts" alt="Basic vector table using GoogleCharts"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/googlechart_vec_table1.png?raw=true 'Basic vector table using GoogleCharts' 'Basic vector table using GoogleCharts' %}</p>
 
 <h3>DataTable</h3>
 
@@ -324,7 +396,7 @@ df_datatable = Daru::View::Table.new(df, pageLength: 3)
 Currently there is some problem to diplay it in IRuby notebook, but in web application
 you can see something like this using</code>df_datatable.div` :</p>
 
-<p><img src="https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/datatables_basic1.png?raw=true" title="Basic table using Datatables" alt="Basic table using Datatables"></p>
+<p>{% img https://github.com/Shekharrajak/gsoc_2017_blog/blob/master/img/datatables_basic1.png?raw=true 'Basic table using Datatables' 'Basic table using Datatables' %}</p>
 
 <h2>How to use it in Ruby web application</h2>
 

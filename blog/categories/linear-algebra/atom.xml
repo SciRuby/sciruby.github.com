@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linear algebra | SciRuby]]></title>
   <link href="http://sciruby.com/blog/categories/linear-algebra/atom.xml" rel="self"/>
   <link href="http://sciruby.com/"/>
-  <updated>2018-01-19T15:57:55+09:00</updated>
+  <updated>2021-02-18T16:06:09+05:30</updated>
   <id>http://sciruby.com/</id>
   <author>
     <name><![CDATA[SciRuby]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GSoC 2016: NMatrix and JRuby]]></title>
-    <link href="http://sciruby.com/blog/2016/10/25/gsoc-2016-port-nmatrix-to-jruby/"/>
-    <updated>2016-10-25T02:13:00+09:00</updated>
-    <id>http://sciruby.com/blog/2016/10/25/gsoc-2016-port-nmatrix-to-jruby</id>
+    <link href="http://sciruby.com/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby/"/>
+    <updated>2016-10-24T22:43:00+05:30</updated>
+    <id>http://sciruby.com/blog/2016/10/24/gsoc-2016-port-nmatrix-to-jruby</id>
     <content type="html"><![CDATA[<h2>Introduction</h2>
 
 <p>I worked on "Port NMatrix to JRuby" in the context of the Google
@@ -753,7 +753,7 @@ helped me with certain aspects of my project.</p>
   <entry>
     <title type="html"><![CDATA[GSoC 2015: New NMatrix gems for advanced linear algebra features]]></title>
     <link href="http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix/"/>
-    <updated>2015-08-19T09:57:00+09:00</updated>
+    <updated>2015-08-19T09:57:00+05:30</updated>
     <id>http://sciruby.com/blog/2015/08/19/gsoc-2015-nmatrix</id>
     <content type="html"><![CDATA[<p>My Google Summer of Code project was working on the <a href="https://github.com/SciRuby/nmatrix">NMatrix project</a>, moving
 functionality that depends on external libraries from the core <code>nmatrix</code>

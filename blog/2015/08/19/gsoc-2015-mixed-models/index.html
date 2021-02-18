@@ -75,6 +75,7 @@
   <li><a href="https://github.com/sciruby/sciruby">SciRuby</a></li>
   <li><a href="/nmatrix">NMatrix</a></li>
   <li><a href="/publications/">Citing SciRuby</a></li>
+  <li><a href="https://github.com/SciRuby/sciruby/wiki/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 </ul>
 
 </nav>
@@ -106,7 +107,7 @@
   
 
 
-<time datetime="2015-08-19T12:00:00+09:00" pubdate data-updated="true">Aug 19<span>th</span>, 2015</time>
+<time datetime="2015-08-19T12:00:00+05:30" pubdate data-updated="true">Aug 19<span>th</span>, 2015</time>
         
       </p>
     
@@ -146,8 +147,8 @@ The Ruby gem loses with respect to memory consumption and speed in comparison to
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">model_fit</span> <span class="o">=</span> <span class="no">LMM</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">:</span> <span class="s2">&quot;log_comments ~ log_host_comments_avg + host_trackbacks_avg + length + has_parent_with_comments + (1 | day)&quot;</span><span class="p">,</span>
-</span><span class='line'>                              <span class="n">data</span><span class="p">:</span> <span class="n">blog_data</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">model_fit</span> <span class="o">=</span> <span class="no">LMM</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="ss">formula</span><span class="p">:</span> <span class="s2">&quot;log_comments ~ log_host_comments_avg + host_trackbacks_avg + length + has_parent_with_comments + (1 | day)&quot;</span><span class="p">,</span>
+</span><span class='line'>                              <span class="ss">data</span><span class="p">:</span> <span class="n">blog_data</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -197,9 +198,9 @@ The Ruby gem loses with respect to memory consumption and speed in comparison to
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Random</span> <span class="n">effects</span> <span class="n">coefficients</span><span class="p">:</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Random</span> <span class="n">effects</span> <span class="ss">coefficients</span><span class="p">:</span>
 </span><span class='line'><span class="p">{</span><span class="ss">:intercept_fr</span><span class="o">=&gt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:intercept_mo</span><span class="o">=&gt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:intercept_sa</span><span class="o">=&gt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:intercept_su</span><span class="o">=&gt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:intercept_th</span><span class="o">=&gt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:intercept_tu</span><span class="o">=&gt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:intercept_we</span><span class="o">=&gt;</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="p">}</span>
-</span><span class='line'><span class="no">Random</span> <span class="n">effects</span> <span class="n">standard</span> <span class="n">deviation</span><span class="p">:</span>
+</span><span class='line'><span class="no">Random</span> <span class="n">effects</span> <span class="n">standard</span> <span class="ss">deviation</span><span class="p">:</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">#&lt;Daru::DataFrame:70278348234580 @name = 8e11a27f-81b0-48a0-9771-085a8f30693d @size = 1&gt;</span>
 </span><span class='line'>                  <span class="n">day</span>
@@ -231,7 +232,7 @@ In fact, like <code>mixed_models</code> above, <code>lme4</code> estimates the r
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='rconsole'><span class='line'><span class="gp">&gt; </span>mod <span class="o">&lt;-</span> lmer<span class="p">(</span>log_comments ~ log_host_comments_avg <span class="o">+</span> host_trackbacks_avg <span class="o">+</span> length <span class="o">+</span> has_parent_with_comments <span class="o">+</span> <span class="p">(</span><span class="m">1</span><span class="o">|</span>day<span class="p">),</span> data <span class="o">=</span> df<span class="p">)</span>
+</pre></td><td class='code'><pre><code class='rconsole'><span class='line'><span class="gp">&gt; </span>mod <span class="o">&lt;-</span> lmer<span class="p">(</span>log_comments <span class="o">~</span> log_host_comments_avg <span class="o">+</span> host_trackbacks_avg <span class="o">+</span> length <span class="o">+</span> has_parent_with_comments <span class="o">+</span> <span class="p">(</span><span class="m">1</span><span class="o">|</span>day<span class="p">),</span> data <span class="o">=</span> df<span class="p">)</span>
 </span><span class='line'><span class="go">Warning message:</span>
 </span><span class='line'><span class="go">Some predictor variables are on very different scales: consider rescaling </span>
 </span><span class='line'><span class="gp">&gt; </span>ranef<span class="p">(</span>mod<span class="p">)</span>
@@ -306,8 +307,8 @@ A good reference on such models is <a href="http://lme4.r-forge.r-project.org/bo
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mod</span> <span class="o">=</span> <span class="no">LMM</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">:</span> <span class="s2">&quot;y ~ x + (1|a) + (1|a:b)&quot;</span><span class="p">,</span>
-</span><span class='line'>                       <span class="n">data</span><span class="p">:</span> <span class="n">df</span><span class="p">,</span> <span class="n">reml</span><span class="p">:</span> <span class="kp">false</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mod</span> <span class="o">=</span> <span class="no">LMM</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="ss">formula</span><span class="p">:</span> <span class="s2">&quot;y ~ x + (1|a) + (1|a:b)&quot;</span><span class="p">,</span>
+</span><span class='line'>                       <span class="ss">data</span><span class="p">:</span> <span class="n">df</span><span class="p">,</span> <span class="ss">reml</span><span class="p">:</span> <span class="kp">false</span><span class="p">)</span>
 </span><span class='line'><span class="nb">puts</span> <span class="n">mod</span><span class="o">.</span><span class="n">ran_ef_summary</span><span class="o">.</span><span class="n">inspect</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -330,7 +331,7 @@ A good reference on such models is <a href="http://lme4.r-forge.r-project.org/bo
 <p>We can compute five types of 95% confidence intervals for the fixed effects coefficients with the following line of code:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mod</span><span class="o">.</span><span class="n">fix_ef_conf_int</span><span class="p">(</span><span class="nb">method</span><span class="p">:</span> <span class="ss">:all</span><span class="p">,</span> <span class="n">nsim</span><span class="p">:</span> <span class="mi">1000</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mod</span><span class="o">.</span><span class="n">fix_ef_conf_int</span><span class="p">(</span><span class="nb">method</span><span class="p">:</span> <span class="ss">:all</span><span class="p">,</span> <span class="ss">nsim</span><span class="p">:</span> <span class="mi">1000</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -357,8 +358,8 @@ A good reference on such models is <a href="http://lme4.r-forge.r-project.org/bo
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mod</span><span class="o">.</span><span class="n">ran_ef_p</span><span class="p">(</span><span class="n">variable</span><span class="p">:</span> <span class="ss">:intercept</span><span class="p">,</span> <span class="n">grouping</span><span class="p">:</span> <span class="o">[</span><span class="ss">:a</span><span class="p">,</span> <span class="ss">:b</span><span class="o">]</span><span class="p">,</span>
-</span><span class='line'>             <span class="nb">method</span><span class="p">:</span> <span class="ss">:bootstrap</span><span class="p">,</span> <span class="n">nsim</span><span class="p">:</span> <span class="mi">1000</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mod</span><span class="o">.</span><span class="n">ran_ef_p</span><span class="p">(</span><span class="ss">variable</span><span class="p">:</span> <span class="ss">:intercept</span><span class="p">,</span> <span class="ss">grouping</span><span class="p">:</span> <span class="o">[</span><span class="ss">:a</span><span class="p">,</span> <span class="ss">:b</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>             <span class="nb">method</span><span class="p">:</span> <span class="ss">:bootstrap</span><span class="p">,</span> <span class="ss">nsim</span><span class="p">:</span> <span class="mi">1000</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -399,10 +400,10 @@ A good reference on such models is <a href="http://lme4.r-forge.r-project.org/bo
 </span><span class='line'><span class="n">kinship_mat_cholesky_factor</span> <span class="o">=</span> <span class="n">kinship_mat</span><span class="o">.</span><span class="n">factorize_cholesky</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1"># Fit the model</span>
-</span><span class='line'><span class="n">model_fit</span> <span class="o">=</span> <span class="no">LMM</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="n">zt</span><span class="p">:</span> <span class="n">z</span><span class="p">,</span>
-</span><span class='line'>                    <span class="n">x_col_names</span><span class="p">:</span> <span class="n">x_names</span><span class="p">,</span>
-</span><span class='line'>                    <span class="n">start_point</span><span class="p">:</span> <span class="o">[</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span>
-</span><span class='line'>                    <span class="n">lower_bound</span><span class="p">:</span> <span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">th</span><span class="o">|</span> <span class="n">kinship_mat_cholesky_factor</span> <span class="o">*</span> <span class="n">th</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="p">}</span>
+</span><span class='line'><span class="n">model_fit</span> <span class="o">=</span> <span class="no">LMM</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="ss">y</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="ss">zt</span><span class="p">:</span> <span class="n">z</span><span class="p">,</span>
+</span><span class='line'>                    <span class="ss">x_col_names</span><span class="p">:</span> <span class="n">x_names</span><span class="p">,</span>
+</span><span class='line'>                    <span class="ss">start_point</span><span class="p">:</span> <span class="o">[</span><span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>                    <span class="ss">lower_bound</span><span class="p">:</span> <span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">th</span><span class="o">|</span> <span class="n">kinship_mat_cholesky_factor</span> <span class="o">*</span> <span class="n">th</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -444,7 +445,7 @@ A good reference on such models is <a href="http://lme4.r-forge.r-project.org/bo
   
 
 
-<time datetime="2015-08-19T12:00:00+09:00" pubdate data-updated="true">Aug 19<span>th</span>, 2015</time>
+<time datetime="2015-08-19T12:00:00+05:30" pubdate data-updated="true">Aug 19<span>th</span>, 2015</time>
       
 
 <span class="categories">
@@ -499,23 +500,23 @@ A good reference on such models is <a href="http://lme4.r-forge.r-project.org/bo
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2017/09/15/gsoc-2017-fastest-ruby-math-libraries/">GSoC 2017 : Creating the fastest Math libraries for Ruby by using the GPU through OpenCL, CUDA and ArrayFire.</a>
+        <a href="/blog/2021/02/16/tensors/">Tensors using NumRuby</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2017/09/01/gsoc-2017-data-visualization-using-daru-view/">GSoC 2017 : Data visualization using daru-view</a>
+        <a href="/blog/2019/08/29/gsoc-2019-rubyplot/">GSoC 2019 : Adding ImageMagick backend, IRuby support and additional functionalities to Rubyplot</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2017/08/29/gsoc-2017-support-to-import-export-of-more-formats/">GSoC 2017 : Support to Import & Export of more formats</a>
+        <a href="/blog/2019/08/26/gsoc-2019-adding-features-to-nmatrix-core/">GSoC 2019: Adding features to NMatrix core</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/11/25/gsoc-2016-adding-categorical-data-support/">GSoC 2016: Adding Categorical Data Support</a>
+        <a href="/blog/2019/01/23/gsoc-2018-rubyplot+-gr-+a-scientific-plotting-library-for-ruby-built-on-gr/">GSoC 2018: RubyPlot GR - A Scientific Plotting Library for Ruby Built on GR Framework</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/11/25/spicerub-kernelpool-and-kernels/">GSoC 2016: SpiceRub::KernelPool and Kernels</a>
+        <a href="/blog/2019/01/17/gsoc-2018-Ruby-Matplotlib/">GSoC 2018 : Ruby Matplotlib</a>
       </li>
     
   </ul>
@@ -576,7 +577,7 @@ A good reference on such models is <a href="http://lme4.r-forge.r-project.org/bo
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2018 - SciRuby -
+  Copyright &copy; 2021 - SciRuby -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
